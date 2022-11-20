@@ -1,4 +1,4 @@
-import 'package:clean_architecture/core/value/strings/strings.dart';
+import 'package:clean_architecture/core/value/strings.dart';
 import 'package:clean_architecture/presentation/pages/settings/settings_state.dart';
 import 'package:flutter/material.dart';
 import '../../../data/datasources/datalocal/shared_preferences_data.dart';

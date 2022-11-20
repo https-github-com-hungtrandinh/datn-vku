@@ -5,8 +5,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 import '../../../core/util/custom_route.dart';
-import '../../../core/value/AppTextStyle.dart';
-import '../../../core/value/strings/strings.dart';
+import '../../../core/value/app_text_style.dart';
+import '../../../core/value/strings.dart';
 import '../detailtopics/detail_page.dart';
 
 class TabViewPage extends StatelessWidget {

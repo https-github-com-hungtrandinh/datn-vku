@@ -1,6 +1,6 @@
-import 'package:clean_architecture/core/value/AppTextStyle.dart';
-import 'package:clean_architecture/core/value/colors/AppColors.dart';
-import 'package:clean_architecture/core/value/strings/strings.dart';
+import 'package:clean_architecture/core/value/app_text_style.dart';
+import 'package:clean_architecture/core/value/app_color.dart';
+import 'package:clean_architecture/core/value/strings.dart';
 import 'package:clean_architecture/domain/entities/topics/Topics.dart';
 import 'package:clean_architecture/presentation/pages/home/home_state.dart';
 import 'package:clean_architecture/presentation/pages/tab/tab_view_model.dart';

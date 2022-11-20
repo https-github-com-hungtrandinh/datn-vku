@@ -4,7 +4,7 @@ import 'package:clean_architecture/presentation/pages/search/search_page.dart';
 import 'package:clean_architecture/presentation/pages/settings/settings_page.dart';
 import 'package:flutter/material.dart';
 
-import '../../core/value/colors/AppColors.dart';
+import '../../core/value/app_color.dart';
 
 class InitialApp extends StatefulWidget{
   const InitialApp({Key? key}) : super(key: key);
@@ -39,7 +39,7 @@ class InitialAppState extends State<InitialApp>{
         type:  BottomNavigationBarType.fixed,
         showSelectedLabels: false,
         showUnselectedLabels: false,
-        items:<BottomNavigationBarItem> [
+        items:const <BottomNavigationBarItem> [
           BottomNavigationBarItem(icon: Icon(Icons.image,color: Colors.white),label: ""),
           BottomNavigationBarItem(icon: Icon(Icons.search,color: Colors.white,),label: ""),
           BottomNavigationBarItem(icon: Icon(Icons.add_box,color: Colors.white,),label: ""),
