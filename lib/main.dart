@@ -1,7 +1,7 @@
 import 'package:clean_architecture/injection.dart';
 import 'package:clean_architecture/presentation/pages/detailtopics/detail_view_model.dart';
 import 'package:clean_architecture/presentation/pages/home/home_view_model.dart';
-import 'package:clean_architecture/presentation/pages/initial.dart';
+import 'package:clean_architecture/presentation/pages/login/login_page.dart';
 import 'package:clean_architecture/presentation/pages/search/search_view_model.dart';
 import 'package:clean_architecture/presentation/pages/settings/settings_view_model.dart';
 import 'package:clean_architecture/presentation/pages/tab/tab_view_model.dart';
@@ -36,7 +36,7 @@ class MyApp extends StatelessWidget {
             GlobalWidgetsLocalizations.delegate,
             GlobalCupertinoLocalizations.delegate,
           ],
-          home: const InitialApp(),
+          home: const LoginScreen(),
           supportedLocales: S.delegate.supportedLocales),
     );
   }

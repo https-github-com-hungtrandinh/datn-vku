@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:clean_architecture/core/error/failure.dart';
-import 'package:clean_architecture/core/value/strings/strings.dart';
+import 'package:clean_architecture/core/value/strings.dart';
 import 'package:clean_architecture/data/datasources/dataremote/remote_data_source.dart';
 import 'package:clean_architecture/domain/entities/searchphoto/search_photo.dart';
 import 'package:clean_architecture/domain/entities/topics/Topics.dart';
