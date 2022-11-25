@@ -18,7 +18,17 @@ class Strings {
   static const String contentLogin = "Login to your account";
   static const String email = "Email";
   static const String password = "Password";
-  static const String forgotPassword="Forgot your password?";
-  static const String login ="Login";
-
+  static const String forgotPassword = "Forgot your password?";
+  static const String login = "Login";
+  static const String titleStartScreen = "Find new friends nearby";
+  static const String contentStartScreen = "With milions of users all over the world, we gives you the ability to connect with people no matter where you are.";
+  static const String signUp = "Sign Up";
+  static const String byMe = "Or log in with";
+  static const String userName = "Username";
+  static const String phone = "Phone";
+  static const String createAtAccount = "Create an account";
+  static const String descriptionRegister = "By clicking Sign up you agree to the following Terms and Conditions without reservation";
+  static const String contentForgotPassword = "Please enter your email address. You will receive a link to create a new password via email.";
+  static const String yourEmail = "Your email";
+  static const String send = "Send";
 }

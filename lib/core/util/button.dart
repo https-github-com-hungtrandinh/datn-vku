@@ -8,12 +8,14 @@ class ButtonCustom extends StatelessWidget {
   final Color? color;
   final double border;
   final String text;
+  final Color? textColor;
   final VoidCallback? onClick;
 
   const ButtonCustom({
     Key? key,
     this.height,
     this.width,
+    this.textColor= AppColors.colorFFFFFF,
     this.color,
     this.border = 22,
     this.onClick,
@@ -38,7 +40,7 @@ class ButtonCustom extends StatelessWidget {
         child: Text(
           text,
           style: GoogleFonts.actor(
-              color: AppColors.colorFFFFFF,
+              color: textColor,
               textStyle:
                   const TextStyle(fontSize: 15, fontWeight: FontWeight.w700)),
         ),

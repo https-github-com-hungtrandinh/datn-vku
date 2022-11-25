@@ -40,7 +40,9 @@ class User {
         isEmailVerified: json['isEmailVerified'],
         isTwoFactor: json['isTwoFactor'],
         smsCode: json['SMScode'],
-        friends: json['friends'],
+        friends:  (json['friends'] as List)
+            .map((followers) => followers.toString())
+            .toList(),
         followers: (json['followers'] as List)
             .map((followers) => followers.toString())
             .toList(),
