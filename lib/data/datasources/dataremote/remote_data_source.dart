@@ -3,6 +3,7 @@ import 'package:clean_architecture/data/models/topic/reponse/TopicsResponse.dart
 import 'package:dio/dio.dart';
 import '../../models/searchphoto/reponse/search_photo_response.dart';
 import '../../models/topicphotodto/reponse/TopicPhotoResponse.dart';
+import '../../models/user.dart';
 import '../../models/weather_dto.dart';
 
 abstract class RemoteDataSource {
@@ -13,16 +14,18 @@ abstract class RemoteDataSource {
   Future<List<TopicPhotoResponse>> getTopicPhoto({required String id});
 
   Future<List<SearchPhotoResponse>> getSearchPhoto({required String query});
+
+  Future<User> login({required String email, required String password});
 }
 
 class RemoteDataSourceImpl implements RemoteDataSource {
-  final Dio _dio = Dio();
+  final Dio _dio = Dio(BaseOptions(baseUrl: ConstApp.baseUrlHeroku));
 
   @override
   Future<WeatherDto> getCurrentWeather(String cityName) async {
-    const String url = "${KeyUnsplash.baseUrl}topics";
+    const String url = "${ConstApp.baseUrl}topics";
     Response response =
-        await _dio.get(url, queryParameters: {"client_id": KeyUnsplash.keyApi});
+        await _dio.get(url, queryParameters: {"client_id": ConstApp.keyApi});
     if (response.statusCode == 200) {
       return WeatherDto.fromJson(response.data);
     } else {
@@ -32,7 +35,7 @@ class RemoteDataSourceImpl implements RemoteDataSource {
 
   @override
   Future<List<TopicsResponse>> getTopics() async {
-    Response response = await _dio.get(KeyUnsplash.currentUnsplashTopics);
+    Response response = await _dio.get(ConstApp.currentUnsplashTopics);
     if (response.statusCode == 200) {
       return (response.data as List)
           .map((e) => TopicsResponse.fromJson(e))
@@ -44,10 +47,10 @@ class RemoteDataSourceImpl implements RemoteDataSource {
 
   @override
   Future<List<TopicPhotoResponse>> getTopicPhoto({required String id}) async {
-    final String url = "${KeyUnsplash.baseUrl}topics/$id/photos";
+    final String url = "${ConstApp.baseUrl}topics/$id/photos";
     Response response = await _dio.get(
       url,
-      queryParameters: {"client_id": KeyUnsplash.keyApi},
+      queryParameters: {"client_id": ConstApp.keyApi},
     );
     if (response.statusCode == 200) {
       return (response.data as List)
@@ -62,13 +65,32 @@ class RemoteDataSourceImpl implements RemoteDataSource {
   Future<List<SearchPhotoResponse>> getSearchPhoto(
       {required String query}) async {
     final String url =
-        "${KeyUnsplash.baseUrl}search/photos?clinet_id=${KeyUnsplash.keyApi}&query=$query";
+        "${ConstApp.baseUrl}search/photos?clinet_id=${ConstApp.keyApi}&query=$query";
 
     Response response = await _dio.get(url);
     if (response.statusCode == 200) {
       return (response.data["results"] as List)
           .map((e) => SearchPhotoResponse.fromJson(e))
           .toList();
+    } else {
+      throw Exception();
+    }
+  }
+
+  @override
+  Future<User> login({required String email, required String password}) async {
+    final Map<String, dynamic> body = {"email": email, "password": password};
+    Response response = await _dio.post(
+      'v1/auth/login',
+      data: body,
+      options: Options(
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      ),
+    );
+    if (response.statusCode == 200) {
+      return User.fromJson(response.data["user"]);
     } else {
       throw Exception();
     }

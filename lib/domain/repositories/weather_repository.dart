@@ -1,4 +1,5 @@
 import 'package:clean_architecture/core/error/failure.dart';
+import 'package:clean_architecture/data/models/user.dart';
 import 'package:clean_architecture/domain/entities/topics/Topics.dart';
 import 'package:clean_architecture/domain/entities/weather.dart';
 import 'package:dartz/dartz.dart';
@@ -14,4 +15,6 @@ abstract class WeatherRepository {
       {required String id});
 
   Future<Either<Failure, List<SearchPhoto>>> getSearchPhoto(String query);
+
+  Future<Either<Failure , User>> login(String email, String password);
 }
