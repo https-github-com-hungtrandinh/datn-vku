@@ -9,6 +9,8 @@ import '../../core/value/app_color.dart';
 class InitialApp extends StatefulWidget{
   const InitialApp({Key? key}) : super(key: key);
 
+  static const initialAppPushName="/InitialScreen";
+
   @override
   State<StatefulWidget> createState() {
     return InitialAppState();

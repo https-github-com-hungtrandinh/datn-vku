@@ -1,6 +1,8 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
 abstract class SharedPreference {
+  static const tokensAccess ="TOKEN_ACCESS";
+  static const tokenRefresh ="TOKEN_REFRESH";
   Future<dynamic> get(String key);
 
   Future set<T>(String key, T value);
