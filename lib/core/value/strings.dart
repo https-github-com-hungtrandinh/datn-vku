@@ -31,4 +31,8 @@ class Strings {
   static const String contentForgotPassword = "Please enter your email address. You will receive a link to create a new password via email.";
   static const String yourEmail = "Your email";
   static const String send = "Send";
+  static const String errorConnectInternet = "Không có kết nối internet";
+  static const String inputError = "Mật khẩu hoặc tài khoản của bạn không chính xác";
+  static const String timeOutConnect = "Không có phản hồi từ máy chủ";
+  static const String tokenTimeOut = "Token hết hạn vui lòng đăng nhập lại";
 }

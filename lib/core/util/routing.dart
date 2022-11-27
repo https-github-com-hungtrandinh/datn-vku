@@ -1,4 +1,6 @@
 import 'package:clean_architecture/presentation/pages/forgot_password/forgot_password_screen.dart';
+import 'package:clean_architecture/presentation/pages/home/home_page.dart';
+import 'package:clean_architecture/presentation/pages/initial.dart';
 import 'package:clean_architecture/presentation/pages/login/login_page.dart';
 import 'package:clean_architecture/presentation/pages/register/register_screen.dart';
 import 'package:clean_architecture/presentation/start_selection/start_selection.dart';
@@ -9,12 +11,17 @@ class RouteGenerator {
     switch (settings.name) {
       case '/LoginPage':
         return MaterialPageRoute(builder: (_) => const LoginScreen());
-      case '/SecondScreen':
+      case '/StartSelection':
         return MaterialPageRoute(builder: (_) => const StartSelection());
       case '/RegisterPage':
         return MaterialPageRoute(builder: (_) => const RegisterScreen());
       case '/ForgotPasswordPage':
         return MaterialPageRoute(builder: (_) => const ForgotPasswordScreen());
+      case '/HomePage':
+        return MaterialPageRoute(builder: (_) => const HomePage());
+      case '/InitialScreen':
+        return MaterialPageRoute(builder: (_) => const InitialApp());
+
       default:
         // If there is no such named route in the switch statement, e.g. /third
         return _errorRoute();
