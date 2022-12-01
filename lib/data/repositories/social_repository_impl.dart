@@ -4,6 +4,7 @@ import 'package:clean_architecture/core/error/failure.dart';
 import 'package:clean_architecture/core/value/strings.dart';
 import 'package:clean_architecture/data/datasources/dataremote/remote_data_source.dart';
 import 'package:clean_architecture/data/models/account.dart';
+import 'package:clean_architecture/data/models/post_all.dart';
 import 'package:clean_architecture/domain/entities/searchphoto/search_photo.dart';
 import 'package:clean_architecture/domain/entities/topics/Topics.dart';
 import 'package:clean_architecture/domain/entities/weather.dart';
@@ -94,6 +95,18 @@ class WeatherRepositoryImpl implements WeatherRepository {
           password: password,
           userName: userName,
           phoneNumber: phoneNumber);
+      return Right(result);
+    } on SocketException {
+      return const Left(ConnectionFailure(Strings.connectionFailure));
+    } on Exception {
+      return const Left(SeverFailure(Strings.serverFailure));
+    }
+  }
+
+  @override
+  Future<Either<Failure, PostAll>> getPostAll({required String token}) async {
+    try {
+      final result = await remoteDataSource.getPostAll(token: token);
       return Right(result);
     } on SocketException {
       return const Left(ConnectionFailure(Strings.connectionFailure));

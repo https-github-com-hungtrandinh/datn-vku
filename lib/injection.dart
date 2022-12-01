@@ -1,12 +1,13 @@
 import 'package:clean_architecture/data/datasources/datalocal/shared_preferences_data.dart';
 import 'package:clean_architecture/data/datasources/dataremote/remote_data_source.dart';
-import 'package:clean_architecture/data/repositories/weather_repository_impl.dart';
+import 'package:clean_architecture/data/repositories/social_repository_impl.dart';
 import 'package:clean_architecture/domain/repositories/weather_repository.dart';
 import 'package:clean_architecture/domain/usecases/social_usecase.dart';
 import 'package:clean_architecture/domain/usecases/topics_usecase.dart';
 import 'package:clean_architecture/domain/usecases/weather_usecase.dart';
 import 'package:clean_architecture/presentation/bloc/authen/auth_bloc.dart';
 import 'package:clean_architecture/presentation/bloc/login/login_bloc.dart';
+import 'package:clean_architecture/presentation/bloc/post/post_bloc.dart';
 import 'package:clean_architecture/presentation/pages/detailtopics/detail_view_model.dart';
 import 'package:clean_architecture/presentation/pages/home/home_view_model.dart';
 import 'package:clean_architecture/presentation/pages/search/search_view_model.dart';
@@ -37,6 +38,7 @@ Future<void> init() async {
   sl.registerFactory(() => SearchVM(sl()));
   sl.registerFactory(() => LoginBloc(sl()));
   sl.registerFactory(() => AuthBloc(sl()));
+  sl.registerFactory(() => PostBloc(sl()));
 
   //SharedPerence
   sl.registerLazySingleton<SharedPreference>(() => SharedPreferenceImpl());

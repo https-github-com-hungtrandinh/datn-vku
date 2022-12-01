@@ -5,14 +5,14 @@ import 'package:clean_architecture/core/value/strings.dart';
 import 'package:clean_architecture/presentation/bloc/login/login_bloc.dart';
 import 'package:clean_architecture/presentation/bloc/login/login_event.dart';
 import 'package:clean_architecture/presentation/bloc/login/login_state.dart';
-import 'package:clean_architecture/presentation/pages/forgot_password/forgot_password_screen.dart';
+import 'package:clean_architecture/presentation/pages/forgot_password_screen.dart';
 import 'package:clean_architecture/presentation/pages/initial.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import '../../../core/util/appbar_common.dart';
-import '../../../core/util/button.dart';
+import '../../core/util/appbar_common.dart';
+import '../../core/util/button.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -31,6 +31,7 @@ class _LoginScreenState extends State<LoginScreen> {
           if (state.loginStatus == LoginStatus.loading) {
             DialogCustom().showDialogLoading(context);
           } else if (state.loginStatus == LoginStatus.error) {
+            Navigator.pop(context);
             DialogCustom().showDialogWithContent(context,state.contentLogin);
           } else if (state.loginStatus == LoginStatus.loaded) {
             Navigator.pushNamed(context, InitialApp.initialAppPushName);
@@ -40,22 +41,19 @@ class _LoginScreenState extends State<LoginScreen> {
           children: [
             Image.asset(
               ImageSrc.imageBackgroundSelection,
-              fit: BoxFit.fill,
+              fit: BoxFit.cover,
               width: double.infinity,
               height: double.infinity,
             ),
-            Align(
-              alignment: Alignment.topCenter,
-              child: CustomAppBar(
-                height: 87,
-                buttonBack: IconButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  icon: const Icon(
-                    Icons.arrow_back_ios,
-                    color: AppColors.colorFFFFFF,
-                  ),
+            CustomAppBar(
+              height: 87,
+              buttonBack: IconButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                icon: const Icon(
+                  Icons.arrow_back_ios,
+                  color: AppColors.colorFFFFFF,
                 ),
               ),
             ),

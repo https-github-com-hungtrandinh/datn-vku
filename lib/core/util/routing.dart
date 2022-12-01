@@ -1,10 +1,12 @@
-import 'package:clean_architecture/presentation/pages/forgot_password/forgot_password_screen.dart';
+
 import 'package:clean_architecture/presentation/pages/home/home_page.dart';
 import 'package:clean_architecture/presentation/pages/initial.dart';
-import 'package:clean_architecture/presentation/pages/login/login_page.dart';
-import 'package:clean_architecture/presentation/pages/register/register_screen.dart';
-import 'package:clean_architecture/presentation/start_selection/start_selection.dart';
 import 'package:flutter/material.dart';
+
+import '../../presentation/pages/forgot_password_screen.dart';
+import '../../presentation/pages/login_screen.dart';
+import '../../presentation/pages/register_screen.dart';
+import '../../presentation/pages/start_selection_screen.dart';
 
 class RouteGenerator {
   static Route<dynamic> generateRoute(RouteSettings settings) {

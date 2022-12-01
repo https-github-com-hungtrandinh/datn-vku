@@ -57,6 +57,7 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
       emit(
         state.copyWith(
           registerStatus: RegisterStatus.error,
+          messages: error.message
         ),
       );
     }, (data) {

@@ -9,11 +9,13 @@ class RegisterState extends Equatable {
   final String? userName;
   final String? phoneNumber;
   final Account? account;
+  final String? messages;
   final RegisterStatus registerStatus;
 
   const RegisterState(
       {required this.email,
       required this.password,
+      required this.messages,
       required this.userName,
       required this.account,
       required this.phoneNumber,
@@ -25,6 +27,7 @@ class RegisterState extends Equatable {
         email: null,
         password: null,
         userName: null,
+        messages: null,
         phoneNumber: null,
         registerStatus: RegisterStatus.initial);
   }
@@ -35,8 +38,10 @@ class RegisterState extends Equatable {
       String? phoneNumber,
       Account? account,
       String? userName,
+      String? messages,
       RegisterStatus? registerStatus}) {
     return RegisterState(
+        messages: messages ?? this.messages,
         account: account ?? this.account,
         email: email ?? this.email,
         password: password ?? this.password,
@@ -47,5 +52,5 @@ class RegisterState extends Equatable {
 
   @override
   List<Object?> get props =>
-      [email, password, userName, phoneNumber, registerStatus, account];
+      [email, password, userName, phoneNumber, registerStatus, account,messages];
 }

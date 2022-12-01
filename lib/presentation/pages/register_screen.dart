@@ -7,9 +7,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import '../../../core/util/appbar_common.dart';
-import '../../../core/util/button.dart';
-import '../../bloc/register/register_state.dart';
+import '../../core/util/appbar_common.dart';
+import '../../core/util/button.dart';
+import '../../core/util/dialog_custom.dart';
+import '../bloc/register/register_state.dart';
+import 'initial.dart';
+
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({Key? key}) : super(key: key);
@@ -24,7 +27,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
   Widget build(BuildContext context) {
     return BlocListener<RegisterBloc, RegisterState>(
       listener: (context,state){
-
+        if (state.registerStatus == RegisterStatus.loading) {
+          DialogCustom().showDialogLoading(context);
+        } else if (state.registerStatus  == RegisterStatus.error) {
+          Navigator.pop(context);
+          DialogCustom().showDialogWithContent(context,state.messages.toString());
+        } else if (state.registerStatus  ==RegisterStatus.loaded) {
+          Navigator.pushNamed(context, InitialApp.initialAppPushName);
+        }
       },
       child: Scaffold(
         body: Stack(
@@ -33,6 +43,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
               ImageSrc.imageBackgroundSelection,
               width: double.infinity,
               height: double.infinity,
+              fit: BoxFit.cover,
             ),
             Align(
               alignment: Alignment.topCenter,
@@ -51,7 +62,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
             ),
             Padding(
               padding: const EdgeInsets.only(left: 32, right: 32),
-              child: Column(
+              child: LayoutBuilder(builder: (context, constraints) {
+                return SingleChildScrollView(
+                  child: ConstrainedBox(
+                    constraints: BoxConstraints(
+                        minWidth: constraints.maxWidth,
+                        minHeight: constraints.maxHeight),
+                    child: IntrinsicHeight(
+                      child:Column(
                 children: [
                   Expanded(
                     child: Column(
@@ -101,6 +119,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   )
                 ],
               ),
+                    ),
+                  ),
+                );
+              }),
             ),
           ],
         ),
