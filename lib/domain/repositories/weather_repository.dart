@@ -1,5 +1,6 @@
 import 'package:clean_architecture/core/error/failure.dart';
 import 'package:clean_architecture/data/models/account.dart';
+import 'package:clean_architecture/data/models/post_all.dart';
 import 'package:clean_architecture/domain/entities/topics/Topics.dart';
 import 'package:clean_architecture/domain/entities/weather.dart';
 import 'package:dartz/dartz.dart';
@@ -23,4 +24,6 @@ abstract class WeatherRepository {
       required String password,
       required String phoneNumber,
       required String userName});
+
+  Future<Either<Failure,PostAll>> getPostAll({required String token});
 }

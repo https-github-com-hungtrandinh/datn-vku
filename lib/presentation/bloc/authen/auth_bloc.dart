@@ -1,6 +1,5 @@
 import 'package:clean_architecture/presentation/bloc/authen/auth_event.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 import '../../../data/datasources/datalocal/shared_preferences_data.dart';
 import 'auth_state.dart';
 

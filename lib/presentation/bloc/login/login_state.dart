@@ -1,7 +1,6 @@
 import 'package:clean_architecture/data/models/account.dart';
 import 'package:equatable/equatable.dart';
 
-import '../../../data/models/user.dart';
 
 enum LoginStatus { initial, loading, loaded, error }
 

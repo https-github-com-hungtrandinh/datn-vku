@@ -35,4 +35,5 @@ class Strings {
   static const String inputError = "Mật khẩu hoặc tài khoản của bạn không chính xác";
   static const String timeOutConnect = "Không có phản hồi từ máy chủ";
   static const String tokenTimeOut = "Token hết hạn vui lòng đăng nhập lại";
+  static const String ok ="OK";
 }

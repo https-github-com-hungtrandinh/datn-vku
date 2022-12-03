@@ -1,6 +1,6 @@
 import 'package:clean_architecture/core/constants/key.dart';
-import 'package:clean_architecture/core/error/failure.dart';
 import 'package:clean_architecture/data/models/account.dart';
+import 'package:clean_architecture/data/models/post_all.dart';
 import 'package:clean_architecture/data/models/topic/reponse/TopicsResponse.dart';
 import 'package:dio/dio.dart';
 
@@ -19,10 +19,13 @@ abstract class RemoteDataSource {
 
   Future<Account> login({required String email, required String password});
 
-  Future<Account> register({required String email,
-    required String password,
-    required String userName,
-    required String phoneNumber});
+  Future<PostAll> getPostAll({required String token});
+
+  Future<Account> register(
+      {required String email,
+      required String password,
+      required String userName,
+      required String phoneNumber});
 }
 
 class RemoteDataSourceImpl implements RemoteDataSource {
@@ -34,7 +37,7 @@ class RemoteDataSourceImpl implements RemoteDataSource {
   Future<WeatherDto> getCurrentWeather(String cityName) async {
     const String url = "${ConstApp.baseUrl}topics";
     Response response =
-    await _dio.get(url, queryParameters: {"client_id": ConstApp.keyApi});
+        await _dio.get(url, queryParameters: {"client_id": ConstApp.keyApi});
     if (response.statusCode == 200) {
       return WeatherDto.fromJson(response.data);
     } else {
@@ -74,8 +77,7 @@ class RemoteDataSourceImpl implements RemoteDataSource {
   Future<List<SearchPhotoResponse>> getSearchPhoto(
       {required String query}) async {
     final String url =
-        "${ConstApp.baseUrl}search/photos?clinet_id=${ConstApp
-        .keyApi}&query=$query";
+        "${ConstApp.baseUrl}search/photos?clinet_id=${ConstApp.keyApi}&query=$query";
 
     Response response = await _dio.get(url);
     if (response.statusCode == 200) {
@@ -103,10 +105,11 @@ class RemoteDataSourceImpl implements RemoteDataSource {
   }
 
   @override
-  Future<Account> register({required String email,
-    required String password,
-    required String userName,
-    required String phoneNumber}) async {
+  Future<Account> register(
+      {required String email,
+      required String password,
+      required String userName,
+      required String phoneNumber}) async {
     final Map<String, dynamic> body = {
       "email": email,
       "password": password,
@@ -122,29 +125,18 @@ class RemoteDataSourceImpl implements RemoteDataSource {
     }
   }
 
-  void networkException(Response response) {
-    switch (response.statusCode) {
-      case 400:
-        throw RequestTimeOut("hung");
-        break;
-      case 401:
-        throw RequestTimeOut("hung1");
-        break;
-      case 403:
-        throw RequestTimeOut("hung2");
-        break;
-      case 404:
-        throw RequestTimeOut("hung3");
-        break;
-      case 409:
-        throw RequestTimeOut("hung4");
-        break;
-      case 408:
-        throw RequestTimeOut("hung5");
-        break;
-      case 500:
-        throw RequestTimeOut("hung5");
-        break;
+  @override
+  Future<PostAll> getPostAll({required String token}) async {
+    Response response = await _dio.get(
+      'post',
+      options: Options(headers: {
+        "Authorization": "Bearer $token",
+      }),
+    );
+    if (response.statusCode == 200) {
+      return PostAll.fromJson(response.data);
+    } else {
+      throw Exception();
     }
   }
 }

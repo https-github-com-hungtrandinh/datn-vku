@@ -1,8 +1,7 @@
 import 'package:clean_architecture/presentation/bloc/authen/auth_bloc.dart';
 import 'package:clean_architecture/presentation/bloc/authen/auth_state.dart';
-import 'package:clean_architecture/presentation/pages/home/home_page.dart';
 import 'package:clean_architecture/presentation/pages/initial.dart';
-import 'package:clean_architecture/presentation/start_selection/start_selection.dart';
+import 'package:clean_architecture/presentation/pages/start_selection_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -33,6 +32,7 @@ class _SplashScreenState extends State<SplashScreen> {
               ImageSrc.imageBackgroundSelection,
               width: double.infinity,
               height: double.infinity,
+              fit: BoxFit.cover,
             ),
           ],
         ),
