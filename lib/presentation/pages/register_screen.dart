@@ -26,12 +26,16 @@ class _RegisterScreenState extends State<RegisterScreen> {
   @override
   Widget build(BuildContext context) {
     return BlocListener<RegisterBloc, RegisterState>(
+      listenWhen: (previous,current){
+       return (previous.registerStatus != current.registerStatus);
+
+      },
       listener: (context,state){
         if (state.registerStatus == RegisterStatus.loading) {
           DialogCustom().showDialogLoading(context);
         } else if (state.registerStatus  == RegisterStatus.error) {
           Navigator.pop(context);
-          DialogCustom().showDialogWithContent(context,state.messages.toString());
+          DialogCustom().showDialogWithContent(context,state.messages);
         } else if (state.registerStatus  ==RegisterStatus.loaded) {
           Navigator.pushNamed(context, InitialApp.initialAppPushName);
         }

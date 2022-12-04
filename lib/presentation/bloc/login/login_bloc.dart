@@ -35,6 +35,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
           .set(SharedPreference.tokensAccess, data.tokens.access.token);
       socialUseCase.sharedPreference
           .set(SharedPreference.tokenRefresh, data.tokens.refresh.token);
+      socialUseCase.sharedPreference.set(SharedPreference.timeToken, data.tokens.access.expires);
       emit(state.copyWith(account: data, loginStatus: LoginStatus.loaded));
     });
   }

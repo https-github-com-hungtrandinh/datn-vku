@@ -13,6 +13,7 @@ class PostBloc extends Bloc<PostEvent, PostState> {
 
   Future<void> _getAllPost(GetPostAll event, Emitter<PostState> emit) async {
     emit(state.copyWith(loadAllPostStatus: LoadAllPostStatus.loading));
+
     final result = await socialUseCase.getPostAll();
     result.fold(
         (error) =>

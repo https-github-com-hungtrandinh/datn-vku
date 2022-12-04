@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:clean_architecture/core/error/failure.dart';
+import 'package:clean_architecture/core/util/auth_excreption.dart';
 import 'package:clean_architecture/core/value/strings.dart';
 import 'package:clean_architecture/data/datasources/dataremote/remote_data_source.dart';
 import 'package:clean_architecture/data/models/account.dart';
@@ -11,6 +12,7 @@ import 'package:clean_architecture/domain/entities/weather.dart';
 import 'package:clean_architecture/domain/repositories/weather_repository.dart';
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 import '../../domain/entities/topicphoto/TopicPhoto.dart';
 
@@ -75,11 +77,10 @@ class WeatherRepositoryImpl implements WeatherRepository {
       final result =
           await remoteDataSource.login(email: email, password: password);
       return Right(result);
-    } on SocketException catch(e){
+    } on SocketException catch (e) {
       return const Left(ConnectionFailure(Strings.connectionFailure));
     } on DioError catch (statusCode) {
-
-     return Left(formatFailure(statusCode.response?.statusCode));
+      return Left(formatFailure(statusCode.response?.statusCode));
     }
   }
 
@@ -112,6 +113,21 @@ class WeatherRepositoryImpl implements WeatherRepository {
       return const Left(ConnectionFailure(Strings.connectionFailure));
     } on Exception {
       return const Left(SeverFailure(Strings.serverFailure));
+    }
+  }
+
+  @override
+  Future<Either<SignUpWithEmailAndPasswordFailure, void>>
+      registerWithEmailPassword(
+          {required String email, required String password}) async {
+    try {
+      await remoteDataSource.registerWithEmailPassword(
+        email: email,
+        password: password,
+      );
+      return const Right(null);
+    } on FirebaseAuthException catch (e) {
+      return left(SignUpWithEmailAndPasswordFailure(e.code));
     }
   }
 }

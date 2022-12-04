@@ -1,8 +1,7 @@
+import 'package:clean_architecture/data/models/firebase/user.dart';
 import 'package:clean_architecture/presentation/bloc/register/register_event.dart';
 import 'package:clean_architecture/presentation/bloc/register/register_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
-import '../../../data/datasources/datalocal/shared_preferences_data.dart';
 import '../../../domain/usecases/social_usecase.dart';
 
 class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
@@ -13,6 +12,7 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
     on<ChangedPasswordRegister>(_changedPassword);
     on<ChangedNameUserRegister>(_changedUserName);
     on<ChangedPhoneNumberRegister>(_changedPhoneNumber);
+    on<RegisterSummit>(_registerSummit);
   }
 
   void _changedEmail(ChangedEmailRegister event, Emitter<RegisterState> emit) {
@@ -42,31 +42,34 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
     );
   }
 
-  Future<void> registerSummit(
+  Future<void> _registerSummit(
       RegisterSummit event, Emitter<RegisterState> emit) async {
     emit(
       state.copyWith(registerStatus: RegisterStatus.loading),
     );
-    final result = await socialUseCase.register(
-      email: state.email!,
-      password: state.password!,
-      userName: state.userName!,
-      phoneNumber: state.phoneNumber!,
+    final result = await socialUseCase.registerWithEmailPassword(
+      email: state.email,
+      password: state.password,
     );
     result.fold((error) {
       emit(
         state.copyWith(
-          registerStatus: RegisterStatus.error,
-          messages: error.message
-        ),
+            messages: error.messenger, registerStatus: RegisterStatus.error),
       );
     }, (data) {
-      socialUseCase.sharedPreference
-          .set(SharedPreference.tokensAccess, data.tokens.access.token);
-      socialUseCase.sharedPreference
-          .set(SharedPreference.tokenRefresh, data.tokens.refresh.token);
-      emit(
-          state.copyWith(registerStatus: RegisterStatus.loaded, account: data));
+      createUser(data);
+      emit(state.copyWith(registerStatus: RegisterStatus.loaded));
     });
+  }
+
+  Future<void> createUser(String uid) async {
+    await socialUseCase.remoteFireBaseCloud.createUser(
+      user: User(
+          name: state.userName,
+          gender: "trai",
+          age: 16,
+          email: state.email,
+          uid: uid),
+    );
   }
 }

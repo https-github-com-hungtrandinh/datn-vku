@@ -4,6 +4,7 @@ import 'package:clean_architecture/data/models/post_all.dart';
 import 'package:clean_architecture/domain/entities/topics/Topics.dart';
 import 'package:clean_architecture/domain/entities/weather.dart';
 import 'package:dartz/dartz.dart';
+import '../../core/util/auth_excreption.dart';
 import '../entities/searchphoto/search_photo.dart';
 import '../entities/topicphoto/TopicPhoto.dart';
 
@@ -26,4 +27,6 @@ abstract class WeatherRepository {
       required String userName});
 
   Future<Either<Failure,PostAll>> getPostAll({required String token});
+
+  Future<Either<SignUpWithEmailAndPasswordFailure, void>> registerWithEmailPassword({required String email, required String password});
 }

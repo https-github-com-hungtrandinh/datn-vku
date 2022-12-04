@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1044772206058",
+    "project_id": "inductive-mind-335403",
+    "storage_bucket": "inductive-mind-335403.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1044772206058:android:f34b780d5c8fa92ddc2e93",
+        "android_client_info": {
+          "package_name": "com.example.clean_architecture"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1044772206058-ho5s1lh5oh6k5lpl30ndlnori3642l79.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBwp2nr4-Oh4zhLtUSNPhO0O-4khZpR0sM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1044772206058-ho5s1lh5oh6k5lpl30ndlnori3642l79.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

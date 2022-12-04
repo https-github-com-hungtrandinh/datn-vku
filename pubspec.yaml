@@ -50,6 +50,12 @@ dependencies:
   flutter_svg: ^1.1.6
   freezed_annotation: ^2.2.0
   dashed_circle: ^0.0.2
+  intl: ^0.17.0
+  firebase_core: ^2.3.0
+  firebase_storage: ^11.0.6
+  firebase_auth: ^4.1.5
+  cloud_firestore: ^4.1.0
+  flutter_custom_clippers: ^2.0.0
 
 dev_dependencies:
   flutter_test:

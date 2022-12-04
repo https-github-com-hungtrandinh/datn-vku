@@ -38,7 +38,7 @@ class ChangedNameUserRegister extends RegisterEvent {
   List<Object?> get props => [nameUser];
 }
 
-class RegisterSummit extends RegisterEvent {
+class  RegisterSummit extends RegisterEvent {
   @override
   List<Object?> get props => [];
 }

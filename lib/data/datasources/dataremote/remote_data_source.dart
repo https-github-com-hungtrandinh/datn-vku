@@ -2,8 +2,11 @@ import 'package:clean_architecture/core/constants/key.dart';
 import 'package:clean_architecture/data/models/account.dart';
 import 'package:clean_architecture/data/models/post_all.dart';
 import 'package:clean_architecture/data/models/topic/reponse/TopicsResponse.dart';
+import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
+import '../../../core/util/auth_excreption.dart';
 import '../../models/searchphoto/reponse/search_photo_response.dart';
 import '../../models/topicphotodto/reponse/TopicPhotoResponse.dart';
 import '../../models/weather_dto.dart';
@@ -21,14 +24,21 @@ abstract class RemoteDataSource {
 
   Future<PostAll> getPostAll({required String token});
 
+  Future<bool> checkAuth();
+
   Future<Account> register(
       {required String email,
       required String password,
       required String userName,
       required String phoneNumber});
+
+  Future<Either<SignUpWithEmailAndPasswordFailure,String>> registerWithEmailPassword(
+      {required String email,
+      required String password,});
 }
 
 class RemoteDataSourceImpl implements RemoteDataSource {
+  FirebaseAuth firebaseAuth = FirebaseAuth.instance;
   final Dio _dio = Dio(BaseOptions(
       baseUrl: ConstApp.baseUrlHeroku,
       headers: {'Content-Type': 'application/json'}));
@@ -138,5 +148,33 @@ class RemoteDataSourceImpl implements RemoteDataSource {
     } else {
       throw Exception();
     }
+  }
+
+  @override
+  Future<Either<SignUpWithEmailAndPasswordFailure,String>> registerWithEmailPassword(
+      {required String email,
+      required String password,
+      }) async {
+    try {
+      final result = await firebaseAuth.createUserWithEmailAndPassword(
+          email: email, password: password);
+       return   Right(result.user!.uid);
+
+    } on FirebaseAuthException catch(e) {
+      return Left(SignUpWithEmailAndPasswordFailure.fromCode(e.code));
+    }
+  }
+
+  @override
+  Future<bool> checkAuth() async {
+     bool auth =false;
+      firebaseAuth.authStateChanges().listen((User? user) {
+      if (user == null) {
+        auth = false;
+      } else {
+        auth = true;
+      }
+    });
+    return auth;
   }
 }

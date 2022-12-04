@@ -36,4 +36,12 @@ class Strings {
   static const String timeOutConnect = "Không có phản hồi từ máy chủ";
   static const String tokenTimeOut = "Token hết hạn vui lòng đăng nhập lại";
   static const String ok ="OK";
+  static const String invalidEmail ="Email Không đúng định dạng";
+  static const String userDisabled  ="Người dùng bị vô hiệu hóa";
+  static const String emailAlreadyInUse ="Gmail đã tồn tại";
+  static const String weakPassword ="Vui lòng nhập mật khẩu bảo mật tốt hơn";
+  static const String operationNotAllowed ="Hoạt Động Không được phép";
+  static const String excreption ="Đã xảy ra một lỗi chưa xác định";
+
+
 }
