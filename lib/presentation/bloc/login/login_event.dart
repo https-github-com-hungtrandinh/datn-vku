@@ -23,3 +23,8 @@ class LoginSummit extends LoginEvent{
   @override
   List<Object?> get props =>[];
 }
+class LoginWithGoogle extends LoginEvent{
+  @override
+  List<Object?> get props => [];
+
+}

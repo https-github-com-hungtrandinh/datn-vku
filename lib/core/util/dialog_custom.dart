@@ -40,7 +40,7 @@ class DialogCustom {
                         padding: const EdgeInsets.all(8.0),
                         child: Center(
                           child: Text(
-                            Strings.inputError,
+                            contentDialog,
                             style: GoogleFonts.aBeeZee(
                                 color: Colors.black, fontSize: 16),
                           ),

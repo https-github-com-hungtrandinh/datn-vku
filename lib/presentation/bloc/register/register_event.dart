@@ -29,16 +29,22 @@ class ChangedPhoneNumberRegister extends RegisterEvent {
   List<Object?> get props => [numberPhone];
 }
 
-class ChangedNameUserRegister extends RegisterEvent {
-  final String nameUser;
-
-  ChangedNameUserRegister(this.nameUser);
-
-  @override
-  List<Object?> get props => [nameUser];
-}
-
 class RegisterSummit extends RegisterEvent {
   @override
   List<Object?> get props => [];
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

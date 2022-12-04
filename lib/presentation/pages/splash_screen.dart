@@ -1,10 +1,9 @@
 import 'package:clean_architecture/presentation/bloc/authen/auth_bloc.dart';
 import 'package:clean_architecture/presentation/bloc/authen/auth_state.dart';
 import 'package:clean_architecture/presentation/pages/initial.dart';
-import 'package:clean_architecture/presentation/pages/start_selection_screen.dart';
+import 'package:clean_architecture/presentation/pages/wellcome_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 import '../../core/value/image.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -23,7 +22,7 @@ class _SplashScreenState extends State<SplashScreen> {
           if (state.authStatus == AuthStatus.auth) {
             Navigator.pushNamed(context, InitialApp.initialAppPushName);
           } else if (state.authStatus == AuthStatus.unAuth) {
-            Navigator.pushNamed(context, StartSelection.startSelection);
+            Navigator.pushNamed(context, WelcomePage.routeName);
           }
         },
         child: Stack(

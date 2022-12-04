@@ -50,6 +50,21 @@ dependencies:
   flutter_svg: ^1.1.6
   freezed_annotation: ^2.2.0
   dashed_circle: ^0.0.2
+  intl: ^0.17.0
+  firebase_core: ^2.3.0
+  firebase_storage: ^11.0.6
+  firebase_auth: ^4.1.5
+  cloud_firestore: ^4.1.0
+  flutter_custom_clippers: ^2.0.0
+  sliding_up_panel: ^2.0.0+1
+  validators: ^3.0.0
+  bouncing_widget: ^2.0.0
+  flutter_rounded_date_picker: ^3.0.1
+  fluttertoast: ^8.0.9
+  google_sign_in: ^5.4.2
+  image_picker: ^0.8.6
+  image_cropper: ^3.0.1
+  appinio_swiper: ^1.1.1
 
 dev_dependencies:
   flutter_test:
