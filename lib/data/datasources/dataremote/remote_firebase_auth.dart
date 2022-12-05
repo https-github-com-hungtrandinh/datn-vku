@@ -6,12 +6,12 @@ import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-import '../../../core/util/auth_excreption.dart';
+import '../../../core/util/firebase_exception.dart';
 import '../../models/searchphoto/reponse/search_photo_response.dart';
 import '../../models/topicphotodto/reponse/TopicPhotoResponse.dart';
 import '../../models/weather_dto.dart';
 
-abstract class RemoteDataSource {
+abstract class RemoteFirebaseAuth {
   Future<WeatherDto> getCurrentWeather(String cityName);
 
   Future<List<TopicsResponse>> getTopics();
@@ -32,12 +32,18 @@ abstract class RemoteDataSource {
       required String userName,
       required String phoneNumber});
 
-  Future<Either<SignUpWithEmailAndPasswordFailure,String>> registerWithEmailPassword(
-      {required String email,
-      required String password,});
+  Future<Either<FirebaseExceptionCustom, String>> registerWithEmailPassword({
+    required String email,
+    required String password,
+  });
+
+  Future<Either<FirebaseExceptionCustom, void>> loginWithEmailPassword({
+    required String email,
+    required String password,
+  });
 }
 
-class RemoteDataSourceImpl implements RemoteDataSource {
+class RemoteFirebaseAuthImpl implements RemoteFirebaseAuth {
   FirebaseAuth firebaseAuth = FirebaseAuth.instance;
   final Dio _dio = Dio(BaseOptions(
       baseUrl: ConstApp.baseUrlHeroku,
@@ -151,24 +157,23 @@ class RemoteDataSourceImpl implements RemoteDataSource {
   }
 
   @override
-  Future<Either<SignUpWithEmailAndPasswordFailure,String>> registerWithEmailPassword(
-      {required String email,
-      required String password,
-      }) async {
+  Future<Either<FirebaseExceptionCustom, String>> registerWithEmailPassword({
+    required String email,
+    required String password,
+  }) async {
     try {
       final result = await firebaseAuth.createUserWithEmailAndPassword(
           email: email, password: password);
-       return   Right(result.user!.uid);
-
-    } on FirebaseAuthException catch(e) {
-      return Left(SignUpWithEmailAndPasswordFailure.fromCode(e.code));
+      return Right(result.user!.uid);
+    } on FirebaseAuthException catch (e) {
+      return Left(FirebaseExceptionCustom.errorSignUp(e.code));
     }
   }
 
   @override
   Future<bool> checkAuth() async {
-     bool auth =false;
-      firebaseAuth.authStateChanges().listen((User? user) {
+    bool auth = false;
+    firebaseAuth.authStateChanges().listen((User? user) {
       if (user == null) {
         auth = false;
       } else {
@@ -176,5 +181,17 @@ class RemoteDataSourceImpl implements RemoteDataSource {
       }
     });
     return auth;
+  }
+
+  @override
+  Future<Either<FirebaseExceptionCustom, void>> loginWithEmailPassword(
+      {required String email, required String password}) async {
+    try {
+      final result = await firebaseAuth.createUserWithEmailAndPassword(
+          email: email, password: password);
+      return const Right(null);
+    } on FirebaseAuthException catch (e) {
+      return Left(FirebaseExceptionCustom.errorSignIn(e.code));
+    }
   }
 }

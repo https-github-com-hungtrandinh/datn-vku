@@ -2,7 +2,7 @@ import 'package:clean_architecture/core/util/button.dart';
 import 'package:clean_architecture/core/value/app_color.dart';
 import 'package:clean_architecture/core/value/image.dart';
 import 'package:clean_architecture/presentation/pages/login_screen.dart';
-import 'package:clean_architecture/presentation/pages/register_screen.dart';
+import 'package:clean_architecture/presentation/pages/register/register_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';

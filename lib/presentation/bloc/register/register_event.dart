@@ -38,7 +38,26 @@ class ChangedNameUserRegister extends RegisterEvent {
   List<Object?> get props => [nameUser];
 }
 
-class  RegisterSummit extends RegisterEvent {
+class ChangedMaleUserRegister extends RegisterEvent {
+  final String male;
+
+  ChangedMaleUserRegister(this.male);
+
+  @override
+  List<Object?> get props => [male];
+}
+
+class RegisterSummit extends RegisterEvent {
   @override
   List<Object?> get props => [];
+}
+class RegisterPush extends RegisterEvent{
+  @override
+  List<Object?> get props => [];
+
+}
+class RegisterPop extends RegisterEvent{
+  @override
+  List<Object?> get props =>[];
+
 }

@@ -4,19 +4,19 @@ import 'package:clean_architecture/data/models/post_all.dart';
 import 'package:dartz/dartz.dart';
 
 import '../../core/error/failure.dart';
-import '../../core/util/auth_excreption.dart';
+import '../../core/util/firebase_exception.dart';
 import '../../data/datasources/datalocal/shared_preferences_data.dart';
-import '../../data/datasources/dataremote/remote_data_source.dart';
+import '../../data/datasources/dataremote/remote_firebase_auth.dart';
 import '../repositories/weather_repository.dart';
 
 class SocialUseCase {
   final RemoteFireBaseCloud remoteFireBaseCloud;
   final WeatherRepository _weatherRepository;
   final SharedPreference sharedPreference;
-  final RemoteDataSource remoteDataSource;
+  final RemoteFirebaseAuth remoteDataSource;
 
-  SocialUseCase(
-      this._weatherRepository, this.sharedPreference, this.remoteDataSource,this.remoteFireBaseCloud);
+  SocialUseCase(this._weatherRepository, this.sharedPreference,
+      this.remoteDataSource, this.remoteFireBaseCloud);
 
   Future<Either<Failure, Account>> login(
       {required String email, required String password}) async {
@@ -41,14 +41,23 @@ class SocialUseCase {
     return _weatherRepository.getPostAll(token: token);
   }
 
-  Future<Either<SignUpWithEmailAndPasswordFailure,String>> registerWithEmailPassword(
-      {required String email,
-      required String password,}) async {
+  Future<Either<FirebaseExceptionCustom, String>> registerWithEmailPassword({
+    required String email,
+    required String password,
+  }) async {
     return remoteDataSource.registerWithEmailPassword(
         email: email, password: password);
   }
 
-  Future<bool> checkAuth() async{
+  Future<Either<FirebaseExceptionCustom, void>> loginWithEmailPassword({
+    required String email,
+    required String password,
+  }) async {
+    return remoteDataSource.loginWithEmailPassword(
+        email: email, password: password);
+  }
+
+  Future<bool> checkAuth() async {
     return await remoteDataSource.checkAuth();
   }
 }

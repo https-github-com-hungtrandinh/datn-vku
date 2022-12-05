@@ -1,9 +1,9 @@
 import 'dart:io';
 
 import 'package:clean_architecture/core/error/failure.dart';
-import 'package:clean_architecture/core/util/auth_excreption.dart';
+import 'package:clean_architecture/core/util/firebase_exception.dart';
 import 'package:clean_architecture/core/value/strings.dart';
-import 'package:clean_architecture/data/datasources/dataremote/remote_data_source.dart';
+import 'package:clean_architecture/data/datasources/dataremote/remote_firebase_auth.dart';
 import 'package:clean_architecture/data/models/account.dart';
 import 'package:clean_architecture/data/models/post_all.dart';
 import 'package:clean_architecture/domain/entities/searchphoto/search_photo.dart';
@@ -17,7 +17,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import '../../domain/entities/topicphoto/TopicPhoto.dart';
 
 class WeatherRepositoryImpl implements WeatherRepository {
-  final RemoteDataSource remoteDataSource;
+  final RemoteFirebaseAuth remoteDataSource;
 
   WeatherRepositoryImpl({required this.remoteDataSource});
 
@@ -117,7 +117,7 @@ class WeatherRepositoryImpl implements WeatherRepository {
   }
 
   @override
-  Future<Either<SignUpWithEmailAndPasswordFailure, void>>
+  Future<Either<FirebaseExceptionCustom, void>>
       registerWithEmailPassword(
           {required String email, required String password}) async {
     try {
@@ -127,7 +127,7 @@ class WeatherRepositoryImpl implements WeatherRepository {
       );
       return const Right(null);
     } on FirebaseAuthException catch (e) {
-      return left(SignUpWithEmailAndPasswordFailure(e.code));
+      return left(FirebaseExceptionCustom(e.code));
     }
   }
 }

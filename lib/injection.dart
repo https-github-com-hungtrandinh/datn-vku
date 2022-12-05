@@ -1,5 +1,5 @@
 import 'package:clean_architecture/data/datasources/datalocal/shared_preferences_data.dart';
-import 'package:clean_architecture/data/datasources/dataremote/remote_data_source.dart';
+import 'package:clean_architecture/data/datasources/dataremote/remote_firebase_auth.dart';
 import 'package:clean_architecture/data/datasources/dataremote/remote_firebase_cloud.dart';
 import 'package:clean_architecture/data/repositories/social_repository_impl.dart';
 import 'package:clean_architecture/domain/repositories/weather_repository.dart';
@@ -23,7 +23,7 @@ Future<void> init() async {
   sl.registerLazySingleton<RemoteFireBaseCloud>(() => RemoteFirebaseCloudImpl());
 
   //Data source
-  sl.registerLazySingleton<RemoteDataSource>(() => RemoteDataSourceImpl());
+  sl.registerLazySingleton<RemoteFirebaseAuth>(() => RemoteFirebaseAuthImpl());
 
   //viewModel
   sl.registerFactory(() => LoginBloc(sl()));

@@ -21,7 +21,7 @@ class Strings {
   static const String forgotPassword = "Forgot your password?";
   static const String login = "Login";
   static const String titleStartScreen = "Find new friends nearby";
-  static const String contentStartScreen = "With milions of users all over the world, we gives you the ability to connect with people no matter where you are.";
+  static const String contentStartScreen = "Find new friends and come together with your college mates";
   static const String signUp = "Sign Up";
   static const String byMe = "Or log in with";
   static const String userName = "Username";
@@ -42,6 +42,23 @@ class Strings {
   static const String weakPassword ="Vui lòng nhập mật khẩu bảo mật tốt hơn";
   static const String operationNotAllowed ="Hoạt Động Không được phép";
   static const String excreption ="Đã xảy ra một lỗi chưa xác định";
+  static const String dontHaveAccount="Don't have an account?";
+  static const String signWithGoogle ="Sign in with Google";
+  static const String signWithEmail="Sign in with Email";
+  static const String collegeMatch="College Match";
+  static const String signWith="Or Sign in with";
+  static const String signIn= "Sign In";
+  static const String emailEmpty ="gmail không đúng hoặc không tồn tại";
+  static const String passwordEmpty="Sai mật khẩu";
+  static const String passWordValidate ="Mật khẩu phải nhiều hơn 6 ký tự";
+  static const String emailValidate = "Email chưa đúng định dạng";
+  static const String continueAction  ="Continue";
+  static const String confirmPassword ="Confirm Password";
+  static const String yourName= "Your name...";
+  static const String contentYourName="Hello! What do you want to call you?";
+  static const String male="Male";
+  static const String female ="Female";
+  static const String whatIsGender="What's your gender?";
 
 
 }

@@ -3,11 +3,9 @@ import 'package:clean_architecture/presentation/bloc/authen/auth_bloc.dart';
 import 'package:clean_architecture/presentation/bloc/authen/auth_event.dart';
 import 'package:clean_architecture/presentation/bloc/login/login_bloc.dart';
 import 'package:clean_architecture/presentation/bloc/post/post_bloc.dart';
-import 'package:clean_architecture/presentation/bloc/post/post_event.dart';
 import 'package:clean_architecture/presentation/bloc/register/register_bloc.dart';
 import 'package:clean_architecture/presentation/bloc/swiper/swiper_custom.dart';
-import 'package:clean_architecture/presentation/pages/initial.dart';
-import 'package:clean_architecture/presentation/pages/splash_screen.dart';
+import 'package:clean_architecture/presentation/pages/wellcome_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -49,7 +47,7 @@ class MyApp extends StatelessWidget {
               GlobalMaterialLocalizations.delegate,
             ],
             onGenerateRoute: RouteGenerator.generateRoute,
-            home: const SplashScreen(),
+            home: const WelcomePage(),
             supportedLocales: S.delegate.supportedLocales),
       ),
     );

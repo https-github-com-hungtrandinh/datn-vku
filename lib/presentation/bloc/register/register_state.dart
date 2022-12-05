@@ -10,10 +10,18 @@ class RegisterState extends Equatable {
   final String phoneNumber;
   final Account? account;
   final String messages;
+  final String gender;
   final RegisterStatus registerStatus;
+  final bool passwordValidate;
+  final bool emailValidate;
+   int registerStep;
 
-  const RegisterState(
+   RegisterState(
       {required this.email,
+      required this.gender,
+      required this.registerStep,
+      required this.passwordValidate,
+      required this.emailValidate,
       required this.password,
       required this.messages,
       required this.userName,
@@ -22,9 +30,13 @@ class RegisterState extends Equatable {
       required this.registerStatus});
 
   factory RegisterState.initial() {
-    return const RegisterState(
+    return  RegisterState(
         account: null,
         email: '',
+        gender: '',
+        registerStep: 0,
+        passwordValidate: false,
+        emailValidate: false,
         password: '',
         userName: '',
         messages: '',
@@ -39,8 +51,16 @@ class RegisterState extends Equatable {
       Account? account,
       String? userName,
       String? messages,
+      bool? passwordValidate,
+      bool? emailValidate,
+      String? gender,
+      int? registerStep,
       RegisterStatus? registerStatus}) {
     return RegisterState(
+        gender: gender ?? this.gender,
+        registerStep: registerStep ?? this.registerStep,
+        passwordValidate: passwordValidate ?? this.passwordValidate,
+        emailValidate: emailValidate ?? this.emailValidate,
         messages: messages ?? this.messages,
         account: account ?? this.account,
         email: email ?? this.email,
@@ -51,6 +71,17 @@ class RegisterState extends Equatable {
   }
 
   @override
-  List<Object?> get props =>
-      [email, password, userName, phoneNumber, registerStatus, account,messages];
+  List<Object?> get props => [
+        email,
+        password,
+        userName,
+        phoneNumber,
+        registerStatus,
+        account,
+        messages,
+        passwordValidate,
+        emailValidate,
+        gender,
+        registerStep
+      ];
 }
