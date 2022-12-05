@@ -3,15 +3,15 @@
 import 'package:clean_architecture/presentation/pages/home_screen.dart';
 import 'package:clean_architecture/presentation/pages/initial.dart';
 import 'package:clean_architecture/presentation/pages/login_screen.dart';
-import 'package:clean_architecture/presentation/pages/register/register_screen.dart';
-import 'package:clean_architecture/presentation/pages/register/register_step_two.dart';
+import 'package:clean_architecture/presentation/pages/register_screen.dart';
 import 'package:flutter/material.dart';
 
 import '../../presentation/pages/forgot_password_screen.dart';
 
 
 import '../../presentation/pages/login_screen.dart';
-import '../../presentation/pages/register/register_screen.dart';
+import '../../presentation/pages/register_screen.dart';
+import '../../presentation/pages/register_slection/register_selection.dart';
 import '../../presentation/pages/start_selection_screen.dart';
 
 class RouteGenerator {

@@ -4,11 +4,10 @@ import 'package:clean_architecture/presentation/bloc/register/register_event.dar
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
-
-import '../../core/value/app_color.dart';
-import '../../core/value/strings.dart';
-import '../bloc/register/register_bloc.dart';
-import '../bloc/register/register_state.dart';
+import '../../../core/value/app_color.dart';
+import '../../../core/value/strings.dart';
+import '../../bloc/register/register_bloc.dart';
+import '../../bloc/register/register_state.dart';
 
 class GenderSection extends StatelessWidget {
   const GenderSection({Key? key}) : super(key: key);
@@ -22,15 +21,20 @@ class GenderSection extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const SizedBox(height: 95),
-          const Text(
-            Strings.whatIsGender,
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 18,
+          const Expanded(
+            flex: 2,
+            child: Text(
+              Strings.whatIsGender,
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 18,
+              ),
             ),
           ),
           Expanded(
+            flex: 5,
             child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Flexible(
                   flex: 1,

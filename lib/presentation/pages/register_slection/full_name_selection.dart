@@ -2,9 +2,11 @@ import 'package:clean_architecture/core/value/app_color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../core/value/strings.dart';
-import '../bloc/register/register_bloc.dart';
-import '../bloc/register/register_state.dart';
+import '../../../core/value/strings.dart';
+import '../../bloc/register/register_bloc.dart';
+import '../../bloc/register/register_state.dart';
+
+
 
 class FullNameSection extends StatelessWidget {
   const FullNameSection({Key? key}) : super(key: key);

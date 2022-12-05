@@ -1,15 +1,15 @@
 import 'package:clean_architecture/presentation/bloc/register/register_state.dart';
-import 'package:clean_architecture/presentation/pages/register/register_step_two.dart';
+import 'package:clean_architecture/presentation/pages/register_slection/register_selection.dart';
 import 'package:clean_architecture/presentation/widgets/signup_form_first.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 
-import '../../../core/util/dialog_custom.dart';
-import '../../../core/util/glow_button.dart';
-import '../../../core/value/image.dart';
-import '../../../core/value/strings.dart';
-import '../../bloc/register/register_bloc.dart';
+import '../../core/util/dialog_custom.dart';
+import '../../core/util/glow_button.dart';
+import '../../core/value/image.dart';
+import '../../core/value/strings.dart';
+import '../bloc/register/register_bloc.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});

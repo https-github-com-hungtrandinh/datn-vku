@@ -59,6 +59,11 @@ class Strings {
   static const String male="Male";
   static const String female ="Female";
   static const String whatIsGender="What's your gender?";
-
+  static const String yourBirthDay="Your birthday...";
+  static const String niceToMissYou="Nice to meet you";
+  static const String whatIsBirthDay="! What is your birthday?";
+  static const String yourMaJor="Your major...";
+  static const String alright ="Alright";
+  static const String whatIsMajor ="! What is your major?";
 
 }

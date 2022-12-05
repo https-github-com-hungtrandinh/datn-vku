@@ -1,14 +1,16 @@
 import 'package:clean_architecture/presentation/bloc/register/register_bloc.dart';
 import 'package:clean_architecture/presentation/bloc/register/register_event.dart';
 import 'package:clean_architecture/presentation/bloc/register/register_state.dart';
-import 'package:clean_architecture/presentation/pages/gender_selection_screen.dart';
+import 'package:clean_architecture/presentation/pages/register_slection/major_selection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../core/util/back_button.dart';
 import '../../../core/util/glow_button.dart';
 import '../../../core/value/app_color.dart';
 import '../../../core/value/strings.dart';
-import '../full_name_screen.dart';
+import 'birthday_user_selection.dart';
+import 'full_name_selection.dart';
+import 'gender_selection.dart';
 
 class RegisterStepTwo extends StatefulWidget {
   const RegisterStepTwo({super.key});
@@ -48,15 +50,16 @@ class _RegisterStepTwoState extends State<RegisterStepTwo> {
                 children: [
                   BlocBuilder<RegisterBloc, RegisterState>(
                       builder: (context, state) {
-                        return IndexedStack(
-                          index: state.registerStep,
-                          children: const [
-                            FullNameSection(),
-                            GenderSection()
-                          ],
-                        );
-                      }
-                  ),
+                    return IndexedStack(
+                      index: state.registerStep,
+                      children: const [
+                        FullNameSection(),
+                        GenderSection(),
+                        BirthdaySection(),
+                        MajorSection()
+                      ],
+                    );
+                  }),
                   Positioned(
                     top: 32,
                     left: 32,
@@ -66,8 +69,7 @@ class _RegisterStepTwoState extends State<RegisterStepTwo> {
                       duration: const Duration(milliseconds: 500),
                       curve: Curves.easeInOut,
                       bottom: 24,
-                      child: registerContinue()
-                  ),
+                      child: registerContinue()),
                 ],
               ),
             ),
@@ -78,33 +80,26 @@ class _RegisterStepTwoState extends State<RegisterStepTwo> {
   }
 
   Widget registerContinue() {
-    return BlocBuilder<RegisterBloc, RegisterState>(
-        builder: (context, state) {
-          return GlowButtonWidget(
-            height: 60,
-            width: MediaQuery
-                .of(context)
-                .size
-                .width * 0.85,
-            backgroundColor: AppColors.colorA989FF,
-            glowColor: AppColors.colorA989FF,
-            glowOffset: const Offset(0, 6),
-            borderRadius: 30,
-            blurRadius: 25,
-            onPressed: () {
-              context.read<RegisterBloc>().add(RegisterPush());
-            },
-            child: const Center(
-              child: Text(
-                Strings.continueAction,
-                style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.w600,
-                    fontSize: 18),
-              ),
-            ),
-          );
-        }
-    );
+    return BlocBuilder<RegisterBloc, RegisterState>(builder: (context, state) {
+      return GlowButtonWidget(
+        height: 60,
+        width: MediaQuery.of(context).size.width * 0.85,
+        backgroundColor: AppColors.colorA989FF,
+        glowColor: AppColors.colorA989FF,
+        glowOffset: const Offset(0, 6),
+        borderRadius: 30,
+        blurRadius: 25,
+        onPressed: () {
+          context.read<RegisterBloc>().add(RegisterPush());
+        },
+        child: const Center(
+          child: Text(
+            Strings.continueAction,
+            style: TextStyle(
+                color: Colors.white, fontWeight: FontWeight.w600, fontSize: 18),
+          ),
+        ),
+      );
+    });
   }
 }

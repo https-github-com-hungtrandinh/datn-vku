@@ -1,4 +1,4 @@
-import 'package:clean_architecture/presentation/pages/register/register_screen.dart';
+import 'package:clean_architecture/presentation/pages/register_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';

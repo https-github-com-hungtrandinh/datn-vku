@@ -1,6 +1,5 @@
 import 'package:clean_architecture/core/value/image.dart';
-import 'package:clean_architecture/presentation/pages/register/register_screen.dart';
-import 'package:clean_architecture/presentation/pages/register/register_step_two.dart';
+import 'package:clean_architecture/presentation/pages/register_slection/register_selection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import '../../core/util/button_logo_widget.dart';
