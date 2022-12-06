@@ -22,6 +22,10 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
     on<SearchMajor>(_searchMajor);
     on<ChangedMajor>(_changedMajor);
     on<ChangedBirthDay>(_changedBirthDay);
+    on<GetPersonality>(getPersonality);
+    on<ChangedAnswerPersonality>(_changedAnswerPersonality);
+    on<ChangedAnswerLifeStyle>(_changedLifestyle);
+    on<GetLifestyle>(getLifeStyle);
   }
 
   void _registerPush(RegisterPush event, Emitter<RegisterState> emit) {
@@ -118,7 +122,34 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
     emit(state.copyWith(major: event.major));
   }
 
-  void _changedBirthDay(ChangedBirthDay event,Emitter<RegisterState> emit) async{
+  void _changedAnswerPersonality(
+      ChangedAnswerPersonality event, Emitter<RegisterState> emit) async {
+    emit(state.copyWith(answerPersonality: event.answerPersonality));
+  }
+
+  void _changedLifestyle(
+      ChangedAnswerLifeStyle event, Emitter<RegisterState> emit) async {
+    emit(state.copyWith(answerLifestyle: event.answerLifestyle));
+  }
+
+  void _changedBirthDay(
+      ChangedBirthDay event, Emitter<RegisterState> emit) async {
     emit(state.copyWith(birthDay: event.birthDay));
+  }
+
+  Future<void> getPersonality(
+      GetPersonality event, Emitter<RegisterState> emit) async {
+    final result = await socialUseCase.getPersonality();
+    result.fold((error) {}, (data) {
+      emit(state.copyWith(listPersonalityQuestion: data));
+    });
+  }
+
+  Future<void> getLifeStyle(
+      GetLifestyle event, Emitter<RegisterState> emit) async {
+    final result = await socialUseCase.getLifestyle();
+    result.fold((error) {}, (data) {
+      emit(state.copyWith(listLifestyleQuestion: data));
+    });
   }
 }

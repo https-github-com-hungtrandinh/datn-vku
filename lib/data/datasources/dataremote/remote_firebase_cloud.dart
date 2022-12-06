@@ -1,4 +1,5 @@
 import 'package:clean_architecture/core/util/firebase_exception.dart';
+import 'package:clean_architecture/data/models/firebase/lifestyle.dart';
 import 'package:clean_architecture/data/models/firebase/personality.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dartz/dartz.dart';
@@ -13,6 +14,9 @@ abstract class RemoteFireBaseCloud {
 
   Future<Either<FirebaseExceptionCustom, List<PersonalityQuestion>>>
       getPersonalityQuestion();
+
+  Future<Either<FirebaseExceptionCustom, List<LifestyleQuestionModel>>>
+      getLifeStyleQuestion();
 }
 
 class RemoteFirebaseCloudImpl extends RemoteFireBaseCloud {
@@ -37,7 +41,7 @@ class RemoteFirebaseCloudImpl extends RemoteFireBaseCloud {
       });
       return Right(majorList);
     } on FirebaseException catch (e) {
-      return left(FirebaseExceptionCustom.errorSignIn(e.code));
+      return Left(FirebaseExceptionCustom.errorSignIn(e.code));
     }
   }
 
@@ -48,7 +52,6 @@ class RemoteFirebaseCloudImpl extends RemoteFireBaseCloud {
     try {
       await firebaseFireStore
           .collection("personality")
-          .orderBy("index", descending: false)
           .get()
           .then((QuerySnapshot querySnapshot) {
         for (var doc in querySnapshot.docs) {
@@ -57,7 +60,26 @@ class RemoteFirebaseCloudImpl extends RemoteFireBaseCloud {
       });
       return Right(personalityQuestion);
     } on FirebaseException catch (e) {
-      return Left(FirebaseExceptionCustom.errorSignIn(e.code));
+      return Left(FirebaseExceptionCustom(e.code));
+    }
+  }
+
+  @override
+  Future<Either<FirebaseExceptionCustom, List<LifestyleQuestionModel>>>
+      getLifeStyleQuestion() async {
+    final List<LifestyleQuestionModel> lifeStyle = [];
+    try {
+       await firebaseFireStore
+          .collection("lifestyle")
+          .get()
+          .then((QuerySnapshot querySnapshot) {
+        for (var doc in querySnapshot.docs) {
+          lifeStyle.add(LifestyleQuestionModel.fromDocument(doc));
+        }
+      });
+      return Right(lifeStyle);
+    } on FirebaseException catch (e) {
+      return Left(FirebaseExceptionCustom(e.code));
     }
   }
 }

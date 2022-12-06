@@ -34,7 +34,7 @@ class MyApp extends StatelessWidget {
         BlocProvider<LoginBloc>(create: (context) => LoginBloc(sl())),
         BlocProvider<AuthBloc>(
             create: (context) => AuthBloc(sl(),sl())..add(CheckAuth())),
-        BlocProvider<RegisterBloc>(create: (context) => RegisterBloc(sl())..add(GetMajor())),
+        BlocProvider<RegisterBloc>(create: (context) => RegisterBloc(sl())..add(GetMajor())..add(GetPersonality())..add(GetLifestyle())),
         BlocProvider<PostBloc>(create: (context)=>PostBloc(sl()),)
       ],
       child: ChangeNotifierProvider(

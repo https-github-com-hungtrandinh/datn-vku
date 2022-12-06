@@ -72,5 +72,8 @@ class Strings {
   static const String pleaseEnterBirthDay="Please enter your birthday";
   static const String errorBirthDay="Birthday should be before today";
   static const String pleaseMajor ="Please enter your major";
+  static const String choose="Choose your best answer based on your own personality";
+  static const String selectionIf="1 if you dissagree, 5 if you agree";
+  static const String markAnswers ="Mark your answers based on your own lifestyle";
 
 }

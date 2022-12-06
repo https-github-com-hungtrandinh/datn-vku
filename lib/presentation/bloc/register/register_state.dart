@@ -1,7 +1,9 @@
 import 'package:clean_architecture/data/models/account.dart';
+import 'package:clean_architecture/data/models/firebase/lifestyle.dart';
 import 'package:equatable/equatable.dart';
 
 import '../../../data/models/firebase/major.dart';
+import '../../../data/models/firebase/personality.dart';
 
 enum RegisterStatus { initial, loading, loaded, error }
 
@@ -21,11 +23,19 @@ class RegisterState extends Equatable {
   final String birthDay;
   List<Major> listMajor;
   List<Major> listMajorInSearch;
+  final List<PersonalityQuestion> listPersonalityQuestion;
+  final List<LifestyleQuestionModel> listLifestyleQuestion;
   int registerStep;
+  final bool answerLifestyle;
+  final int answerPersonality;
 
   RegisterState(
       {required this.email,
+      required this.answerPersonality,
+      required this.listLifestyleQuestion,
+      required this.listPersonalityQuestion,
       required this.gender,
+      required this.answerLifestyle,
       required this.listMajor,
       required this.major,
       required this.birthDay,
@@ -43,7 +53,11 @@ class RegisterState extends Equatable {
 
   factory RegisterState.initial() {
     return RegisterState(
+        listLifestyleQuestion: const [],
+        answerPersonality: 0,
+        listPersonalityQuestion: const [],
         major: '',
+        answerLifestyle: false,
         birthDay: '',
         listMajor: const [],
         account: null,
@@ -76,9 +90,19 @@ class RegisterState extends Equatable {
       List<Major>? listMajor,
       String? searchMajor,
       String? major,
+      bool? answerLifestyle,
+      List<PersonalityQuestion>? listPersonalityQuestion,
       List<Major>? listMajorInSearch,
+      int? answerPersonality,
+      List<LifestyleQuestionModel>? listLifestyleQuestion,
       RegisterStatus? registerStatus}) {
     return RegisterState(
+        answerLifestyle: answerLifestyle ?? this.answerLifestyle,
+        answerPersonality: answerPersonality ?? this.answerPersonality,
+        listPersonalityQuestion:
+            listPersonalityQuestion ?? this.listPersonalityQuestion,
+        listLifestyleQuestion:
+            listLifestyleQuestion ?? this.listLifestyleQuestion,
         birthDay: birthDay ?? this.birthDay,
         searchMajor: searchMajor ?? this.searchMajor,
         gender: gender ?? this.gender,
@@ -114,6 +138,9 @@ class RegisterState extends Equatable {
         searchMajor,
         listMajorInSearch,
         major,
-        birthDay
+        birthDay,
+        listPersonalityQuestion,
+        answerPersonality,
+        answerLifestyle
       ];
 }

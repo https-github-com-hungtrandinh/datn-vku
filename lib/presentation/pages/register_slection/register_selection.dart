@@ -2,7 +2,9 @@ import 'package:clean_architecture/core/util/toast.dart';
 import 'package:clean_architecture/presentation/bloc/register/register_bloc.dart';
 import 'package:clean_architecture/presentation/bloc/register/register_event.dart';
 import 'package:clean_architecture/presentation/bloc/register/register_state.dart';
+import 'package:clean_architecture/presentation/pages/register_slection/lifestyle_selection.dart';
 import 'package:clean_architecture/presentation/pages/register_slection/major_selection.dart';
+import 'package:clean_architecture/presentation/pages/register_slection/personality_section.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../core/util/back_button.dart';
@@ -57,7 +59,9 @@ class _RegisterStepTwoState extends State<RegisterStepTwo> {
                         FullNameSection(),
                         GenderSection(),
                         BirthdaySection(),
-                        MajorSection()
+                        MajorSection(),
+                        PersonalitySection(),
+                       LifestyleSection(),
                       ],
                     );
                   }),
@@ -99,7 +103,7 @@ class _RegisterStepTwoState extends State<RegisterStepTwo> {
         borderRadius: 30,
         blurRadius: 25,
         onPressed: () {
-          if (state.registerStep < 4) {
+          if (state.registerStep < 6) {
             switch (state.registerStep) {
               case 0:
                 {
@@ -143,7 +147,7 @@ class _RegisterStepTwoState extends State<RegisterStepTwo> {
         },
         child: Center(
           child: Text(
-            state.registerStep == 4 ? Strings.summit : Strings.continueAction,
+            state.registerStep == 6 ? Strings.summit : Strings.continueAction,
             style: const TextStyle(
                 color: Colors.white, fontWeight: FontWeight.w600, fontSize: 18),
           ),

@@ -36,6 +36,7 @@ class PersonalityCardWidget extends StatelessWidget {
             question,
             style: const TextStyle(
               fontSize: 14,
+              color: Colors.black
             ),
           ),
           const SizedBox(height: 18),

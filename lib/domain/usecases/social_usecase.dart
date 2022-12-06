@@ -8,6 +8,8 @@ import '../../core/error/failure.dart';
 import '../../core/util/firebase_exception.dart';
 import '../../data/datasources/datalocal/shared_preferences_data.dart';
 import '../../data/datasources/dataremote/remote_firebase_auth.dart';
+import '../../data/models/firebase/lifestyle.dart';
+import '../../data/models/firebase/personality.dart';
 import '../repositories/weather_repository.dart';
 
 class SocialUseCase {
@@ -63,9 +65,16 @@ class SocialUseCase {
   }
 
   Future<Either<FirebaseExceptionCustom , List<Major>>> getMajor() async{
-    return remoteFireBaseCloud.getMajor();
+    return await remoteFireBaseCloud.getMajor();
   }
   Future<void> loginWithGoogle() async{
-    return remoteDataSource.signInWithGoogle();
+    return await remoteDataSource.signInWithGoogle();
+  }
+  Future<Either<FirebaseExceptionCustom, List<PersonalityQuestion>>> getPersonality() async{
+    return await remoteFireBaseCloud.getPersonalityQuestion();
+  }
+
+  Future<Either<FirebaseExceptionCustom,List<LifestyleQuestionModel>>> getLifestyle() async{
+    return await remoteFireBaseCloud.getLifeStyleQuestion();
   }
 }

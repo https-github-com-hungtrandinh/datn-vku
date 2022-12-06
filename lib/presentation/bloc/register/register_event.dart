@@ -93,3 +93,27 @@ class ChangedBirthDay extends RegisterEvent {
   @override
   List<Object?> get props => [birthDay];
 }
+class GetPersonality extends RegisterEvent{
+  @override
+  List<Object?> get props =>[];
+
+}
+class GetLifestyle extends RegisterEvent{
+  @override
+  List<Object?> get props =>[];
+
+}
+class ChangedAnswerPersonality extends RegisterEvent{
+  final int answerPersonality;
+  ChangedAnswerPersonality(this.answerPersonality);
+
+  @override
+  List<Object?> get props =>[answerPersonality];
+}
+class ChangedAnswerLifeStyle extends RegisterEvent{
+  final bool answerLifestyle;
+  ChangedAnswerLifeStyle(this.answerLifestyle);
+  @override
+  List<Object?> get props => [answerLifestyle];
+
+}
