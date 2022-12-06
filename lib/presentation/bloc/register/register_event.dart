@@ -51,13 +51,45 @@ class RegisterSummit extends RegisterEvent {
   @override
   List<Object?> get props => [];
 }
-class RegisterPush extends RegisterEvent{
+
+class RegisterPush extends RegisterEvent {
   @override
   List<Object?> get props => [];
-
 }
-class RegisterPop extends RegisterEvent{
-  @override
-  List<Object?> get props =>[];
 
+class GetMajor extends RegisterEvent {
+  @override
+  List<Object?> get props => [];
+}
+
+class RegisterPop extends RegisterEvent {
+  @override
+  List<Object?> get props => [];
+}
+
+class SearchMajor extends RegisterEvent {
+  final String major;
+
+  SearchMajor(this.major);
+
+  @override
+  List<Object?> get props => [major];
+}
+
+class ChangedMajor extends RegisterEvent {
+  final String major;
+
+  ChangedMajor(this.major);
+
+  @override
+  List<Object?> get props => [major];
+}
+
+class ChangedBirthDay extends RegisterEvent {
+  final String birthDay;
+
+  ChangedBirthDay(this.birthDay);
+
+  @override
+  List<Object?> get props => [birthDay];
 }

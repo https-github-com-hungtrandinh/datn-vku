@@ -1,6 +1,10 @@
 import 'package:clean_architecture/core/value/image.dart';
+import 'package:clean_architecture/presentation/bloc/login/login_bloc.dart';
+import 'package:clean_architecture/presentation/bloc/login/login_event.dart';
+import 'package:clean_architecture/presentation/bloc/login/login_state.dart';
 import 'package:clean_architecture/presentation/pages/register_slection/register_selection.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import '../../core/util/button_logo_widget.dart';
 import '../../core/util/circle_logo.dart';
@@ -124,19 +128,25 @@ class _WelcomePageState extends State<WelcomePage> {
     );
   }
 
-  ButtonLogoWidget _signInWithGoogleButton() {
-    return ButtonLogoWidget(
-      height: 58,
-      width: MediaQuery.of(context).size.width * 0.8,
-      padding: const EdgeInsets.all(11),
-      logo: CircleLogoWidget(
-          diameter: 38,
-          color: Colors.red,
-          image: SvgPicture.asset(ImageSrc.iconGmail),
-          padding: 8),
-      color: Colors.white.withOpacity(0.58),
-      text: Strings.signWithGoogle,
-      onTap: () {},
+  BlocBuilder<LoginBloc, LoginState> _signInWithGoogleButton() {
+    return  BlocBuilder<LoginBloc,LoginState>(
+      builder: (context,state) {
+        return ButtonLogoWidget(
+          height: 58,
+          width: MediaQuery.of(context).size.width * 0.8,
+          padding: const EdgeInsets.all(11),
+          logo: CircleLogoWidget(
+              diameter: 38,
+              color: Colors.red,
+              image: SvgPicture.asset(ImageSrc.iconGmail),
+              padding: 8),
+          color: Colors.white.withOpacity(0.58),
+          text: Strings.signWithGoogle,
+          onTap: () {
+            context.read<LoginBloc>().add(LoginWithGoogle());
+          },
+        );
+      }
     );
   }
 

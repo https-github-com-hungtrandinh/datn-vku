@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 
-Widget buildBackButton(BuildContext context) {
+Widget buildBackButton( {required VoidCallback onClick}) {
   return OutlinedButton(
-    onPressed: () {
-      Navigator.pop(context);
-    },
+    onPressed:onClick,
     style: OutlinedButton.styleFrom(
       fixedSize: const Size(40, 40),
       minimumSize: Size.zero,

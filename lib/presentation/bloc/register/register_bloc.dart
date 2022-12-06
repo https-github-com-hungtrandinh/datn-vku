@@ -1,4 +1,5 @@
 import 'package:clean_architecture/core/util/validate.dart';
+import 'package:clean_architecture/data/models/firebase/major.dart';
 import 'package:clean_architecture/data/models/firebase/user.dart';
 import 'package:clean_architecture/presentation/bloc/register/register_event.dart';
 import 'package:clean_architecture/presentation/bloc/register/register_state.dart';
@@ -17,6 +18,10 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
     on<RegisterPush>(_registerPush);
     on<RegisterPop>(_registerPop);
     on<ChangedMaleUserRegister>(_changeGender);
+    on<GetMajor>(_getMajor);
+    on<SearchMajor>(_searchMajor);
+    on<ChangedMajor>(_changedMajor);
+    on<ChangedBirthDay>(_changedBirthDay);
   }
 
   void _registerPush(RegisterPush event, Emitter<RegisterState> emit) {
@@ -27,8 +32,8 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
     emit(state.copyWith(registerStep: state.registerStep - 1));
   }
 
-  void _changeGender(ChangedMaleUserRegister event,
-      Emitter<RegisterState> emit) {
+  void _changeGender(
+      ChangedMaleUserRegister event, Emitter<RegisterState> emit) {
     emit(state.copyWith(gender: event.male));
   }
 
@@ -39,8 +44,8 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
     );
   }
 
-  void _changedPassword(ChangedPasswordRegister event,
-      Emitter<RegisterState> emit) {
+  void _changedPassword(
+      ChangedPasswordRegister event, Emitter<RegisterState> emit) {
     emit(
       state.copyWith(
           password: event.password,
@@ -48,22 +53,22 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
     );
   }
 
-  void _changedUserName(ChangedNameUserRegister event,
-      Emitter<RegisterState> emit) {
+  void _changedUserName(
+      ChangedNameUserRegister event, Emitter<RegisterState> emit) {
     emit(
-      state.copyWith(password: event.nameUser),
+      state.copyWith(userName: event.nameUser),
     );
   }
 
-  void _changedPhoneNumber(ChangedPhoneNumberRegister event,
-      Emitter<RegisterState> emit) {
+  void _changedPhoneNumber(
+      ChangedPhoneNumberRegister event, Emitter<RegisterState> emit) {
     emit(
       state.copyWith(password: event.numberPhone),
     );
   }
 
-  Future<void> _registerSummit(RegisterSummit event,
-      Emitter<RegisterState> emit) async {
+  Future<void> _registerSummit(
+      RegisterSummit event, Emitter<RegisterState> emit) async {
     if (state.passwordValidate == false && state.emailValidate == false) {
       emit(
         state.copyWith(registerStatus: RegisterStatus.loading),
@@ -93,5 +98,27 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
           email: state.email,
           uid: uid),
     );
+  }
+
+  void _searchMajor(SearchMajor event, Emitter<RegisterState> emit) {
+    final List<Major> listNewMajor = [];
+    listNewMajor.addAll(state.listMajor
+        .where((element) => element.major.toLowerCase().contains(event.major)));
+    emit(state.copyWith(listMajorInSearch: listNewMajor));
+  }
+
+  Future<void> _getMajor(GetMajor event, Emitter<RegisterState> emit) async {
+    final result = await socialUseCase.getMajor();
+    result.fold((error) {}, (data) {
+      emit(state.copyWith(listMajor: data));
+    });
+  }
+
+  void _changedMajor(ChangedMajor event, Emitter<RegisterState> emit) async {
+    emit(state.copyWith(major: event.major));
+  }
+
+  void _changedBirthDay(ChangedBirthDay event,Emitter<RegisterState> emit) async{
+    emit(state.copyWith(birthDay: event.birthDay));
   }
 }

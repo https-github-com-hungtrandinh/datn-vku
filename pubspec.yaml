@@ -59,6 +59,9 @@ dependencies:
   sliding_up_panel: ^2.0.0+1
   validators: ^3.0.0
   bouncing_widget: ^2.0.0
+  flutter_rounded_date_picker: ^3.0.1
+  fluttertoast: ^8.0.9
+  google_sign_in: ^5.4.2
 
 dev_dependencies:
   flutter_test:

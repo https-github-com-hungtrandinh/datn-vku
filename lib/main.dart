@@ -4,6 +4,7 @@ import 'package:clean_architecture/presentation/bloc/authen/auth_event.dart';
 import 'package:clean_architecture/presentation/bloc/login/login_bloc.dart';
 import 'package:clean_architecture/presentation/bloc/post/post_bloc.dart';
 import 'package:clean_architecture/presentation/bloc/register/register_bloc.dart';
+import 'package:clean_architecture/presentation/bloc/register/register_event.dart';
 import 'package:clean_architecture/presentation/bloc/swiper/swiper_custom.dart';
 import 'package:clean_architecture/presentation/pages/wellcome_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -33,7 +34,7 @@ class MyApp extends StatelessWidget {
         BlocProvider<LoginBloc>(create: (context) => LoginBloc(sl())),
         BlocProvider<AuthBloc>(
             create: (context) => AuthBloc(sl(),sl())..add(CheckAuth())),
-        BlocProvider<RegisterBloc>(create: (context) => RegisterBloc(sl())),
+        BlocProvider<RegisterBloc>(create: (context) => RegisterBloc(sl())..add(GetMajor())),
         BlocProvider<PostBloc>(create: (context)=>PostBloc(sl()),)
       ],
       child: ChangeNotifierProvider(

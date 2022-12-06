@@ -1,30 +1,23 @@
 import 'package:clean_architecture/core/constants/key.dart';
 import 'package:clean_architecture/data/models/account.dart';
 import 'package:clean_architecture/data/models/post_all.dart';
-import 'package:clean_architecture/data/models/topic/reponse/TopicsResponse.dart';
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-
+import 'package:google_sign_in/google_sign_in.dart';
 import '../../../core/util/firebase_exception.dart';
-import '../../models/searchphoto/reponse/search_photo_response.dart';
-import '../../models/topicphotodto/reponse/TopicPhotoResponse.dart';
 import '../../models/weather_dto.dart';
 
 abstract class RemoteFirebaseAuth {
   Future<WeatherDto> getCurrentWeather(String cityName);
-
-  Future<List<TopicsResponse>> getTopics();
-
-  Future<List<TopicPhotoResponse>> getTopicPhoto({required String id});
-
-  Future<List<SearchPhotoResponse>> getSearchPhoto({required String query});
 
   Future<Account> login({required String email, required String password});
 
   Future<PostAll> getPostAll({required String token});
 
   Future<bool> checkAuth();
+
+  Future<void> signInWithGoogle();
 
   Future<Account> register(
       {required String email,
@@ -44,6 +37,7 @@ abstract class RemoteFirebaseAuth {
 }
 
 class RemoteFirebaseAuthImpl implements RemoteFirebaseAuth {
+  GoogleSignIn googleSign = GoogleSignIn();
   FirebaseAuth firebaseAuth = FirebaseAuth.instance;
   final Dio _dio = Dio(BaseOptions(
       baseUrl: ConstApp.baseUrlHeroku,
@@ -61,49 +55,6 @@ class RemoteFirebaseAuthImpl implements RemoteFirebaseAuth {
     }
   }
 
-  @override
-  Future<List<TopicsResponse>> getTopics() async {
-    Response response = await _dio.get(ConstApp.currentUnsplashTopics);
-    if (response.statusCode == 200) {
-      return (response.data as List)
-          .map((e) => TopicsResponse.fromJson(e))
-          .toList();
-    } else {
-      throw Exception();
-    }
-  }
-
-  @override
-  Future<List<TopicPhotoResponse>> getTopicPhoto({required String id}) async {
-    final String url = "${ConstApp.baseUrl}topics/$id/photos";
-    Response response = await _dio.get(
-      url,
-      queryParameters: {"client_id": ConstApp.keyApi},
-    );
-    if (response.statusCode == 200) {
-      return (response.data as List)
-          .map((e) => TopicPhotoResponse.fromJson(e))
-          .toList();
-    } else {
-      throw Exception(response.statusMessage);
-    }
-  }
-
-  @override
-  Future<List<SearchPhotoResponse>> getSearchPhoto(
-      {required String query}) async {
-    final String url =
-        "${ConstApp.baseUrl}search/photos?clinet_id=${ConstApp.keyApi}&query=$query";
-
-    Response response = await _dio.get(url);
-    if (response.statusCode == 200) {
-      return (response.data["results"] as List)
-          .map((e) => SearchPhotoResponse.fromJson(e))
-          .toList();
-    } else {
-      throw Exception();
-    }
-  }
 
   @override
   Future<Account> login(
@@ -192,6 +143,27 @@ class RemoteFirebaseAuthImpl implements RemoteFirebaseAuth {
       return const Right(null);
     } on FirebaseAuthException catch (e) {
       return Left(FirebaseExceptionCustom.errorSignIn(e.code));
+    }
+  }
+
+  @override
+  Future<void> signInWithGoogle() async {
+    try{
+     await googleSign.signIn();
+      // if (googleSignInAccount != null) {
+      //   GoogleSignInAuthentication googleSignInAuthentication =
+      //   await googleSignInAccount.authentication;
+      //
+      //   AuthCredential credential = GoogleAuthProvider.credential(
+      //     accessToken: googleSignInAuthentication.accessToken,
+      //     idToken: googleSignInAuthentication.idToken,
+      //   );
+      //
+      //   UserCredential authResult = await firebaseAuth.signInWithCredential(credential).catchError((onErr) => print(onErr));
+      // }
+
+    }on FirebaseException catch(e){
+
     }
   }
 }

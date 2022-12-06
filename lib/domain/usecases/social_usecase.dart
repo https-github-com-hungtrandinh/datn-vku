@@ -1,5 +1,6 @@
 import 'package:clean_architecture/data/datasources/dataremote/remote_firebase_cloud.dart';
 import 'package:clean_architecture/data/models/account.dart';
+import 'package:clean_architecture/data/models/firebase/major.dart';
 import 'package:clean_architecture/data/models/post_all.dart';
 import 'package:dartz/dartz.dart';
 
@@ -59,5 +60,12 @@ class SocialUseCase {
 
   Future<bool> checkAuth() async {
     return await remoteDataSource.checkAuth();
+  }
+
+  Future<Either<FirebaseExceptionCustom , List<Major>>> getMajor() async{
+    return remoteFireBaseCloud.getMajor();
+  }
+  Future<void> loginWithGoogle() async{
+    return remoteDataSource.signInWithGoogle();
   }
 }

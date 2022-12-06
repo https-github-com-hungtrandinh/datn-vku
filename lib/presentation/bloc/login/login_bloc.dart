@@ -12,6 +12,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     on<EmailChanged>(_onChangedEmail);
     on<PasswordChanged>(_onChangedPassword);
     on<LoginSummit>(login);
+    on<LoginWithGoogle>(signInWithGoogle);
   }
 
   void _onChangedEmail(EmailChanged event, Emitter<LoginState> emit) {
@@ -37,5 +38,10 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     }, (data) {
       emit(state.copyWith(loginStatus: LoginStatus.loaded));
     });
+  }
+
+  Future<void> signInWithGoogle(
+      LoginWithGoogle event, Emitter<LoginState> emit) async {
+    socialUseCase.loginWithGoogle();
   }
 }

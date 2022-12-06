@@ -3,7 +3,7 @@ class Strings {
   static const String serverFailure = "Failed to connect to the server";
   static const String nameApp = "Weather";
   static const String hintWeather = "Enter city name";
-  static const String summit = "summit";
+  static const String summit = "Summit";
   static const String loading = "loading";
   static const String error = "error";
   static const String nullData = "noData";
@@ -60,10 +60,17 @@ class Strings {
   static const String female ="Female";
   static const String whatIsGender="What's your gender?";
   static const String yourBirthDay="Your birthday...";
-  static const String niceToMissYou="Nice to meet you";
+  static const String niceToMissYou="Nice to meet you ";
   static const String whatIsBirthDay="! What is your birthday?";
   static const String yourMaJor="Your major...";
   static const String alright ="Alright";
   static const String whatIsMajor ="! What is your major?";
+  static const String search='Search';
+  static const String pleaseEnterYourName="Please enter your name";
+  static const String nameSize="Name should be less than 20 characters";
+  static const String pleaseEnterGender="Please choose your gender";
+  static const String pleaseEnterBirthDay="Please enter your birthday";
+  static const String errorBirthDay="Birthday should be before today";
+  static const String pleaseMajor ="Please enter your major";
 
 }

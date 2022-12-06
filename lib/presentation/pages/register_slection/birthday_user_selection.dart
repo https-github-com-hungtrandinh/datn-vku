@@ -1,7 +1,10 @@
 import 'package:clean_architecture/presentation/bloc/register/register_bloc.dart';
+import 'package:clean_architecture/presentation/bloc/register/register_event.dart';
 import 'package:clean_architecture/presentation/bloc/register/register_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_rounded_date_picker/flutter_rounded_date_picker.dart';
+import '../../../core/value/app_color.dart';
 import '../../../core/value/strings.dart';
 
 class BirthdaySection extends StatelessWidget {
@@ -29,13 +32,16 @@ class BirthdaySection extends StatelessWidget {
   Widget _textInputBirthDay() {
     return BlocBuilder<RegisterBloc, RegisterState>(builder: (context, state) {
       return TextFormField(
+        controller: TextEditingController(text: state.birthDay),
         style: const TextStyle(
           fontWeight: FontWeight.w600,
           color: Colors.white,
         ),
         textAlign: TextAlign.center,
         readOnly: true,
-        onTap: () {},
+        onTap: () {
+          setBirthday(context);
+        },
         decoration: InputDecoration(
           contentPadding:
               const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
@@ -65,5 +71,23 @@ class BirthdaySection extends StatelessWidget {
         ),
       );
     });
+  }
+
+  Future<void> setBirthday(BuildContext context) async {
+    DateTime? birthday = await showRoundedDatePicker(
+        context: context,
+        initialDate: DateTime.now(),
+        firstDate: DateTime(1900),
+        lastDate: DateTime(2100),
+        borderRadius: 16,
+        height: 280,
+        theme: ThemeData(
+          primarySwatch: AppColors.purplePallete,
+        ));
+
+    if (birthday != null) {
+      context.read<RegisterBloc>().add(ChangedBirthDay(
+          "${birthday.day}-${birthday.month}-${birthday.year}"));
+    }
   }
 }

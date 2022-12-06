@@ -1,3 +1,4 @@
+import 'package:clean_architecture/core/util/toast.dart';
 import 'package:clean_architecture/presentation/bloc/register/register_bloc.dart';
 import 'package:clean_architecture/presentation/bloc/register/register_event.dart';
 import 'package:clean_architecture/presentation/bloc/register/register_state.dart';
@@ -63,7 +64,15 @@ class _RegisterStepTwoState extends State<RegisterStepTwo> {
                   Positioned(
                     top: 32,
                     left: 32,
-                    child: buildBackButton(context),
+                    child: BlocBuilder<RegisterBloc, RegisterState>(
+                        builder: (context, state) {
+                      if (state.registerStep == 0) {
+                        return const SizedBox();
+                      }
+                      return buildBackButton(onClick: () {
+                        context.read<RegisterBloc>().add(RegisterPop());
+                      });
+                    }),
                   ),
                   AnimatedPositioned(
                       duration: const Duration(milliseconds: 500),
@@ -90,12 +99,52 @@ class _RegisterStepTwoState extends State<RegisterStepTwo> {
         borderRadius: 30,
         blurRadius: 25,
         onPressed: () {
-          context.read<RegisterBloc>().add(RegisterPush());
+          if (state.registerStep < 4) {
+            switch (state.registerStep) {
+              case 0:
+                {
+                  if (state.userName.isEmpty) {
+                    showToast(msg: Strings.pleaseEnterYourName);
+                    return;
+                  } else if (state.userName.length > 20) {
+                    showToast(msg: Strings.nameSize);
+                    return;
+                  }
+                }
+                break;
+              case 1:
+                {
+                  if (state.gender.isEmpty) {
+                    showToast(msg: Strings.pleaseEnterGender);
+                    return;
+                  }
+                }
+                break;
+              case 2:
+                {
+                  if (state.birthDay.isEmpty) {
+                    showToast(msg: Strings.pleaseEnterBirthDay);
+                    return;
+                  }
+                }
+                break;
+              case 3:
+                {
+                  if (state.major.isEmpty) {
+                    showToast(msg: Strings.pleaseMajor);
+                    return;
+                  }
+                }
+                break;
+              default:
+            }
+            context.read<RegisterBloc>().add(RegisterPush());
+          } else {}
         },
-        child: const Center(
+        child: Center(
           child: Text(
-            Strings.continueAction,
-            style: TextStyle(
+            state.registerStep == 4 ? Strings.summit : Strings.continueAction,
+            style: const TextStyle(
                 color: Colors.white, fontWeight: FontWeight.w600, fontSize: 18),
           ),
         ),

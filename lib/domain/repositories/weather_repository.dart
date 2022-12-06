@@ -11,12 +11,6 @@ import '../entities/topicphoto/TopicPhoto.dart';
 abstract class WeatherRepository {
   Future<Either<Failure, Weather>> getCurrentWeather(String cityName);
 
-  Future<Either<Failure, List<Topics>>> getCurrentTopics();
-
-  Future<Either<Failure, List<TopicPhoto>>> getCurrentTopicPhoto(
-      {required String id});
-
-  Future<Either<Failure, List<SearchPhoto>>> getSearchPhoto(String query);
 
   Future<Either<Failure, Account>> login(String email, String password);
 
