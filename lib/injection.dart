@@ -6,7 +6,7 @@ import 'package:clean_architecture/domain/repositories/weather_repository.dart';
 import 'package:clean_architecture/domain/usecases/social_usecase.dart';
 import 'package:clean_architecture/presentation/bloc/authen/auth_bloc.dart';
 import 'package:clean_architecture/presentation/bloc/login/login_bloc.dart';
-import 'package:clean_architecture/presentation/bloc/post/post_bloc.dart';
+
 
 import 'package:get_it/get_it.dart';
 
@@ -14,7 +14,7 @@ final sl = GetIt.instance;
 
 Future<void> init() async {
   // UseCase
-  sl.registerLazySingleton(() => SocialUseCase(sl(), sl(),sl(),sl()));
+  sl.registerLazySingleton(() => SocialUseCase(sl(), sl(),sl()));
 
   //Repository
   sl.registerLazySingleton<WeatherRepository>(
@@ -28,7 +28,7 @@ Future<void> init() async {
   //viewModel
   sl.registerFactory(() => LoginBloc(sl()));
   sl.registerFactory(() => AuthBloc(sl(),sl()));
-  sl.registerFactory(() => PostBloc(sl()));
+
 
   //SharedPerence
   sl.registerLazySingleton<SharedPreference>(() => SharedPreferenceImpl());

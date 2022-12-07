@@ -75,5 +75,8 @@ class Strings {
   static const String choose="Choose your best answer based on your own personality";
   static const String selectionIf="1 if you dissagree, 5 if you agree";
   static const String markAnswers ="Mark your answers based on your own lifestyle";
+  static const String choseInterest="Choose your interests";
+  static const String addPhoto ="Give us your best photo";
+  static const String cropper="Cropper";
 
 }

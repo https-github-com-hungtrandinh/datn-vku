@@ -1,10 +1,10 @@
-import 'package:clean_architecture/presentation/bloc/register/register_bloc.dart';
-import 'package:clean_architecture/presentation/bloc/register/register_event.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../core/util/rouder_text_field.dart';
 import '../../../core/value/strings.dart';
-import '../../bloc/register/register_state.dart';
+import '../../bloc/register_selection/register_selection_bloc.dart';
+import '../../bloc/register_selection/register_selection_event.dart';
+import '../../bloc/register_selection/register_selection_state.dart';
 
 class MajorSection extends StatefulWidget {
   const MajorSection({Key? key}) : super(key: key);
@@ -34,7 +34,7 @@ class _MajorSectionState extends State<MajorSection> {
   }
 
   Widget nameUser() {
-    return BlocBuilder<RegisterBloc, RegisterState>(builder: (context, state) {
+    return BlocBuilder<RegisterSelectionBloc, RegisterSelectionState>(builder: (context, state) {
       return Text(
         "${Strings.alright} ${state.userName}${Strings.whatIsMajor}",
         style: const TextStyle(
@@ -46,7 +46,7 @@ class _MajorSectionState extends State<MajorSection> {
   }
 
   Widget _majorInput() {
-    return BlocBuilder<RegisterBloc, RegisterState>(builder: (context, state) {
+    return BlocBuilder<RegisterSelectionBloc, RegisterSelectionState>(builder: (context, state) {
       return TextFormField(
         controller: TextEditingController(text: state.major),
         style: const TextStyle(
@@ -85,7 +85,7 @@ class _MajorSectionState extends State<MajorSection> {
       ),
       context: context,
       builder: (context) {
-        return BlocBuilder<RegisterBloc, RegisterState>(
+        return BlocBuilder<RegisterSelectionBloc, RegisterSelectionState>(
           builder: (context, state) {
             return DraggableScrollableSheet(
               expand: false,
@@ -103,7 +103,7 @@ class _MajorSectionState extends State<MajorSection> {
                           color: Colors.grey,
                         ),
                         onChanged: (value) {
-                          context.read<RegisterBloc>().add(SearchMajor(value));
+                          context.read<RegisterSelectionBloc>().add(SearchMajor(value));
                         },
                       ),
                       const SizedBox(height: 16),
@@ -112,7 +112,7 @@ class _MajorSectionState extends State<MajorSection> {
                             itemBuilder: (context, index) {
                               return InkWell(
                                   onTap: () {
-                                    context.read<RegisterBloc>().add(
+                                    context.read<RegisterSelectionBloc>().add(
                                         ChangedMajor((state.listMajorInSearch
                                                     .isNotEmpty ||
                                                 state.searchMajor.isNotEmpty)

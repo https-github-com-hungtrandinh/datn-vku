@@ -2,6 +2,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 abstract class SharedPreference {
   static const tokensAccess ="TOKEN_ACCESS";
+  static const uidAccount ="UID";
   static const tokenRefresh ="TOKEN_REFRESH";
   static const timeToken ="TIME_TOKEN";
   static const time=1800000;

@@ -1,11 +1,11 @@
-import 'package:clean_architecture/presentation/bloc/register/register_bloc.dart';
-import 'package:clean_architecture/presentation/bloc/register/register_event.dart';
-import 'package:clean_architecture/presentation/bloc/register/register_state.dart';
+import 'package:clean_architecture/presentation/bloc/register_selection/register_selection_bloc.dart';
+import 'package:clean_architecture/presentation/bloc/register_selection/register_selection_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rounded_date_picker/flutter_rounded_date_picker.dart';
 import '../../../core/value/app_color.dart';
 import '../../../core/value/strings.dart';
+import '../../bloc/register_selection/register_selection_event.dart';
 
 class BirthdaySection extends StatelessWidget {
   const BirthdaySection({Key? key}) : super(key: key);
@@ -30,9 +30,13 @@ class BirthdaySection extends StatelessWidget {
   }
 
   Widget _textInputBirthDay() {
-    return BlocBuilder<RegisterBloc, RegisterState>(builder: (context, state) {
+    return BlocBuilder<RegisterSelectionBloc, RegisterSelectionState>(
+        builder: (context, state) {
       return TextFormField(
-        controller: TextEditingController(text: state.birthDay),
+        controller: TextEditingController(
+            text: state.birthDay == null
+                ? ""
+                : "${state.birthDay!.day}-${state.birthDay!.month}-${state.birthDay!.year}"),
         style: const TextStyle(
           fontWeight: FontWeight.w600,
           color: Colors.white,
@@ -62,7 +66,8 @@ class BirthdaySection extends StatelessWidget {
   }
 
   Widget _nameUser() {
-    return BlocBuilder<RegisterBloc, RegisterState>(builder: (builder, state) {
+    return BlocBuilder<RegisterSelectionBloc, RegisterSelectionState>(
+        builder: (builder, state) {
       return Text(
         "${Strings.niceToMissYou}${state.userName}${Strings.whatIsBirthDay}",
         style: const TextStyle(
@@ -78,7 +83,7 @@ class BirthdaySection extends StatelessWidget {
         context: context,
         initialDate: DateTime.now(),
         firstDate: DateTime(1900),
-        lastDate: DateTime(2100),
+        lastDate: DateTime.now(),
         borderRadius: 16,
         height: 280,
         theme: ThemeData(
@@ -86,8 +91,7 @@ class BirthdaySection extends StatelessWidget {
         ));
 
     if (birthday != null) {
-      context.read<RegisterBloc>().add(ChangedBirthDay(
-          "${birthday.day}-${birthday.month}-${birthday.year}"));
+      context.read<RegisterSelectionBloc>().add(ChangedBirthDay(birthday));
     }
   }
 }

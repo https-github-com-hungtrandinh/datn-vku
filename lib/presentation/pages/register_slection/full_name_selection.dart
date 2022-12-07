@@ -2,9 +2,9 @@ import 'package:clean_architecture/core/value/app_color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../core/value/strings.dart';
-import '../../bloc/register/register_bloc.dart';
-import '../../bloc/register/register_event.dart';
-import '../../bloc/register/register_state.dart';
+import '../../bloc/register_selection/register_selection_bloc.dart';
+import '../../bloc/register_selection/register_selection_event.dart';
+import '../../bloc/register_selection/register_selection_state.dart';
 
 
 
@@ -37,10 +37,10 @@ class FullNameSection extends StatelessWidget {
   }
 
   Widget _inputNameUser() {
-    return BlocBuilder<RegisterBloc, RegisterState>(builder: (context, state) {
+    return BlocBuilder<RegisterSelectionBloc, RegisterSelectionState>(builder: (context, state) {
       return TextFormField(
         onChanged: (userName){
-          context.read<RegisterBloc>().add(ChangedNameUserRegister(userName));
+          context.read<RegisterSelectionBloc>().add(ChangedNameUserRegister(userName));
         },
         style: const TextStyle(
           fontWeight: FontWeight.w600,

@@ -35,7 +35,9 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         state.copyWith(
             loginStatus: LoginStatus.error, contentLogin: fail.messenger),
       );
-    }, (data) {
+    }, (data)  {
+        socialUseCase.sharedPreference
+          .set(SharedPreference.uidAccount, data);
       emit(state.copyWith(loginStatus: LoginStatus.loaded));
     });
   }

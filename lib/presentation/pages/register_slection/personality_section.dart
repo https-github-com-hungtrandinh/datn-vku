@@ -1,10 +1,10 @@
-import 'package:clean_architecture/presentation/bloc/register/register_bloc.dart';
-import 'package:clean_architecture/presentation/bloc/register/register_event.dart';
-import 'package:clean_architecture/presentation/bloc/register/register_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../core/value/strings.dart';
 import '../../../data/models/firebase/personality.dart';
+import '../../bloc/register_selection/register_selection_bloc.dart';
+import '../../bloc/register_selection/register_selection_event.dart';
+import '../../bloc/register_selection/register_selection_state.dart';
 import '../../widgets/personality_card_widget.dart';
 
 class PersonalitySection extends StatelessWidget {
@@ -12,7 +12,7 @@ class PersonalitySection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<RegisterBloc, RegisterState>(builder: (context, state) {
+    return BlocBuilder<RegisterSelectionBloc, RegisterSelectionState>(builder: (context, state) {
       return ListView.builder(
         padding: const EdgeInsets.symmetric(horizontal: 32),
         shrinkWrap: true,
@@ -59,7 +59,7 @@ class PersonalitySection extends StatelessWidget {
   }
 
   Widget _buildQuestionCard(PersonalityQuestion questionData, int index) {
-    return BlocBuilder<RegisterBloc, RegisterState>(builder: (context, state) {
+    return BlocBuilder<RegisterSelectionBloc, RegisterSelectionState>(builder: (context, state) {
       return Padding(
         padding: const EdgeInsets.only(bottom: 16),
         child: PersonalityCardWidget(
@@ -67,7 +67,7 @@ class PersonalitySection extends StatelessWidget {
           initialValue: ((questionData.scaleAnswers ?? 1).toDouble() - 1) / 4,
           onChanged: (value) {
             context
-                .read<RegisterBloc>()
+                .read<RegisterSelectionBloc>()
                 .add(ChangedAnswerPersonality(value!.toInt()));
           },
         ),

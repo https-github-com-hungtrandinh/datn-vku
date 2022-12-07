@@ -1,6 +1,8 @@
 import 'package:clean_architecture/core/constants/key.dart';
 import 'package:clean_architecture/data/models/account.dart';
+import 'package:clean_architecture/data/models/firebase/user.dart';
 import 'package:clean_architecture/data/models/post_all.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -30,7 +32,7 @@ abstract class RemoteFirebaseAuth {
     required String password,
   });
 
-  Future<Either<FirebaseExceptionCustom, void>> loginWithEmailPassword({
+  Future<Either<FirebaseExceptionCustom, String>> loginWithEmailPassword({
     required String email,
     required String password,
   });
@@ -38,6 +40,7 @@ abstract class RemoteFirebaseAuth {
 
 class RemoteFirebaseAuthImpl implements RemoteFirebaseAuth {
   GoogleSignIn googleSign = GoogleSignIn();
+  FirebaseFirestore firebaseFireStore = FirebaseFirestore.instance;
   FirebaseAuth firebaseAuth = FirebaseAuth.instance;
   final Dio _dio = Dio(BaseOptions(
       baseUrl: ConstApp.baseUrlHeroku,
@@ -54,7 +57,6 @@ class RemoteFirebaseAuthImpl implements RemoteFirebaseAuth {
       throw Exception();
     }
   }
-
 
   @override
   Future<Account> login(
@@ -115,6 +117,16 @@ class RemoteFirebaseAuthImpl implements RemoteFirebaseAuth {
     try {
       final result = await firebaseAuth.createUserWithEmailAndPassword(
           email: email, password: password);
+      final user = UserModel(
+          uid: firebaseAuth.currentUser!.uid,
+          email: email,
+          questionaireFilled: false,
+          registerFinished: false,
+          emailVerified: false);
+      await firebaseFireStore
+          .collection("user")
+          .doc(firebaseAuth.currentUser?.uid)
+          .set(user.toMap()..['createdAt'] = FieldValue.serverTimestamp());
       return Right(result.user!.uid);
     } on FirebaseAuthException catch (e) {
       return Left(FirebaseExceptionCustom.errorSignUp(e.code));
@@ -135,12 +147,12 @@ class RemoteFirebaseAuthImpl implements RemoteFirebaseAuth {
   }
 
   @override
-  Future<Either<FirebaseExceptionCustom, void>> loginWithEmailPassword(
+  Future<Either<FirebaseExceptionCustom, String>> loginWithEmailPassword(
       {required String email, required String password}) async {
     try {
-      final result = await firebaseAuth.createUserWithEmailAndPassword(
+     final result= await firebaseAuth.signInWithEmailAndPassword(
           email: email, password: password);
-      return const Right(null);
+      return  Right(result.user!.uid);
     } on FirebaseAuthException catch (e) {
       return Left(FirebaseExceptionCustom.errorSignIn(e.code));
     }
@@ -148,22 +160,8 @@ class RemoteFirebaseAuthImpl implements RemoteFirebaseAuth {
 
   @override
   Future<void> signInWithGoogle() async {
-    try{
-     await googleSign.signIn();
-      // if (googleSignInAccount != null) {
-      //   GoogleSignInAuthentication googleSignInAuthentication =
-      //   await googleSignInAccount.authentication;
-      //
-      //   AuthCredential credential = GoogleAuthProvider.credential(
-      //     accessToken: googleSignInAuthentication.accessToken,
-      //     idToken: googleSignInAuthentication.idToken,
-      //   );
-      //
-      //   UserCredential authResult = await firebaseAuth.signInWithCredential(credential).catchError((onErr) => print(onErr));
-      // }
-
-    }on FirebaseException catch(e){
-
-    }
+    try {
+      await googleSign.signIn();
+    } on FirebaseException catch (e) {}
   }
 }

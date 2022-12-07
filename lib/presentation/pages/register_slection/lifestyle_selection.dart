@@ -1,19 +1,29 @@
-import 'package:clean_architecture/presentation/bloc/register/register_bloc.dart';
-import 'package:clean_architecture/presentation/bloc/register/register_state.dart';
+import 'package:clean_architecture/presentation/bloc/register_selection/register_selection_event.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../core/value/strings.dart';
 import '../../../data/models/firebase/lifestyle.dart';
+import '../../bloc/register_selection/register_selection_bloc.dart';
+import '../../bloc/register_selection/register_selection_state.dart';
 import '../../widgets/mark_card_widget.dart';
 
-class LifestyleSection extends StatelessWidget {
+class LifestyleSection extends StatefulWidget {
   const LifestyleSection({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<RegisterBloc, RegisterState>(builder: (context, state) {
+  State<LifestyleSection> createState() => _LifestyleSectionState();
+}
 
+class _LifestyleSectionState extends State<LifestyleSection> {
+  @override
+  void initState() {
+    context.read<RegisterSelectionBloc>().add(GetLifestyle());
+    super.initState();
+  }
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<RegisterSelectionBloc, RegisterSelectionState>(builder: (context, state) {
       return ListView.builder(
         padding: const EdgeInsets.symmetric(horizontal: 32),
         shrinkWrap: true,

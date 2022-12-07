@@ -1,5 +1,6 @@
 import 'package:clean_architecture/core/value/app_color.dart';
 import 'package:clean_architecture/core/value/image.dart';
+import 'package:clean_architecture/presentation/pages/wellcome_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
 
@@ -80,10 +81,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 // changes position of shadow
                               ),
                             ]),
-                        child: Icon(
-                          Icons.settings,
-                          size: 35,
-                          color: Colors.grey.withOpacity(0.5),
+                        child:IconButton(
+                          onPressed: (){
+                            Navigator.pushReplacementNamed(context, WelcomePage.routeName);
+                          },
+                          icon: Icon(
+                            Icons.settings,
+                            size: 35,
+                            color: Colors.grey.withOpacity(0.5),
+                          ),
                         ),
                       ),
                       const SizedBox(

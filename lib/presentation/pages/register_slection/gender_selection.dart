@@ -1,13 +1,13 @@
 import 'package:bouncing_widget/bouncing_widget.dart';
 import 'package:clean_architecture/core/value/image.dart';
-import 'package:clean_architecture/presentation/bloc/register/register_event.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import '../../../core/value/app_color.dart';
 import '../../../core/value/strings.dart';
-import '../../bloc/register/register_bloc.dart';
-import '../../bloc/register/register_state.dart';
+import '../../bloc/register_selection/register_selection_bloc.dart';
+import '../../bloc/register_selection/register_selection_event.dart';
+import '../../bloc/register_selection/register_selection_state.dart';
 
 class GenderSection extends StatelessWidget {
   const GenderSection({Key? key}) : super(key: key);
@@ -56,11 +56,11 @@ class GenderSection extends StatelessWidget {
   }
 
   Widget labelGender() {
-    return BlocBuilder<RegisterBloc, RegisterState>(builder: (context, state) {
+    return BlocBuilder<RegisterSelectionBloc, RegisterSelectionState>(builder: (context, state) {
       return BouncingWidget(
         onPressed: () {
           context
-              .read<RegisterBloc>()
+              .read<RegisterSelectionBloc>()
               .add(ChangedMaleUserRegister(Strings.male));
         },
         duration: const Duration(milliseconds: 200),
@@ -110,11 +110,11 @@ class GenderSection extends StatelessWidget {
   }
 
   Widget labelGenderFeMale() {
-    return BlocBuilder<RegisterBloc, RegisterState>(builder: (context, state) {
+    return BlocBuilder<RegisterSelectionBloc, RegisterSelectionState>(builder: (context, state) {
       return BouncingWidget(
         onPressed: () {
           context
-              .read<RegisterBloc>()
+              .read<RegisterSelectionBloc>()
               .add(ChangedMaleUserRegister(Strings.female));
         },
         duration: const Duration(milliseconds: 200),
