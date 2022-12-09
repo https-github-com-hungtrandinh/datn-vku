@@ -1,3 +1,4 @@
+import 'package:clean_architecture/core/util/validate.dart';
 import 'package:clean_architecture/data/datasources/datalocal/shared_preferences_data.dart';
 import 'package:clean_architecture/presentation/bloc/login/login_event.dart';
 import 'package:clean_architecture/presentation/bloc/login/login_state.dart';
@@ -11,31 +12,38 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     on<EmailChanged>(_onChangedEmail);
     on<PasswordChanged>(_onChangedPassword);
     on<LoginSummit>(login);
+    on<LoginWithGoogle>(signInWithGoogle);
   }
 
   void _onChangedEmail(EmailChanged event, Emitter<LoginState> emit) {
-    emit(state.copyWith(email: event.email));
+    emit(state.copyWith(
+        email: event.email, validateEmail: event.email.isValidEmail()));
   }
 
   void _onChangedPassword(PasswordChanged event, Emitter<LoginState> emit) {
-    emit(state.copyWith(password: event.password));
+    emit(state.copyWith(
+        password: event.password,
+        validatePassword: event.password.isValidatePassword()));
   }
 
   Future<void> login(LoginSummit event, Emitter<LoginState> emit) async {
     emit(state.copyWith(loginStatus: LoginStatus.loading));
-    final result =
-        await socialUseCase.login(email: state.email, password: state.password);
+    final result = await socialUseCase.loginWithEmailPassword(
+        email: state.email, password: state.password);
     result.fold((fail) {
       emit(
         state.copyWith(
-            loginStatus: LoginStatus.error, contentLogin: fail.message),
+            loginStatus: LoginStatus.error, contentLogin: fail.messenger),
       );
-    }, (data) {
-      socialUseCase.sharedPreference
-          .set(SharedPreference.tokensAccess, data.tokens.access.token);
-      socialUseCase.sharedPreference
-          .set(SharedPreference.tokenRefresh, data.tokens.refresh.token);
-      emit(state.copyWith(account: data, loginStatus: LoginStatus.loaded));
+    }, (data)  {
+        socialUseCase.sharedPreference
+          .set(SharedPreference.uidAccount, data);
+      emit(state.copyWith(loginStatus: LoginStatus.loaded));
     });
+  }
+
+  Future<void> signInWithGoogle(
+      LoginWithGoogle event, Emitter<LoginState> emit) async {
+    socialUseCase.loginWithGoogle();
   }
 }
