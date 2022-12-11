@@ -1,4 +1,5 @@
 import 'package:clean_architecture/core/value/image.dart';
+import 'package:clean_architecture/presentation/pages/chat_list_screen.dart';
 import 'package:clean_architecture/presentation/pages/home_screen.dart';
 import 'package:clean_architecture/presentation/pages/likes_screen.dart';
 import 'package:clean_architecture/presentation/pages/profile_screen.dart';
@@ -25,7 +26,7 @@ class InitialAppState extends State<InitialApp> {
   static const List<Widget> _widgetOptions = <Widget>[
     HomeScreen(),
     SearchScreen(),
-    LikesScreen(),
+    ChatsList(),
     ProfileScreen()
   ];
 

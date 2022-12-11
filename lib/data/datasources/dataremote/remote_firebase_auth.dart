@@ -8,10 +8,9 @@ import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import '../../../core/util/firebase_exception.dart';
-import '../../models/weather_dto.dart';
+
 
 abstract class RemoteFirebaseAuth {
-  Future<WeatherDto> getCurrentWeather(String cityName);
 
   Future<Account> login({required String email, required String password});
 
@@ -45,19 +44,6 @@ class RemoteFirebaseAuthImpl implements RemoteFirebaseAuth {
   final Dio _dio = Dio(BaseOptions(
       baseUrl: ConstApp.baseUrlHeroku,
       headers: {'Content-Type': 'application/json'}));
-
-  @override
-  Future<WeatherDto> getCurrentWeather(String cityName) async {
-    const String url = "${ConstApp.baseUrl}topics";
-    Response response =
-        await _dio.get(url, queryParameters: {"client_id": ConstApp.keyApi});
-    if (response.statusCode == 200) {
-      return WeatherDto.fromJson(response.data);
-    } else {
-      throw Exception();
-    }
-  }
-
   @override
   Future<Account> login(
       {required String email, required String password}) async {

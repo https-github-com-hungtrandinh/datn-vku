@@ -1,6 +1,8 @@
 import 'package:clean_architecture/injection.dart';
 import 'package:clean_architecture/presentation/bloc/authen/auth_bloc.dart';
 import 'package:clean_architecture/presentation/bloc/authen/auth_event.dart';
+import 'package:clean_architecture/presentation/bloc/chat/chat_bloc.dart';
+import 'package:clean_architecture/presentation/bloc/chat/chat_event.dart';
 import 'package:clean_architecture/presentation/bloc/home/home_bloc.dart';
 import 'package:clean_architecture/presentation/bloc/home/home_event.dart';
 import 'package:clean_architecture/presentation/bloc/login/login_bloc.dart';
@@ -8,6 +10,7 @@ import 'package:clean_architecture/presentation/bloc/register/register_bloc.dart
 import 'package:clean_architecture/presentation/bloc/register_selection/register_selection_bloc.dart';
 import 'package:clean_architecture/presentation/bloc/register_selection/register_selection_event.dart';
 import 'package:clean_architecture/presentation/pages/initial.dart';
+import 'package:clean_architecture/presentation/pages/splash_screen.dart';
 import 'package:clean_architecture/presentation/pages/wellcome_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -40,7 +43,8 @@ class MyApp extends StatelessWidget {
             ..add(GetMajor())
             ..add(GetPersonality()),
         ),
-        BlocProvider<HomeBloc>(create: (context)=>HomeBloc(sl())..add(GetAllUser()))
+        BlocProvider<HomeBloc>(create: (context)=>HomeBloc(sl())..add(GetAllUser())),
+        BlocProvider<ChatBloc>(create: (context) => ChatBloc(sl())..add(GetAllMatch())..add(GetAllMessages()))
       ],
       child: MaterialApp(
           theme: ThemeData.dark(),
@@ -51,7 +55,7 @@ class MyApp extends StatelessWidget {
             GlobalMaterialLocalizations.delegate,
           ],
           onGenerateRoute: RouteGenerator.generateRoute,
-          home: const WelcomePage(),
+          home: const SplashScreen(),
           supportedLocales: S.delegate.supportedLocales),
     );
   }

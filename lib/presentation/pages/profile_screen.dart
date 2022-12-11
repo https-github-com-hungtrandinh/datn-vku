@@ -1,7 +1,11 @@
 import 'package:clean_architecture/core/value/app_color.dart';
 import 'package:clean_architecture/core/value/image.dart';
+import 'package:clean_architecture/presentation/bloc/authen/auth_bloc.dart';
+import 'package:clean_architecture/presentation/bloc/authen/auth_event.dart';
+import 'package:clean_architecture/presentation/bloc/authen/auth_state.dart';
 import 'package:clean_architecture/presentation/pages/wellcome_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -81,15 +85,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 // changes position of shadow
                               ),
                             ]),
-                        child:IconButton(
-                          onPressed: (){
-                            Navigator.pushReplacementNamed(context, WelcomePage.routeName);
-                          },
-                          icon: Icon(
-                            Icons.settings,
-                            size: 35,
-                            color: Colors.grey.withOpacity(0.5),
-                          ),
+                        child:BlocBuilder<AuthBloc,AuthState>(
+                          builder: (context,state) {
+                            return IconButton(
+                              onPressed: (){
+                                context.read<AuthBloc>().add(LogOut());
+                                Navigator.pushReplacementNamed(context, WelcomePage.routeName);
+                              },
+                              icon: Icon(
+                                Icons.settings,
+                                size: 35,
+                                color: Colors.grey.withOpacity(0.5),
+                              ),
+                            );
+                          }
                         ),
                       ),
                       const SizedBox(

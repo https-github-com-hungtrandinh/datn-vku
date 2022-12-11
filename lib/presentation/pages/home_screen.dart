@@ -101,9 +101,6 @@ class _HomeScreenState extends State<HomeScreen> {
       return GestureDetector(
         onTap: () {
           controller.swipeRight();
-          context
-              .read<HomeBloc>()
-              .add(UserLikeEvent(state.allUser[controller.state!.index].uid!));
         },
         child: Container(
           width: 55,

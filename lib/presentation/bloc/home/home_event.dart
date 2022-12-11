@@ -1,4 +1,7 @@
+import 'package:clean_architecture/presentation/pages/home_screen.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
+
 
 abstract class HomeEvent extends Equatable {
 

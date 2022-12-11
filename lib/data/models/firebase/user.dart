@@ -15,7 +15,6 @@ class UserModel {
   bool? questionaireFilled;
   bool? registerFinished;
   bool? emailVerified;
-  List<dynamic>? alreadyConnect;
   List<dynamic>? interests;
 
   UserModel({
@@ -28,7 +27,6 @@ class UserModel {
     this.major,
     this.questionaireFilled,
     this.registerFinished,
-    this.alreadyConnect,
     this.emailVerified,
     this.mbti,
     this.gender,
@@ -51,28 +49,24 @@ class UserModel {
       'interests': interests,
       'questionaireFilled': questionaireFilled,
       'registerFinished': registerFinished,
-      'alreadyConnect': alreadyConnect,
       'emailVerified': emailVerified,
     };
   }
 
   factory UserModel.fromDocument(DocumentSnapshot doc) {
     return UserModel(
-      uid: doc.get('uid'),
-      photoUrl: doc.get('photoUrl'),
-      email: doc.get('email'),
-      username: doc.get('username'),
-      phone: doc.get('phone'),
+      uid: doc['uid'],
+      photoUrl: doc['photoUrl'],
+      email: doc['email'],
       name: doc.get('name'),
       major: doc.get('major'),
       mbti: doc.get('mbti'),
       gender: doc.get('gender'),
       // birthday: (doc.get('birthday') as Timestamp).toDate(),
-      interests: doc.get('interests'),
-      questionaireFilled: doc.get('questionaireFilled'),
-      registerFinished: doc.get('registerFinished'),
-      alreadyConnect: doc.get('alreadyConnect'),
-      emailVerified: doc.get('emailVerified'),
+      interests: (doc['interests'] as List).map((e) => e.toString()).toList(),
+      questionaireFilled: doc['questionaireFilled'],
+      registerFinished: doc['registerFinished'],
+      emailVerified:doc['emailVerified'],
     );
   }
 }

@@ -78,5 +78,6 @@ class Strings {
   static const String choseInterest="Choose your interests";
   static const String addPhoto ="Give us your best photo";
   static const String cropper="Cropper";
+  static const String startChat="Bắt đầu trò chuyện với người bạn mới";
 
 }

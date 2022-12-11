@@ -1,7 +1,5 @@
-import 'dart:developer';
-
 import 'package:clean_architecture/data/models/firebase/user.dart';
-import 'package:clean_architecture/data/models/firebase/user_like.dart';
+import 'package:clean_architecture/data/models/firebase/like.dart';
 import 'package:clean_architecture/presentation/bloc/home/home_event.dart';
 import 'package:clean_architecture/presentation/bloc/home/home_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -24,14 +22,33 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   Future<void> _userLike(UserLikeEvent event, Emitter<HomeState> emit) async {
     final uid =
         await socialUseCase.sharedPreference.get(SharedPreference.uidAccount);
-    socialUseCase.userLike(userLike: UserLike(like: uid, liked: event.liked));
+    socialUseCase.userLike(
+        userLike: UserLike(uidLike: uid, uidLiked: [event.liked]));
     final resultCheckMatch =
         await socialUseCase.checkMatch(like: uid, liked: event.liked);
     resultCheckMatch.fold((error) {}, (data) {
-     log("$data");
       emit(state.copyWith(checkMatch: data));
     });
+    if (state.checkMatch) {
+      await createGroupChat(uidLike: uid, uidLiked: event.liked, emit: emit);
+      await socialUseCase.matching(
+          uidLike: uid, uidLiked: event.liked, chatId: state.chatId);
+    }
     emit(state.copyWith(liked: event.liked));
+  }
+
+  Future<void> createGroupChat(
+      {required String uidLike,
+      required String uidLiked,
+      required Emitter<HomeState> emit}) async {
+    final result = await socialUseCase.createGroupChat(
+        uidLike: uidLike, uidLiked: uidLiked);
+    result.fold((error) {}, (data) {
+      emit(state.copyWith(chatId: data));
+    });
+  }
+  Future<void> getAllUserMatch() async{
+
   }
 
   Future<void> _getAllUser(GetAllUser event, Emitter<HomeState> emit) async {
@@ -47,12 +64,13 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
     allUser.fold((error) {}, (data) {
       final List<UserModel> listAllUser = [];
-      if (state.allUserLike.isEmpty) {
+
+      if (state.allUserLike == null) {
         listAllUser.addAll(data);
       } else {
-        for (var i in state.allUserLike) {
+        for (var i in state.allUserLike!.uidLiked) {
           data.removeWhere((element) {
-            return element.uid == i.liked;
+            return element.uid == i;
           });
         }
         listAllUser.addAll(data);

@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
+import '../../../data/models/firebase/messages.dart';
 import '../../../data/models/firebase/user.dart';
-import '../../../data/models/firebase/user_like.dart';
+import '../../../data/models/firebase/like.dart';
 
 enum LoadUserSwiper { initial, loading, loaded, success }
 
@@ -9,12 +10,18 @@ class HomeState extends Equatable {
   final String? liked;
   final LoadUserSwiper loadUserSwiper;
   final List<UserModel> allUser;
-  final List<UserLike> allUserLike;
+  final UserLike? allUserLike;
   final bool checkMatch;
+  final String chatId;
+  final List<UserModel> allUserMatch;
+  final List<Message> listMessages;
 
   const HomeState(
       {required this.loadUserSwiper,
+      required this.allUserMatch,
+      required this.listMessages,
       required this.liked,
+      required this.chatId,
       required this.checkMatch,
       required this.allUser,
       required this.allUserLike,
@@ -22,8 +29,11 @@ class HomeState extends Equatable {
 
   factory HomeState.initial() {
     return const HomeState(
+        listMessages: [],
+        allUserMatch: [],
         checkMatch: false,
-        allUserLike: [],
+        allUserLike: null,
+        chatId: '',
         loadUserSwiper: LoadUserSwiper.initial,
         allUser: [],
         liked: null,
@@ -33,11 +43,17 @@ class HomeState extends Equatable {
   HomeState copyWith(
       {LoadUserSwiper? loadUserSwiper,
       String? liked,
-      List<UserLike>? allUserLike,
+      List<Message>? listMessages,
+      UserLike? allUserLike,
       String? userWatch,
       bool? checkMatch,
+      String? chatId,
+      List<UserModel>? allUserMatch,
       List<UserModel>? allUser}) {
     return HomeState(
+        listMessages: listMessages ?? this.listMessages,
+        allUserMatch: allUserMatch ?? this.allUserMatch,
+        chatId: chatId ?? this.chatId,
         checkMatch: checkMatch ?? this.checkMatch,
         allUserLike: allUserLike ?? this.allUserLike,
         allUser: allUser ?? this.allUser,
@@ -47,6 +63,15 @@ class HomeState extends Equatable {
   }
 
   @override
-  List<Object?> get props =>
-      [loadUserSwiper, liked, userWatch, allUser, allUserLike, checkMatch];
+  List<Object?> get props => [
+        loadUserSwiper,
+        liked,
+        userWatch,
+        allUser,
+        allUserLike,
+        checkMatch,
+        chatId,
+        allUserMatch,
+        listMessages
+      ];
 }
