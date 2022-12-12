@@ -30,7 +30,10 @@ class _ChatPageState extends State<ChatPage> {
             left: 24,
             right: 24,
             bottom: 16,
-            top: MediaQuery.of(context).padding.top + 16,
+            top: MediaQuery
+                .of(context)
+                .padding
+                .top + 16,
           ),
           decoration: BoxDecoration(
             color: Colors.white,
@@ -50,27 +53,27 @@ class _ChatPageState extends State<ChatPage> {
             mainAxisAlignment: MainAxisAlignment.start,
             mainAxisSize: MainAxisSize.max,
             children: [
-              BlocBuilder<ChatBloc,ChatState>(
-                builder: (context,state) {
-                  return Container(
-                    width: 42,
-                    height: 42,
-                    decoration: const BoxDecoration(
-                      shape: BoxShape.circle,
-                      image: DecorationImage(
-                        image:NetworkImage("https://firebasestorage.googleapis.com/v0/b/inductive-mind-335403.appspot.com/o/images%2Fprofile-picture%2F2I6QK9wzVYeEXGPynZrwJbBkn2u1.jpg?alt=media&token=3686202c-9e0b-4f48-8511-71a8ab075329"),
-                        fit: BoxFit.cover,
+              BlocBuilder<ChatBloc, ChatState>(
+                  builder: (context, state) {
+                    return Container(
+                      width: 42,
+                      height: 42,
+                      decoration: const BoxDecoration(
+                        shape: BoxShape.circle,
+                        image: DecorationImage(
+                          image: NetworkImage(
+                              "https://firebasestorage.googleapis.com/v0/b/inductive-mind-335403.appspot.com/o/images%2Fprofile-picture%2F2I6QK9wzVYeEXGPynZrwJbBkn2u1.jpg?alt=media&token=3686202c-9e0b-4f48-8511-71a8ab075329"),
+                          fit: BoxFit.cover,
+                        ),
                       ),
-                    ),
-                  );
-                }
+                    );
+                  }
               ),
               const SizedBox(width: 8),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: const [
-
                 ],
               ),
               // Icon(Icons.more_vert),
@@ -133,45 +136,48 @@ class _ChatPageState extends State<ChatPage> {
         ),
       ),
       body: Padding(
-        padding: const EdgeInsets.only(bottom: 60),
-        child: buildListMessage()),
+          padding: const EdgeInsets.only(bottom: 60),
+          child: buildListMessage()),
     );
   }
 
   Widget buildListMessage() {
-    return  ListView.separated(
-                    physics: const BouncingScrollPhysics(),
-                    shrinkWrap: true,
-                    separatorBuilder: (_, __) => const SizedBox(height: 24),
-                    padding: const EdgeInsets.all(24),
-                    itemBuilder: (context, index) => buildItem(
-                        context, ),
-                    itemCount: 0,
-                    reverse: true,
+    return ListView.separated(
+      physics: const BouncingScrollPhysics(),
+      shrinkWrap: true,
+      separatorBuilder: (_, __) => const SizedBox(height: 24),
+      padding: const EdgeInsets.all(24),
+      itemBuilder: (context, index) =>
+          buildItem(
+              index: 0),
+      itemCount: 1,
+      reverse: true,
 
-                  );
-
+    );
   }
 
-  Widget buildItem(
-      BuildContext context) {
-    if (2==1) {
-      return RightChatWidget(
-        content: const Text("1"),
-        time: formatHour(
-            DateTime.fromMillisecondsSinceEpoch(111111111)),
-      );
-    } else {
-      return LeftChatWidget(
-          profileImage: const NetworkImage("https://firebasestorage.googleapis.com/v0/b/inductive-mind-335403.appspot.com/o/images%2Fprofile-picture%2F2I6QK9wzVYeEXGPynZrwJbBkn2u1.jpg?alt=media&token=3686202c-9e0b-4f48-8511-71a8ab075329"),
-          content: const Text("2"),
+  Widget buildItem({required int index}) {
+    return BlocBuilder<ChatBloc, ChatState>(builder: (context, state) {
+      if (state.listMessage[index].senderId == state.uid) {
+        return RightChatWidget(
+          content: Text(state.listMessage[index].message),
           time: formatHour(
-              DateTime.fromMillisecondsSinceEpoch(111111111)));
-    }
-
+              DateTime.fromMillisecondsSinceEpoch(111111111)),
+        );
+      } else {
+        return LeftChatWidget(
+            profileImage: const NetworkImage(
+                "https://firebasestorage.googleapis.com/v0/b/inductive-mind-335403.appspot.com/o/images%2Fprofile-picture%2F2I6QK9wzVYeEXGPynZrwJbBkn2u1.jpg?alt=media&token=3686202c-9e0b-4f48-8511-71a8ab075329"),
+            content: Text(state.listMessage[index].message),
+            time: formatHour(
+                DateTime.fromMillisecondsSinceEpoch(111111111)));
+      }
+    });
   }
 }
- String formatHour(DateTime time) {
-return '${time.hour.toString().padLeft(2, '0')}:${time.minute.toString().padLeft(2, '0')}';
+
+String formatHour(DateTime time) {
+  return '${time.hour.toString().padLeft(2, '0')}:${time.minute.toString()
+      .padLeft(2, '0')}';
 }
 

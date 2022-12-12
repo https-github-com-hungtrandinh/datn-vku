@@ -135,12 +135,15 @@ class SocialUseCase {
     return await remoteFireBaseCloud.getAllMatchId(uid: uid);
   }
 
-  Stream<List<Chat>> getAllMessages({required String uid}) {
-   return remoteFireBaseCloud.getAllMessages(uid: uid);
+  Stream<List<Chat>> getAllChat({required String uid}) {
+   return remoteFireBaseCloud.getAllChat(uid: uid);
   }
 
   Future<Either<FirebaseExceptionCustom, List<UserModel>>> getAllUserMatch(
       {required List<MatchUser> listMatch}) async {
     return await remoteFireBaseCloud.getAllUserMatch(listMatch: listMatch);
+  }
+  Stream<List<Message>> getAllMessage({required String groupChatId}){
+    return remoteFireBaseCloud.getAllMessage(groupChatId: groupChatId);
   }
 }

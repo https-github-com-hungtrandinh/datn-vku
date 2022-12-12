@@ -76,8 +76,8 @@ class _ChatsListState extends State<ChatsList> {
                                       color: Colors.black),
                                 ),
                                 Text(
-                                    state.listMessages[0].messages!.isNotEmpty
-                                        ? state.listMessages[0].messages![0].message
+                                    state.listChat.isNotEmpty
+                                        ? state.listChat[0].lastMessage
                                         : Strings.startChat,
                                     style: const TextStyle(
                                         fontSize: 16,

@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:developer';
 
 import 'package:clean_architecture/data/datasources/datalocal/shared_preferences_data.dart';
+import 'package:clean_architecture/data/models/firebase/messages.dart';
 import 'package:clean_architecture/presentation/bloc/chat/chat_event.dart';
 import 'package:clean_architecture/presentation/bloc/chat/chat_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -23,7 +24,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     final uid =
         await socialUseCase.sharedPreference.get(SharedPreference.uidAccount);
     final result = await socialUseCase.getAllMatchId(uid: uid);
-    result.fold((error) {}, (data) => emit(state.copyWith(listMatch: data)));
+    result.fold((error) {}, (data) => emit(state.copyWith(listMatch: data,uid: uid)));
 
     final userMatch =
         await socialUseCase.getAllUserMatch(listMatch: state.listMatch);
@@ -40,10 +41,19 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
   void _getAllMessages(GetAllMessages event, Emitter<ChatState> emit) async {
     final uid =
         await socialUseCase.sharedPreference.get(SharedPreference.uidAccount);
-    await emit.forEach(socialUseCase.getAllMessages(uid: uid),
+    await emit.forEach(socialUseCase.getAllChat(uid: uid),
         onData: (List<Chat> event) {
-      log("${event[0].userIds}");
-      return state.copyWith(listMessages: event);
+
+      for (var id in event) {
+        emit.forEach(socialUseCase.getAllMessage(groupChatId: id.chatId),
+            onData: (List<Message> message) {
+
+          return state.copyWith(listMessage: message);
+
+        });
+      }
+
+      return state.copyWith(listChat: event);
     });
   }
 

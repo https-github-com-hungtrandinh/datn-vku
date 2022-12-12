@@ -8,6 +8,7 @@ import 'package:clean_architecture/data/models/firebase/messages.dart';
 import 'package:clean_architecture/data/models/firebase/personality.dart';
 import 'package:clean_architecture/data/models/firebase/like.dart';
 import 'package:clean_architecture/data/models/firebase/user_question.dart';
+import 'package:clean_architecture/generated/intl/messages_en.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dartz/dartz.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -335,7 +336,7 @@ class RemoteFirebaseCloudImpl extends RemoteFireBaseCloud {
   }
 
   @override
-  Stream<List<Chat>> getAllMessages({required String uid}) {
+  Stream<List<Chat>> getAllChat({required String uid}) {
     return firebaseFireStore
         .collection("chats")
         .where("userIds", arrayContainsAny: [uid])
@@ -368,13 +369,15 @@ class RemoteFirebaseCloudImpl extends RemoteFireBaseCloud {
   }
 
   @override
-  Future<Either<FirebaseExceptionCustom, void>> seenMessage({required Message message,required String groupChatId}) async {
-  try{
-    await firebaseFireStore.collection("chats").doc(groupChatId).set(
-
-    )
-  }on FirebaseException catch (e) {
-    return Left(FirebaseExceptionCustom(e.code));
+  Stream<List<Message>> getAllMessage({required String groupChatId}) {
+    return firebaseFireStore
+        .collection("chats")
+        .doc(groupChatId)
+        .collection("message").orderBy("dateTime")
+        .limitToLast(1)
+        .snapshots()
+        .map((snap) {
+      return snap.docs.map((e) => Message.fromJson(e.data())).toList();
+    });
   }
-  
 }

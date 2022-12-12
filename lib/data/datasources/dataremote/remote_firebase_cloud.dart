@@ -65,7 +65,7 @@ abstract class RemoteFireBaseCloud {
       {required String uid});
   Future<Either<FirebaseExceptionCustom,List<UserModel>>> getAllUserMatch({required List<MatchUser> listMatch});
 
-  Stream<List<Chat>> getAllMessages(
+  Stream<List<Chat>> getAllChat(
       {required String uid});
-  Future<Either<FirebaseExceptionCustom,void>> seenMessage({required Message message});
+  Stream<List<Message>> getAllMessage({required String groupChatId});
 }
