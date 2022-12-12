@@ -44,7 +44,7 @@ class MyApp extends StatelessWidget {
             ..add(GetPersonality()),
         ),
         BlocProvider<HomeBloc>(create: (context)=>HomeBloc(sl())..add(GetAllUser())),
-        BlocProvider<ChatBloc>(create: (context) => ChatBloc(sl())..add(GetAllMatch())..add(GetAllMessages()))
+        BlocProvider<ChatBloc>(create: (context) => ChatBloc(sl()))
       ],
       child: MaterialApp(
           theme: ThemeData.dark(),

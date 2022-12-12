@@ -8,6 +8,7 @@ import 'package:clean_architecture/presentation/bloc/chat/chat_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../bloc/chat/chat_event.dart';
 import '../widgets/avatar_lable_user.dart';
 
 class ChatsList extends StatefulWidget {
@@ -21,7 +22,9 @@ class ChatsList extends StatefulWidget {
 class _ChatsListState extends State<ChatsList> {
   @override
   void initState() {
-    super.initState();
+    context.read<ChatBloc>()
+      ..add(GetAllMatch())..add(GetAllMessages());
+        super.initState();
   }
 
   @override
@@ -60,17 +63,26 @@ class _ChatsListState extends State<ChatsList> {
                     children: [
                       Text(
                         state.allUserMatch[index].name!,
-                        style: Theme.of(context).textTheme.headline5,
+                        style: Theme
+                            .of(context)
+                            .textTheme
+                            .headline5,
                       ),
                       const SizedBox(height: 5),
                       Text(
                         "1",
-                        style: Theme.of(context).textTheme.headline6,
+                        style: Theme
+                            .of(context)
+                            .textTheme
+                            .headline6,
                       ),
                       const SizedBox(height: 5),
                       Text(
-                      Strings.startChat,
-                        style: Theme.of(context).textTheme.bodyText1,
+                        Strings.startChat,
+                        style: Theme
+                            .of(context)
+                            .textTheme
+                            .bodyText1,
                       ),
                     ],
                   )

@@ -1,32 +1,27 @@
 
+
+import 'dart:developer';
+
 import 'messages.dart';
 
 class Chat {
-
+  final String chatId;
   final List<String> userIds;
   final List<Message>? messages;
 
   Chat({
-
+    required this.chatId,
     required this.userIds,
     required this.messages,
   });
 
-  factory Chat.fromJson(Map<String, dynamic> json, {String? id}) {
-    List<String> userIds =
-    (json['userIds'] as List).map((userId) => userId as String).toList();
-
-    List<Message> messages = (json['messages'] as List)
-        .map((message) => Message.fromJson(message))
-        .toList();
-
-    messages.sort((a, b) => b.dateTime.compareTo(a.dateTime));
-
+  factory Chat.fromJson(Map<String, dynamic> json, {required String chatId}) {
+    log("$chatId");
     return Chat(
-
-      userIds: userIds,
-      messages: messages,
-    );
+        userIds: (json['userIds'] as List).map((e) => e.toString()).toList(),
+        messages:
+            (json["messages"] as List).map((e) => Message.fromJson(e)).toList(),
+        chatId: chatId);
   }
 
   Map<String, dynamic> toJson() {

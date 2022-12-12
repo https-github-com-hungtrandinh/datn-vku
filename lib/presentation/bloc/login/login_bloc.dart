@@ -35,11 +35,14 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         state.copyWith(
             loginStatus: LoginStatus.error, contentLogin: fail.messenger),
       );
-    }, (data)  {
-        socialUseCase.sharedPreference
-          .set(SharedPreference.uidAccount, data);
-      emit(state.copyWith(loginStatus: LoginStatus.loaded));
+    }, (data) async {
+      emit(state.copyWith(loginStatus: LoginStatus.loaded, uid: data));
     });
+    if(state.loginStatus ==LoginStatus.loaded){
+      await socialUseCase.sharedPreference
+          .set(SharedPreference.uidAccount, state.uid);
+    }
+
   }
 
   Future<void> signInWithGoogle(

@@ -4,7 +4,6 @@ import 'package:clean_architecture/data/models/firebase/chat.dart';
 import 'package:clean_architecture/data/models/firebase/interest.dart';
 import 'package:clean_architecture/data/models/firebase/lifestyle.dart';
 import 'package:clean_architecture/data/models/firebase/match.dart';
-import 'package:clean_architecture/data/models/firebase/messages.dart';
 import 'package:clean_architecture/data/models/firebase/personality.dart';
 import 'package:clean_architecture/data/models/firebase/like.dart';
 import 'package:clean_architecture/data/models/firebase/user_question.dart';
@@ -335,16 +334,16 @@ class RemoteFirebaseCloudImpl extends RemoteFireBaseCloud {
   }
 
   @override
-  Stream< List<Chat>> getAllMessages(
-      {required String uid})  {
-    return  firebaseFireStore
-          .collection("chats")
-          .where("userIds", arrayContainsAny: [uid])
-           .orderBy("messages").limit(1)
-          .snapshots()
-          .map((snap) {
-           return snap.docs.map((e) => Chat.fromJson(e.data())).toList();
-          });
+  Stream<List<Chat>> getAllMessages({required String uid}) {
+    return firebaseFireStore
+        .collection("chats")
+        .where("userIds", arrayContainsAny: [uid])
+        .snapshots()
+        .map((snap) {
+          return snap.docs
+              .map((e) => Chat.fromJson(e.data(), chatId: e.id))
+              .toList();
+        });
   }
 
   @override

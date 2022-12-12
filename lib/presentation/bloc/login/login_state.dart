@@ -11,9 +11,11 @@ class LoginState extends Equatable {
   final Account? account;
   final bool validatePassword;
   final bool validateEmail;
+  final String uid;
 
   const LoginState(
       {required this.loginStatus,
+      required this.uid,
       required this.validateEmail,
       required this.validatePassword,
       required this.contentLogin,
@@ -24,6 +26,7 @@ class LoginState extends Equatable {
   factory LoginState.initial() {
     return const LoginState(
         validateEmail: false,
+        uid: '',
         validatePassword: false,
         loginStatus: LoginStatus.initial,
         contentLogin: '',
@@ -39,8 +42,10 @@ class LoginState extends Equatable {
       String? password,
       bool? validateEmail,
       bool? validatePassword,
+      String? uid,
       Account? account}) {
     return LoginState(
+        uid: uid ?? this.uid,
         validateEmail: validateEmail ?? this.validateEmail,
         validatePassword: validatePassword ?? this.validatePassword,
         contentLogin: contentLogin ?? this.contentLogin,
@@ -58,6 +63,7 @@ class LoginState extends Equatable {
         account,
         contentLogin,
         validateEmail,
+        uid,
         validatePassword
       ];
 }
