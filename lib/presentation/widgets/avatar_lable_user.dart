@@ -50,16 +50,14 @@ class UserImage extends StatelessWidget {
       height: height,
       width: width,
       decoration: BoxDecoration(
+        shape: BoxShape.circle,
         image: DecorationImage(
           fit: BoxFit.cover,
           image: (url == null)
               ? const AssetImage(ImageSrc.maleAvatar) as ImageProvider
               : NetworkImage(url!),
         ),
-        borderRadius: const BorderRadius.all(
-          Radius.circular(8.0),
-        ),
-        border: border,
+
         boxShadow: boxShadow,
         color: Theme.of(context).primaryColor,
       ),

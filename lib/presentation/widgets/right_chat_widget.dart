@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
 
-
-class LeftChatWidget extends StatelessWidget {
-  final ImageProvider profileImage;
+class RightChatWidget extends StatelessWidget {
   final Widget content;
   final String time;
 
-  const LeftChatWidget({
+  const RightChatWidget({
     Key? key,
-    required this.profileImage,
     required this.content,
     required this.time,
   }) : super(key: key);
@@ -18,24 +15,8 @@ class LeftChatWidget extends StatelessWidget {
     return SizedBox(
       width: double.infinity,
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.end,
         children: [
-          Container(
-            width: 40,
-            height: 40,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: Colors.grey,
-              image: DecorationImage(
-                image: profileImage,
-                fit: BoxFit.cover,
-              ),
-            ),
-          ),
-          const SizedBox(
-            width: 12,
-          ),
           ConstrainedBox(
             constraints: BoxConstraints(
               maxWidth: MediaQuery.of(context).size.width * 0.6,
@@ -43,9 +24,9 @@ class LeftChatWidget extends StatelessWidget {
             child: Container(
               padding: const EdgeInsets.only(bottom: 8, top: 16, left: 16, right: 16),
               decoration: BoxDecoration(
-                color: Color(0xFFFFEAF4),
+                color: Color(0xFFDED6F4),
                 borderRadius: const BorderRadius.only(
-                  topRight: Radius.circular(16),
+                  topLeft: Radius.circular(16),
                   bottomLeft: Radius.circular(16),
                   bottomRight: Radius.circular(16),
                 ),

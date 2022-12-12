@@ -1,13 +1,9 @@
-import 'dart:developer';
-
 import 'package:clean_architecture/core/value/strings.dart';
-import 'package:clean_architecture/data/models/firebase/match.dart';
 import 'package:clean_architecture/presentation/bloc/chat/chat_bloc.dart';
-
 import 'package:clean_architecture/presentation/bloc/chat/chat_state.dart';
+import 'package:clean_architecture/presentation/pages/chat_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 import '../bloc/chat/chat_event.dart';
 import '../widgets/avatar_lable_user.dart';
 
@@ -23,8 +19,9 @@ class _ChatsListState extends State<ChatsList> {
   @override
   void initState() {
     context.read<ChatBloc>()
-      ..add(GetAllMatch())..add(GetAllMessages());
-        super.initState();
+      ..add(GetAllMatch())
+      ..add(GetAllMessages());
+    super.initState();
   }
 
   @override
@@ -34,62 +31,75 @@ class _ChatsListState extends State<ChatsList> {
         return const CircularProgressIndicator();
       } else if (state.loadListMatchStatus == LoadListMatchStatus.error) {
         return const Center(
-          child: Text("error"),
+          child: Text(Strings.error),
         );
       } else if (state.loadListMatchStatus == LoadListMatchStatus.loaded) {
-        log("done ${state.allUserMatch.length}");
-        return ListView.builder(
-          shrinkWrap: true,
-          itemCount: state.allUserMatch.length,
-          itemBuilder: (context, index) {
-            return InkWell(
-              onTap: () {
-                // Navigator.pushNamed(
-                //   context,
-                //   ChatScreen.routeName,
-                //   arguments: activeMatches[index],
-                // );
-              },
-              child: Row(
-                children: [
-                  UserImage.small(
-                    margin: const EdgeInsets.only(top: 10, right: 10),
-                    height: 70,
-                    width: 70,
-                    url: state.allUserMatch[index].photoUrl,
-                  ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        state.allUserMatch[index].name!,
-                        style: Theme
-                            .of(context)
-                            .textTheme
-                            .headline5,
+        return Column(
+          children: [
+            Expanded(
+              child: ListView.builder(
+                shrinkWrap: true,
+                itemCount: state.allUserMatch.length,
+                itemBuilder: (context, index) {
+                  return InkWell(
+                    onTap: () {
+                      Navigator.pushNamed(
+                        context,
+                        ChatPage.routeName,
+                      );
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      height: 90,
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          UserImage.small(
+                            margin: const EdgeInsets.only(top: 10, right: 10),
+                            height: 70,
+                            width: 70,
+                            url: state.allUserMatch[index].photoUrl,
+                          ),
+                          Flexible(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                                Text(
+                                  state.allUserMatch[index].name!,
+                                  style: const TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.w800,
+                                      color: Colors.black),
+                                ),
+                                Text(
+                                    state.listMessages[0].messages!.isNotEmpty
+                                        ? state.listMessages[0].messages![0].message
+                                        : Strings.startChat,
+                                    style: const TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w500,
+                                        color: Colors.black),
+                                    overflow: TextOverflow.ellipsis),
+                                const SizedBox(height: 10),
+                                const Divider(
+                                  height: 1,
+                                  color: Colors.grey,
+                                )
+                              ],
+                            ),
+                          )
+                        ],
                       ),
-                      const SizedBox(height: 5),
-                      Text(
-                        "1",
-                        style: Theme
-                            .of(context)
-                            .textTheme
-                            .headline6,
-                      ),
-                      const SizedBox(height: 5),
-                      Text(
-                        Strings.startChat,
-                        style: Theme
-                            .of(context)
-                            .textTheme
-                            .bodyText1,
-                      ),
-                    ],
-                  )
-                ],
+                    ),
+                  );
+                },
               ),
-            );
-          },
+            ),
+          ],
         );
       }
       return Center(

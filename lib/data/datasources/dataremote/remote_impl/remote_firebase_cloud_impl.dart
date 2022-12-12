@@ -4,6 +4,7 @@ import 'package:clean_architecture/data/models/firebase/chat.dart';
 import 'package:clean_architecture/data/models/firebase/interest.dart';
 import 'package:clean_architecture/data/models/firebase/lifestyle.dart';
 import 'package:clean_architecture/data/models/firebase/match.dart';
+import 'package:clean_architecture/data/models/firebase/messages.dart';
 import 'package:clean_architecture/data/models/firebase/personality.dart';
 import 'package:clean_architecture/data/models/firebase/like.dart';
 import 'package:clean_architecture/data/models/firebase/user_question.dart';
@@ -365,4 +366,15 @@ class RemoteFirebaseCloudImpl extends RemoteFireBaseCloud {
       return Left(FirebaseExceptionCustom(e.code));
     }
   }
+
+  @override
+  Future<Either<FirebaseExceptionCustom, void>> seenMessage({required Message message,required String groupChatId}) async {
+  try{
+    await firebaseFireStore.collection("chats").doc(groupChatId).set(
+
+    )
+  }on FirebaseException catch (e) {
+    return Left(FirebaseExceptionCustom(e.code));
+  }
+  
 }

@@ -1,4 +1,5 @@
 import 'package:clean_architecture/presentation/pages/chat_list_screen.dart';
+import 'package:clean_architecture/presentation/pages/chat_screen.dart';
 import 'package:clean_architecture/presentation/pages/home_screen.dart';
 import 'package:clean_architecture/presentation/pages/initial.dart';
 import 'package:clean_architecture/presentation/pages/login_screen.dart';
@@ -34,6 +35,8 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => const WelcomePage());
       case '/chatList':
         return MaterialPageRoute(builder: (_) => const ChatsList());
+      case '/chat-page':
+        return MaterialPageRoute(builder: (_) => const ChatPage());
       default:
         // If there is no such named route in the switch statement, e.g. /third
         return _errorRoute();

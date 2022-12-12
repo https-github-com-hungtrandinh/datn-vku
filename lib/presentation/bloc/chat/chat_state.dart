@@ -2,7 +2,7 @@ import 'package:clean_architecture/data/models/firebase/chat.dart';
 import 'package:equatable/equatable.dart';
 
 import '../../../data/models/firebase/match.dart';
-import '../../../data/models/firebase/messages.dart';
+
 import '../../../data/models/firebase/user.dart';
 
 enum LoadListMatchStatus { initial, loading, loaded, error }

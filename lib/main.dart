@@ -43,11 +43,14 @@ class MyApp extends StatelessWidget {
             ..add(GetMajor())
             ..add(GetPersonality()),
         ),
-        BlocProvider<HomeBloc>(create: (context)=>HomeBloc(sl())..add(GetAllUser())),
+        BlocProvider<HomeBloc>(
+            create: (context) => HomeBloc(sl())..add(GetAllUser())),
         BlocProvider<ChatBloc>(create: (context) => ChatBloc(sl()))
       ],
       child: MaterialApp(
-          theme: ThemeData.dark(),
+          theme: ThemeData(
+              bottomSheetTheme:
+                  const BottomSheetThemeData(backgroundColor: Colors.transparent)),
           localizationsDelegates: const [
             S.delegate,
             GlobalWidgetsLocalizations.delegate,

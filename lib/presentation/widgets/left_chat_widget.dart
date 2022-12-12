@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 
-class RightChatWidget extends StatelessWidget {
+
+class LeftChatWidget extends StatelessWidget {
+  final ImageProvider profileImage;
   final Widget content;
   final String time;
 
-  const RightChatWidget({
+  const LeftChatWidget({
     Key? key,
+    required this.profileImage,
     required this.content,
     required this.time,
   }) : super(key: key);
@@ -15,19 +18,34 @@ class RightChatWidget extends StatelessWidget {
     return SizedBox(
       width: double.infinity,
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.end,
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          Container(
+            width: 40,
+            height: 40,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: Colors.grey,
+              image: DecorationImage(
+                image: profileImage,
+                fit: BoxFit.cover,
+              ),
+            ),
+          ),
+          SizedBox(
+            width: 12,
+          ),
           ConstrainedBox(
             constraints: BoxConstraints(
               maxWidth: MediaQuery.of(context).size.width * 0.6,
             ),
             child: Container(
-              padding: const EdgeInsets.only(
-                  bottom: 8, top: 16, left: 16, right: 16),
+              padding: EdgeInsets.only(bottom: 8, top: 16, left: 16, right: 16),
               decoration: BoxDecoration(
-                color: const Color(0xFFDED6F4),
+                color: Color(0xFFFFEAF4),
                 borderRadius: const BorderRadius.only(
-                  topLeft: Radius.circular(16),
+                  topRight: Radius.circular(16),
                   bottomLeft: Radius.circular(16),
                   bottomRight: Radius.circular(16),
                 ),
@@ -43,12 +61,12 @@ class RightChatWidget extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   content,
-                  const SizedBox(height: 4),
+                  SizedBox(height: 4),
                   SizedBox(
                     width: double.infinity,
                     child: Text(
                       time,
-                      style: const TextStyle(
+                      style: TextStyle(
                         color: Color(0xFF737373),
                         fontSize: 9,
                       ),

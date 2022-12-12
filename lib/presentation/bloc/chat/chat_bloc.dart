@@ -40,7 +40,6 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
   void _getAllMessages(GetAllMessages event, Emitter<ChatState> emit) async {
     final uid =
         await socialUseCase.sharedPreference.get(SharedPreference.uidAccount);
-
     await emit.forEach(socialUseCase.getAllMessages(uid: uid),
         onData: (List<Chat> event) {
       log("${event[0].userIds}");

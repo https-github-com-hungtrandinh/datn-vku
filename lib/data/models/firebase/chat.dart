@@ -1,7 +1,3 @@
-
-
-import 'dart:developer';
-
 import 'messages.dart';
 
 class Chat {
@@ -16,11 +12,13 @@ class Chat {
   });
 
   factory Chat.fromJson(Map<String, dynamic> json, {required String chatId}) {
-    log("$chatId");
     return Chat(
+
         userIds: (json['userIds'] as List).map((e) => e.toString()).toList(),
-        messages:
-            (json["messages"] as List).map((e) => Message.fromJson(e)).toList(),
+        messages: (json["messages"] as List)
+            .reversed
+            .map((e) => Message.fromJson(e))
+            .toList(),
         chatId: chatId);
   }
 

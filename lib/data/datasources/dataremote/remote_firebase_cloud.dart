@@ -67,4 +67,5 @@ abstract class RemoteFireBaseCloud {
 
   Stream<List<Chat>> getAllMessages(
       {required String uid});
+  Future<Either<FirebaseExceptionCustom,void>> seenMessage({required Message message});
 }
