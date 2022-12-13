@@ -9,9 +9,7 @@ import 'package:clean_architecture/presentation/bloc/login/login_bloc.dart';
 import 'package:clean_architecture/presentation/bloc/register/register_bloc.dart';
 import 'package:clean_architecture/presentation/bloc/register_selection/register_selection_bloc.dart';
 import 'package:clean_architecture/presentation/bloc/register_selection/register_selection_event.dart';
-import 'package:clean_architecture/presentation/pages/initial.dart';
 import 'package:clean_architecture/presentation/pages/splash_screen.dart';
-import 'package:clean_architecture/presentation/pages/wellcome_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -45,12 +43,15 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider<HomeBloc>(
             create: (context) => HomeBloc(sl())..add(GetAllUser())),
-        BlocProvider<ChatBloc>(create: (context) => ChatBloc(sl()))
+        BlocProvider<ChatBloc>(
+            create: (context) => ChatBloc(sl())
+              ..add(GetAllMatch())
+              ..add(GetAllChat()))
       ],
       child: MaterialApp(
           theme: ThemeData(
-              bottomSheetTheme:
-                  const BottomSheetThemeData(backgroundColor: Colors.transparent)),
+              bottomSheetTheme: const BottomSheetThemeData(
+                  backgroundColor: Colors.transparent)),
           localizationsDelegates: const [
             S.delegate,
             GlobalWidgetsLocalizations.delegate,

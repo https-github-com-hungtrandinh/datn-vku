@@ -9,8 +9,6 @@ import 'package:flutter/material.dart';
 
 import '../../presentation/pages/forgot_password_screen.dart';
 
-import '../../presentation/pages/login_screen.dart';
-import '../../presentation/pages/register_screen.dart';
 import '../../presentation/pages/register_slection/register_selection.dart';
 import '../../presentation/pages/start_selection_screen.dart';
 
@@ -18,6 +16,7 @@ class RouteGenerator {
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
       case '/LoginPage':
+
         return MaterialPageRoute(builder: (_) => const LoginScreen());
       case '/StartSelection':
         return MaterialPageRoute(builder: (_) => const StartSelection());
@@ -36,7 +35,8 @@ class RouteGenerator {
       case '/chatList':
         return MaterialPageRoute(builder: (_) => const ChatsList());
       case '/chat-page':
-        return MaterialPageRoute(builder: (_) => const ChatPage());
+        final args = settings.arguments as int;
+        return MaterialPageRoute(builder: (_) =>  ChatScreen(index: args));
       default:
         // If there is no such named route in the switch statement, e.g. /third
         return _errorRoute();

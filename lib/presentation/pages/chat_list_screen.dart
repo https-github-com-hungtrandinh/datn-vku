@@ -18,12 +18,11 @@ class ChatsList extends StatefulWidget {
 class _ChatsListState extends State<ChatsList> {
   @override
   void initState() {
-    context.read<ChatBloc>()
-      ..add(GetAllMatch())
-      ..add(GetAllMessages());
+    // context.read<ChatBloc>()
+    //   ..add(GetAllMatch())
+    //   ..add(GetAllChat());
     super.initState();
   }
-
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<ChatBloc, ChatState>(builder: (context, state) {
@@ -43,9 +42,11 @@ class _ChatsListState extends State<ChatsList> {
                 itemBuilder: (context, index) {
                   return InkWell(
                     onTap: () {
+                      context.read<ChatBloc>().add(GetAllMessage(groupChatId:  state.listChat[index].chatId));
                       Navigator.pushNamed(
                         context,
-                        ChatPage.routeName,
+                        ChatScreen.routeName,
+                        arguments: index,
                       );
                     },
                     child: Container(
@@ -77,7 +78,7 @@ class _ChatsListState extends State<ChatsList> {
                                 ),
                                 Text(
                                     state.listChat.isNotEmpty
-                                        ? state.listChat[0].lastMessage
+                                        ? state.listChat[index].lastMessage ?? Strings.startChat
                                         : Strings.startChat,
                                     style: const TextStyle(
                                         fontSize: 16,
@@ -102,8 +103,8 @@ class _ChatsListState extends State<ChatsList> {
           ],
         );
       }
-      return Center(
-        child: Text("dataaaa"),
+      return const Center(
+        child: Text("data"),
       );
     });
   }

@@ -15,6 +15,9 @@ import '../../models/firebase/user.dart';
 abstract class RemoteFireBaseCloud {
   Future<void> createUser({required UserModel user});
 
+  Future<Either<FirebaseExceptionCustom, UserModel>> getUser(
+      {required String uid});
+
   Future<Either<FirebaseExceptionCustom, List<Major>>> getMajor();
 
   Future<Either<FirebaseExceptionCustom, List<PersonalityQuestion>>>
@@ -63,9 +66,14 @@ abstract class RemoteFireBaseCloud {
 
   Future<Either<FirebaseExceptionCustom, List<MatchUser>>> getAllMatchId(
       {required String uid});
-  Future<Either<FirebaseExceptionCustom,List<UserModel>>> getAllUserMatch({required List<MatchUser> listMatch});
 
-  Stream<List<Chat>> getAllChat(
-      {required String uid});
+  Future<Either<FirebaseExceptionCustom, List<UserModel>>> getAllUserMatch(
+      {required List<MatchUser> listMatch});
+
+  Stream<List<Chat>> getAllChat({required String uid});
+
   Stream<List<Message>> getAllMessage({required String groupChatId});
+
+  Future<Either<FirebaseExceptionCustom, void>> seenMessage(
+      {required Message message, required String groupChatId,required Chat chat});
 }

@@ -14,11 +14,17 @@ class ChatState extends Equatable {
   final List<MatchUser> listMatch;
   final List<Message> listMessage;
   final String uid;
+  final UserModel? user;
+  final String message;
+  final String receiverId;
   final LoadListMatchStatus loadListMatchStatus;
 
   const ChatState(
       {required this.allUserMatch,
+      required this.receiverId,
       required this.listMatch,
+      required this.user,
+      required this.message,
       required this.uid,
       required this.listChat,
       required this.listMessage,
@@ -26,8 +32,11 @@ class ChatState extends Equatable {
 
   factory ChatState.initial() {
     return const ChatState(
+        receiverId: "",
         allUserMatch: [],
         uid: "",
+        user: null,
+        message: "",
         listMatch: [],
         listChat: [],
         listMessage: [],
@@ -40,9 +49,15 @@ class ChatState extends Equatable {
       List<MatchUser>? listMatch,
       List<Message>? listMessage,
       String? uid,
+      String? message,
+      String? receiverId,
+      UserModel? user,
       LoadListMatchStatus? loadListMatchStatus}) {
     return ChatState(
         uid: uid ?? this.uid,
+        receiverId: receiverId ?? this.receiverId,
+        user: user ?? this.user,
+        message: message ?? this.message,
         listMessage: listMessage ?? this.listMessage,
         listMatch: listMatch ?? this.listMatch,
         allUserMatch: allUserMatch ?? this.allUserMatch,
@@ -57,6 +72,9 @@ class ChatState extends Equatable {
         loadListMatchStatus,
         listMatch,
         listMessage,
-        uid
+    message,
+        uid,
+        user,
+        receiverId
       ];
 }

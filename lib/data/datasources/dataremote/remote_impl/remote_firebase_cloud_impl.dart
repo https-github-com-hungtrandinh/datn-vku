@@ -306,7 +306,7 @@ class RemoteFirebaseCloudImpl extends RemoteFireBaseCloud {
     try {
       String chatId = await firebaseFireStore.collection('chats').add({
         'userIds': [uidLike, uidLiked],
-        'messages': [],
+        'lastMessage':""
       }).then((value) => value.id);
       return Right(chatId);
     } on FirebaseException catch (e) {
@@ -373,11 +373,63 @@ class RemoteFirebaseCloudImpl extends RemoteFireBaseCloud {
     return firebaseFireStore
         .collection("chats")
         .doc(groupChatId)
-        .collection("message").orderBy("dateTime")
-        .limitToLast(1)
+        .collection("message")
+        .orderBy("dateTime", descending: true)
         .snapshots()
         .map((snap) {
       return snap.docs.map((e) => Message.fromJson(e.data())).toList();
     });
+  }
+
+  @override
+  Future<Either<FirebaseExceptionCustom, UserModel>> getUser(
+      {required String uid}) async {
+    try {
+      final result = await firebaseFireStore
+          .collection("user")
+          .doc(uid)
+          .get()
+          .then((DocumentSnapshot documentSnapshot) {
+        return UserModel.fromDocument(documentSnapshot);
+      });
+      return Right(result);
+    } on FirebaseException catch (e) {
+      return Left(FirebaseExceptionCustom(e.code));
+    }
+  }
+
+  @override
+  Future<Either<FirebaseExceptionCustom, void>> seenMessage(
+      {required Message message, required String groupChatId,required Chat chat}) async {
+    try {
+      final result = firebaseFireStore
+          .collection("chats")
+          .doc(groupChatId)
+          .collection("message")
+          .doc(DateTime.now().millisecondsSinceEpoch.toString());
+      firebaseFireStore.runTransaction((transaction) async {
+        transaction.set(result, message.toJson());
+      }).then((value) {
+        updateNewMessage(
+            groupChatId: groupChatId, lastMessage: message.message,chat: chat);
+      });
+      return const Right(null);
+    } on FirebaseException catch (e) {
+      return Left(FirebaseExceptionCustom(e.code));
+    }
+  }
+
+  Future<void> updateNewMessage(
+      {required String groupChatId,
+      required Chat chat,
+      required String lastMessage}) async {
+    try {
+      await firebaseFireStore
+          .collection("chats")
+          .doc(groupChatId)
+          .update({"lastMessage": lastMessage, "userIds": chat.userIds});
+    } catch (e) {
+      throw Exception();
+    }
   }
 }

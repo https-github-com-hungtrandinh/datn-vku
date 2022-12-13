@@ -4,17 +4,19 @@ import '../../core/value/app_color.dart';
 class MessageTextFieldWidget extends StatelessWidget {
   final ValueChanged<String> onChanged;
   final VoidCallback onSendPressed;
+ final  TextEditingController textEditingController;
 
   const MessageTextFieldWidget({
     Key? key,
-   required this.onChanged,
-    required this.onSendPressed,
+    required this.onChanged,
+    required this.onSendPressed, required this.textEditingController,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-      onChanged: onChanged,
+      controller: textEditingController,
+      onChanged:onChanged,
       maxLines: null,
       style: const TextStyle(
         fontWeight: FontWeight.w500,
@@ -39,7 +41,7 @@ class MessageTextFieldWidget extends StatelessWidget {
         fillColor: AppColors.kGrayColor[10]!,
         suffixIcon: IconButton(
           icon: const Icon(Icons.send),
-          onPressed: onSendPressed,
+          onPressed:onSendPressed,
           padding: EdgeInsets.zero,
           constraints: const BoxConstraints(),
         ),

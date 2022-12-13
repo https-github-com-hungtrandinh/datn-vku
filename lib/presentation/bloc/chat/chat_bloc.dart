@@ -15,16 +15,24 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
   StreamSubscription? _chatSubscription;
 
   ChatBloc(this.socialUseCase) : super(ChatState.initial()) {
-    on<GetAllMessages>(_getAllMessages);
+    on<GetAllChat>(_getAllChat);
     on<GetAllMatch>(_getAllMatch);
+    on<GetAllMessage>(_getAllMessage);
+    on<SeenMessageEvent>(_seenMessage);
+    on<ChangedMessage>(_changedMessage);
   }
 
   Future<void> _getAllMatch(GetAllMatch event, Emitter<ChatState> emit) async {
     emit(state.copyWith(loadListMatchStatus: LoadListMatchStatus.loading));
     final uid =
         await socialUseCase.sharedPreference.get(SharedPreference.uidAccount);
+    final user = await socialUseCase.getUser(uid: uid);
+    user.fold((error) {}, (data) {
+      emit(state.copyWith(user: data));
+    });
     final result = await socialUseCase.getAllMatchId(uid: uid);
-    result.fold((error) {}, (data) => emit(state.copyWith(listMatch: data,uid: uid)));
+    result.fold(
+        (error) {}, (data) => emit(state.copyWith(listMatch: data, uid: uid)));
 
     final userMatch =
         await socialUseCase.getAllUserMatch(listMatch: state.listMatch);
@@ -37,21 +45,33 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       ));
     });
   }
+  void _changedMessage(ChangedMessage event, Emitter<ChatState> emit){
+    emit(state.copyWith(message: event.message));
+  }
 
-  void _getAllMessages(GetAllMessages event, Emitter<ChatState> emit) async {
+  Future<void> _seenMessage(
+      SeenMessageEvent event, Emitter<ChatState> emit) async {
+    final result = await socialUseCase.seenMessage(
+        message: event.message,
+        groupChatId: event.groupChatId,
+        chat: event.chat);
+    result.fold((error) {}, (data) {});
+  }
+
+  void _getAllMessage(GetAllMessage event, Emitter<ChatState> emit) async {
+    await emit
+        .forEach(socialUseCase.getAllMessage(groupChatId: event.groupChatId),
+            onData: (List<Message> message) {
+      return state.copyWith(listMessage: message);
+    });
+  }
+
+  void _getAllChat(GetAllChat event, Emitter<ChatState> emit) async {
     final uid =
         await socialUseCase.sharedPreference.get(SharedPreference.uidAccount);
+
     await emit.forEach(socialUseCase.getAllChat(uid: uid),
         onData: (List<Chat> event) {
-
-      for (var id in event) {
-        emit.forEach(socialUseCase.getAllMessage(groupChatId: id.chatId),
-            onData: (List<Message> message) {
-
-          return state.copyWith(listMessage: message);
-
-        });
-      }
 
       return state.copyWith(listChat: event);
     });
