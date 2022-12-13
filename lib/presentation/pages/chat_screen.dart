@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'package:clean_architecture/core/util/image_picker.dart';
 import 'package:clean_architecture/data/models/firebase/messages.dart';
 import 'package:clean_architecture/presentation/bloc/chat/chat_bloc.dart';
 import 'package:clean_architecture/presentation/bloc/chat/chat_event.dart';
@@ -6,6 +7,7 @@ import 'package:clean_architecture/presentation/bloc/chat/chat_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../core/util/format_time.dart';
+import '../../injection.dart';
 import '../widgets/left_chat_widget.dart';
 import '../widgets/message_text_field.dart';
 import '../widgets/right_chat_widget.dart';
@@ -89,54 +91,67 @@ class _ChatScreenState extends State<ChatScreen> {
         constraints: const BoxConstraints(
           maxHeight: 100,
         ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Container(
-              padding: const EdgeInsets.all(8),
-              decoration: const BoxDecoration(
-                  color: Color(0xFFF4F4F4), shape: BoxShape.circle),
-              child: IconButton(
-                padding: EdgeInsets.zero,
-                constraints: const BoxConstraints(),
-                icon: const Icon(Icons.image),
-                color: const Color(0xFFA6A6A6),
-                onPressed: () {},
+        child: BlocBuilder<ChatBloc, ChatState>(builder: (context, state) {
+          final List<String> receiverId = state.listChat[widget.index].userIds;
+          var receiver = receiverId.where((element) {
+            return element != state.uid;
+          });
+          log("${receiver.first} ${state.uid}");
+          return Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Container(
+                padding: const EdgeInsets.all(8),
+                decoration: const BoxDecoration(
+                    color: Color(0xFFF4F4F4), shape: BoxShape.circle),
+                child: IconButton(
+                    padding: EdgeInsets.zero,
+                    constraints: const BoxConstraints(),
+                    icon: const Icon(Icons.image),
+                    color: const Color(0xFFA6A6A6),
+                    onPressed: () async {
+                      context.read<ChatBloc>().add(UploadImageMessageEvent(
+                          file: await getFromGallery(), uid: state.uid));
+                      if(state.urlImage.isNotEmpty){
+                        context.read<ChatBloc>().add(SeenMessageEvent(
+                            chat: state.listChat[widget.index],
+                            message: Message(
+                              messageType: MessageType.image,
+                              senderId: state.uid,
+                              receiverId: receiver.first,
+                              message: state.urlImage,
+                              dateTime: DateTime.now(),
+                            ),
+                            groupChatId: state.listChat[widget.index].chatId));
+                      }
+
+                    }),
               ),
-            ),
-            const SizedBox(width: 12),
-            Expanded(
-              child:
-                  BlocBuilder<ChatBloc, ChatState>(builder: (context, state) {
-                final List<String> receiverId =
-                    state.listChat[widget.index].userIds;
-                var receiver = receiverId.where((element) {
-                  return element != state.uid;
-                });
-                log("${receiver.first} ${state.uid}");
-                return MessageTextFieldWidget(
-                  textEditingController: textEditingController,
-                  onChanged: (message) {
-                    context.read<ChatBloc>().add(ChangedMessage(message));
-                  },
-                  onSendPressed: () {
-                    context.read<ChatBloc>().add(SeenMessageEvent(
-                        chat: state.listChat[widget.index],
-                        message: Message(
-                          senderId: state.uid,
-                          receiverId: receiver.first,
-                          message: state.message,
-                          dateTime: DateTime.now(),
-                        ),
-                        groupChatId: state.listChat[widget.index].chatId));
-                    textEditingController.clear();
-                  },
-                );
-              }),
-            )
-          ],
-        ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: MessageTextFieldWidget(
+                    textEditingController: textEditingController,
+                    onChanged: (message) {
+                      context.read<ChatBloc>().add(ChangedMessage(message));
+                    },
+                    onSendPressed: () {
+                      context.read<ChatBloc>().add(SeenMessageEvent(
+                          chat: state.listChat[widget.index],
+                          message: Message(
+                            messageType: MessageType.text,
+                            senderId: state.uid,
+                            receiverId: receiver.first,
+                            message: state.message,
+                            dateTime: DateTime.now(),
+                          ),
+                          groupChatId: state.listChat[widget.index].chatId));
+                      textEditingController.clear();
+                    }),
+              )
+            ],
+          );
+        }),
       ),
     );
   }

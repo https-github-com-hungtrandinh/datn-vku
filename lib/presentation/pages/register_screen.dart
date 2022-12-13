@@ -37,7 +37,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
               DialogCustom().showDialogWithContent(context, state.messages);
             } else if (state.registerStatus == RegisterStatus.loaded) {
               Navigator.pop(context);
-              Navigator.pushNamed(context,RegisterSelection.registerStepTwoPushName);
+              Navigator.pushReplacementNamed(context,RegisterSelection.registerStepTwoPushName);
             }
           },
           child: Stack(

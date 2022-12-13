@@ -17,11 +17,13 @@ class ChatState extends Equatable {
   final UserModel? user;
   final String message;
   final String receiverId;
+  final String urlImage;
   final LoadListMatchStatus loadListMatchStatus;
 
   const ChatState(
       {required this.allUserMatch,
       required this.receiverId,
+      required this.urlImage,
       required this.listMatch,
       required this.user,
       required this.message,
@@ -34,6 +36,7 @@ class ChatState extends Equatable {
     return const ChatState(
         receiverId: "",
         allUserMatch: [],
+        urlImage: '',
         uid: "",
         user: null,
         message: "",
@@ -50,11 +53,13 @@ class ChatState extends Equatable {
       List<Message>? listMessage,
       String? uid,
       String? message,
+      String? urlImage,
       String? receiverId,
       UserModel? user,
       LoadListMatchStatus? loadListMatchStatus}) {
     return ChatState(
         uid: uid ?? this.uid,
+        urlImage: urlImage ?? this.urlImage,
         receiverId: receiverId ?? this.receiverId,
         user: user ?? this.user,
         message: message ?? this.message,
@@ -72,9 +77,10 @@ class ChatState extends Equatable {
         loadListMatchStatus,
         listMatch,
         listMessage,
-    message,
+        message,
         uid,
         user,
-        receiverId
+        receiverId,
+        urlImage
       ];
 }

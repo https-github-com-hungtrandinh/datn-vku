@@ -8,6 +8,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import '../../core/value/image.dart';
+import '../../injection.dart';
+
 import '../bloc/home/home_event.dart';
 import '../widgets/card_swiper.dart';
 
@@ -23,21 +25,15 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   final AppinioSwiperController controller = AppinioSwiperController();
 
-  @override
-  void initState() {
-    context.read<HomeBloc>().add(GetAllUser());
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<HomeBloc, HomeState>(buildWhen: (oldState, newState) {
+    return  BlocBuilder<HomeBloc, HomeState>(buildWhen: (oldState, newState) {
       return oldState.allUser != newState.allUser;
     }, builder: (context, state) {
       if (state.loadUserSwiper == LoadUserSwiper.loading) {
         return const DotLoading();
       } else if (state.loadUserSwiper == LoadUserSwiper.loaded) {
-
         final List<UserModel> userModel = state.allUser;
         return Column(
           children: [

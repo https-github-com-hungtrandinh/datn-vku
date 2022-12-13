@@ -4,6 +4,7 @@ import 'package:clean_architecture/presentation/bloc/chat/chat_state.dart';
 import 'package:clean_architecture/presentation/pages/chat_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../injection.dart';
 import '../bloc/chat/chat_event.dart';
 import '../widgets/avatar_lable_user.dart';
 
@@ -18,11 +19,9 @@ class ChatsList extends StatefulWidget {
 class _ChatsListState extends State<ChatsList> {
   @override
   void initState() {
-    // context.read<ChatBloc>()
-    //   ..add(GetAllMatch())
-    //   ..add(GetAllChat());
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<ChatBloc, ChatState>(builder: (context, state) {
@@ -42,7 +41,8 @@ class _ChatsListState extends State<ChatsList> {
                 itemBuilder: (context, index) {
                   return InkWell(
                     onTap: () {
-                      context.read<ChatBloc>().add(GetAllMessage(groupChatId:  state.listChat[index].chatId));
+                      context.read<ChatBloc>().add(GetAllMessage(
+                          groupChatId: state.listChat[index].chatId));
                       Navigator.pushNamed(
                         context,
                         ChatScreen.routeName,
@@ -78,7 +78,8 @@ class _ChatsListState extends State<ChatsList> {
                                 ),
                                 Text(
                                     state.listChat.isNotEmpty
-                                        ? state.listChat[index].lastMessage ?? Strings.startChat
+                                        ? state.listChat[index].lastMessage ??
+                                            Strings.startChat
                                         : Strings.startChat,
                                     style: const TextStyle(
                                         fontSize: 16,

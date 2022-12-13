@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:equatable/equatable.dart';
 
 import '../../../data/models/firebase/chat.dart';
@@ -42,5 +44,15 @@ class ChangedMessage extends ChatEvent{
 
   @override
   List<Object?> get props => [message];
+
+}
+class UploadImageMessageEvent extends ChatEvent{
+  final File file;
+  final String uid;
+
+  UploadImageMessageEvent({required this.file,required this.uid});
+
+  @override
+  List<Object?> get props => [file, uid];
 
 }

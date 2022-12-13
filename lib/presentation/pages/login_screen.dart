@@ -36,7 +36,7 @@ class _LoginScreenState extends State<LoginScreen> {
               Navigator.pop(context);
               DialogCustom().showDialogWithContent(context, state.contentLogin);
             } else if (state.loginStatus == LoginStatus.loaded) {
-              Navigator.pushNamed(context, InitialApp.initialAppPushName);
+              Navigator.pushReplacementNamed(context, InitialApp.initialAppPushName);
             }
           },
           child: Stack(

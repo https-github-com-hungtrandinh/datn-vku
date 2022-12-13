@@ -20,9 +20,9 @@ class _SplashScreenState extends State<SplashScreen> {
       body: BlocListener<AuthBloc, AuthState>(
         listener: (context, state) {
           if (state.authStatus == AuthStatus.auth) {
-            Navigator.pushNamed(context, InitialApp.initialAppPushName);
+            Navigator.pushReplacementNamed(context, InitialApp.initialAppPushName);
           } else if (state.authStatus == AuthStatus.unAuth) {
-            Navigator.pushNamed(context, WelcomePage.routeName);
+            Navigator.pushReplacementNamed(context, WelcomePage.routeName);
           }
         },
         child: Stack(

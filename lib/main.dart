@@ -42,13 +42,12 @@ class MyApp extends StatelessWidget {
             ..add(GetPersonality()),
         ),
         BlocProvider<HomeBloc>(
+            lazy: false,
             create: (context) => HomeBloc(sl())..add(GetAllUser())),
-        BlocProvider<ChatBloc>(
-            create: (context) => ChatBloc(sl())
-              ..add(GetAllMatch())
-              ..add(GetAllChat()))
+        BlocProvider<ChatBloc>(lazy: false, create: (context) => ChatBloc(sl()))
       ],
       child: MaterialApp(
+          debugShowCheckedModeBanner: false,
           theme: ThemeData(
               bottomSheetTheme: const BottomSheetThemeData(
                   backgroundColor: Colors.transparent)),

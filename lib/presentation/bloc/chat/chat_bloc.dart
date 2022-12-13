@@ -20,6 +20,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     on<GetAllMessage>(_getAllMessage);
     on<SeenMessageEvent>(_seenMessage);
     on<ChangedMessage>(_changedMessage);
+    on<UploadImageMessageEvent>(_updateImageMessage);
   }
 
   Future<void> _getAllMatch(GetAllMatch event, Emitter<ChatState> emit) async {
@@ -45,7 +46,8 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       ));
     });
   }
-  void _changedMessage(ChangedMessage event, Emitter<ChatState> emit){
+
+  void _changedMessage(ChangedMessage event, Emitter<ChatState> emit) {
     emit(state.copyWith(message: event.message));
   }
 
@@ -56,6 +58,15 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
         groupChatId: event.groupChatId,
         chat: event.chat);
     result.fold((error) {}, (data) {});
+  }
+
+  Future<void> _updateImageMessage(
+      UploadImageMessageEvent event, Emitter<ChatState> emit) async {
+    final result = await socialUseCase.addImageProfile(
+        uid: event.uid, imageFile: event.file);
+result.fold((error) {}, (data){
+  emit(state.copyWith(urlImage: data));
+});
   }
 
   void _getAllMessage(GetAllMessage event, Emitter<ChatState> emit) async {
@@ -72,7 +83,6 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
 
     await emit.forEach(socialUseCase.getAllChat(uid: uid),
         onData: (List<Chat> event) {
-
       return state.copyWith(listChat: event);
     });
   }

@@ -1,19 +1,17 @@
 import 'package:clean_architecture/core/value/image.dart';
 import 'package:clean_architecture/presentation/pages/chat_list_screen.dart';
 import 'package:clean_architecture/presentation/pages/home_screen.dart';
-import 'package:clean_architecture/presentation/pages/likes_screen.dart';
 import 'package:clean_architecture/presentation/pages/profile_screen.dart';
 import 'package:clean_architecture/presentation/pages/search_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
-import '../../core/util/text_utils.dart';
+
 import '../../core/value/app_color.dart';
-import '../../injection.dart';
 import '../bloc/chat/chat_bloc.dart';
 import '../bloc/chat/chat_event.dart';
-import '../bloc/home/home_bloc.dart';
-import '../bloc/home/home_event.dart';
+
+
 
 class InitialApp extends StatefulWidget {
   const InitialApp({Key? key}) : super(key: key);
@@ -34,6 +32,13 @@ class InitialAppState extends State<InitialApp> {
     ChatsList(),
     ProfileScreen()
   ];
+  @override
+  void initState() {
+    context.read<ChatBloc>()
+      ..add(GetAllMatch())
+      ..add(GetAllChat());
+    super.initState();
+  }
 
   void _onItemTapped(int index) {
     setState(() {
