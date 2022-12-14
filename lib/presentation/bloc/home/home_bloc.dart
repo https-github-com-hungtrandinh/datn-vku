@@ -13,6 +13,10 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     on<UserWatchEvent>(_userWatch);
     on<UserLikeEvent>(_userLike);
     on<GetAllUser>(_getAllUser);
+    on<UpdateCheckMatch>(_updateCheckMatch);
+  }
+  void _updateCheckMatch(UpdateCheckMatch event, Emitter<HomeState> emit){
+    emit(state.copyWith(checkMatch: false));
   }
 
   void _userWatch(UserWatchEvent event, Emitter<HomeState> emit) {
@@ -27,8 +31,16 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     final resultCheckMatch =
         await socialUseCase.checkMatch(like: uid, liked: event.liked);
     resultCheckMatch.fold((error) {}, (data) {
-      emit(state.copyWith(checkMatch: data));
+      emit(state.copyWith(checkMatch: data, like: uid, liked: event.liked));
     });
+    final List<String> userMatchID = [uid, event.liked];
+    final List<UserModel> userMatch = [];
+    for (var user in userMatchID) {
+      final resultUser = await socialUseCase.getUser(uid: user);
+      resultUser.fold((l) => null, (data) => userMatch.add(data));
+    }
+    emit(state.copyWith(userMatch: userMatch));
+
     if (state.checkMatch) {
       await createGroupChat(uidLike: uid, uidLiked: event.liked, emit: emit);
       await socialUseCase.matching(
@@ -47,9 +59,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       emit(state.copyWith(chatId: data));
     });
   }
-  Future<void> getAllUserMatch() async{
 
-  }
+
 
   Future<void> _getAllUser(GetAllUser event, Emitter<HomeState> emit) async {
     emit(state.copyWith(loadUserSwiper: LoadUserSwiper.loading));

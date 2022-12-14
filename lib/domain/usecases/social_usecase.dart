@@ -156,4 +156,7 @@ class SocialUseCase {
       {required Message message, required String groupChatId,required Chat chat}) async{
     return await remoteFireBaseCloud.seenMessage(message: message, groupChatId: groupChatId, chat: chat);
   }
+  Future<Either<FirebaseExceptionCustom, String>> seenImage({required String uid, required File imageFile}) async {
+    return await remoteFireBaseCloud.seenImage(uid: uid, imageFile: imageFile);
+  }
 }

@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:clean_architecture/core/util/image_picker.dart';
 import 'package:clean_architecture/data/models/firebase/messages.dart';
 import 'package:clean_architecture/presentation/bloc/chat/chat_bloc.dart';
@@ -26,6 +27,11 @@ class ChatScreen extends StatefulWidget {
 }
 
 class _ChatScreenState extends State<ChatScreen> {
+  @override
+  void initState() {
+
+    super.initState();
+  }
   TextEditingController textEditingController = TextEditingController();
 
   @override
@@ -58,13 +64,17 @@ class _ChatScreenState extends State<ChatScreen> {
     return BlocBuilder<ChatBloc, ChatState>(builder: (context, state) {
       if (state.listMessage[index].senderId == state.uid) {
         return RightChatWidget(
-            content: Text(state.listMessage[index].message),
+            content: state.listMessage[index].messageType == MessageType.text
+                ? Text(state.listMessage[index].message)
+                : Image.network(state.listMessage[index].message),
             time: formatDate(state.listMessage[index].dateTime));
       } else {
         return LeftChatWidget(
             profileImage:
                 NetworkImage(state.allUserMatch[widget.index].photoUrl!),
-            content: Text(state.listMessage[index].message),
+            content: state.listMessage[index].messageType == MessageType.text
+                ? Text(state.listMessage[index].message)
+                : Image.network(state.listMessage[index].message),
             time: formatDate(state.listMessage[index].dateTime));
       }
     });
@@ -112,20 +122,11 @@ class _ChatScreenState extends State<ChatScreen> {
                     color: const Color(0xFFA6A6A6),
                     onPressed: () async {
                       context.read<ChatBloc>().add(UploadImageMessageEvent(
-                          file: await getFromGallery(), uid: state.uid));
-                      if(state.urlImage.isNotEmpty){
-                        context.read<ChatBloc>().add(SeenMessageEvent(
-                            chat: state.listChat[widget.index],
-                            message: Message(
-                              messageType: MessageType.image,
-                              senderId: state.uid,
-                              receiverId: receiver.first,
-                              message: state.urlImage,
-                              dateTime: DateTime.now(),
-                            ),
-                            groupChatId: state.listChat[widget.index].chatId));
-                      }
-
+                          chat: state.listChat[widget.index],
+                          receiver: receiverId[0],
+                          groupChatId: state.listChat[widget.index].chatId,
+                          file: await getFromGallery(),
+                          uid: state.uid));
                     }),
               ),
               const SizedBox(width: 12),

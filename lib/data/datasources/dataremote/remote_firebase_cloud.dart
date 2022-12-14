@@ -76,4 +76,6 @@ abstract class RemoteFireBaseCloud {
 
   Future<Either<FirebaseExceptionCustom, void>> seenMessage(
       {required Message message, required String groupChatId,required Chat chat});
+
+  Future<Either<FirebaseExceptionCustom, String>> seenImage({required String uid, required File imageFile});
 }

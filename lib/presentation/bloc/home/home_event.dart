@@ -1,6 +1,6 @@
-import 'package:clean_architecture/presentation/pages/home_screen.dart';
+
 import 'package:equatable/equatable.dart';
-import 'package:flutter/material.dart';
+
 
 
 abstract class HomeEvent extends Equatable {
@@ -23,6 +23,12 @@ class UserLikeEvent extends HomeEvent{
 
 }
 class GetAllUser extends HomeEvent{
+  @override
+  List<Object?> get props => [];
+
+}
+class UpdateCheckMatch extends HomeEvent{
+
   @override
   List<Object?> get props => [];
 

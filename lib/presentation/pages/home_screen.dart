@@ -1,5 +1,6 @@
 import 'dart:developer';
 import 'package:appinio_swiper/appinio_swiper.dart';
+import 'package:clean_architecture/core/util/dialog_custom.dart';
 import 'package:clean_architecture/data/models/firebase/user.dart';
 import 'package:clean_architecture/presentation/bloc/home/home_bloc.dart';
 import 'package:clean_architecture/presentation/bloc/home/home_state.dart';
@@ -8,8 +9,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import '../../core/value/image.dart';
-import '../../injection.dart';
 
+import '../bloc/chat/chat_bloc.dart';
+import '../bloc/chat/chat_event.dart';
 import '../bloc/home/home_event.dart';
 import '../widgets/card_swiper.dart';
 
@@ -23,12 +25,34 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  final AppinioSwiperController controller = AppinioSwiperController();
+  @override
+  void initState() {
+    context.read<HomeBloc>().add(GetAllUser());
+    super.initState();
+  }
 
+  final AppinioSwiperController controller = AppinioSwiperController();
 
   @override
   Widget build(BuildContext context) {
-    return  BlocBuilder<HomeBloc, HomeState>(buildWhen: (oldState, newState) {
+    return BlocConsumer<HomeBloc, HomeState>(
+      listenWhen: (oldState, newState){
+        return oldState.checkMatch != newState.checkMatch;
+      },
+        listener: (context, state) {
+      if (state.checkMatch == true) {
+        context.read<ChatBloc>()
+          ..add(GetAllMatch())
+          ..add(GetAllChat());
+        DialogCustom().showAnimatedDialogMatch(context, onClick: () {
+          context.read<HomeBloc>().add(UpdateCheckMatch());
+          Navigator.of(context).pop();
+        },
+            urlAvatarMyUser: state.userMatch[0].photoUrl!,
+            urlAvatarOwenUser: state.userMatch[1].photoUrl!);
+
+      }
+    }, buildWhen: (oldState, newState) {
       return oldState.allUser != newState.allUser;
     }, builder: (context, state) {
       if (state.loadUserSwiper == LoadUserSwiper.loading) {

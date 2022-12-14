@@ -2,9 +2,10 @@ import 'package:clean_architecture/core/value/strings.dart';
 import 'package:clean_architecture/presentation/bloc/chat/chat_bloc.dart';
 import 'package:clean_architecture/presentation/bloc/chat/chat_state.dart';
 import 'package:clean_architecture/presentation/pages/chat_screen.dart';
+import 'package:clean_architecture/presentation/widgets/dot_loading.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../injection.dart';
+import '../../core/value/image.dart';
 import '../bloc/chat/chat_event.dart';
 import '../widgets/avatar_lable_user.dart';
 
@@ -19,6 +20,7 @@ class ChatsList extends StatefulWidget {
 class _ChatsListState extends State<ChatsList> {
   @override
   void initState() {
+
     super.initState();
   }
 
@@ -26,12 +28,22 @@ class _ChatsListState extends State<ChatsList> {
   Widget build(BuildContext context) {
     return BlocBuilder<ChatBloc, ChatState>(builder: (context, state) {
       if (state.loadListMatchStatus == LoadListMatchStatus.loading) {
-        return const CircularProgressIndicator();
+        return const Center(child: DotLoading());
       } else if (state.loadListMatchStatus == LoadListMatchStatus.error) {
         return const Center(
           child: Text(Strings.error),
         );
       } else if (state.loadListMatchStatus == LoadListMatchStatus.loaded) {
+        if(state.allUserMatch.isEmpty){
+          return  Center(
+            child: Image.asset(
+              ImageSrc.noMessage,
+              width: 300,
+              height: 300,
+              fit: BoxFit.cover,
+            ),
+          );
+        }
         return Column(
           children: [
             Expanded(

@@ -49,10 +49,14 @@ class ChangedMessage extends ChatEvent{
 class UploadImageMessageEvent extends ChatEvent{
   final File file;
   final String uid;
+  final Chat chat;
 
-  UploadImageMessageEvent({required this.file,required this.uid});
+  final String groupChatId;
+  final String receiver;
+
+  UploadImageMessageEvent({required this.chat,required this.receiver,required this.groupChatId, required this.file,required this.uid});
 
   @override
-  List<Object?> get props => [file, uid];
+  List<Object?> get props => [file, uid,receiver,groupChatId,chat];
 
 }

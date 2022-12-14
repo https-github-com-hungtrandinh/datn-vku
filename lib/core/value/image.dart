@@ -21,4 +21,6 @@ class ImageSrc {
   static const chat="assets/images/chat_icon.svg";
   static const accountActive  ="assets/images/account_active_icon.svg";
   static const account ="assets/images/account_icon.svg";
+  static const matchIcon="assets/icons/match_icon.svg";
+  static const noMessage="assets/images/no-message.gif";
 }

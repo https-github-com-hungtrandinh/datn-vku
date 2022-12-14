@@ -2,9 +2,7 @@ import 'package:clean_architecture/injection.dart';
 import 'package:clean_architecture/presentation/bloc/authen/auth_bloc.dart';
 import 'package:clean_architecture/presentation/bloc/authen/auth_event.dart';
 import 'package:clean_architecture/presentation/bloc/chat/chat_bloc.dart';
-import 'package:clean_architecture/presentation/bloc/chat/chat_event.dart';
 import 'package:clean_architecture/presentation/bloc/home/home_bloc.dart';
-import 'package:clean_architecture/presentation/bloc/home/home_event.dart';
 import 'package:clean_architecture/presentation/bloc/login/login_bloc.dart';
 import 'package:clean_architecture/presentation/bloc/register/register_bloc.dart';
 import 'package:clean_architecture/presentation/bloc/register_selection/register_selection_bloc.dart';
@@ -42,8 +40,7 @@ class MyApp extends StatelessWidget {
             ..add(GetPersonality()),
         ),
         BlocProvider<HomeBloc>(
-            lazy: false,
-            create: (context) => HomeBloc(sl())..add(GetAllUser())),
+            create: (context) => HomeBloc(sl())),
         BlocProvider<ChatBloc>(lazy: false, create: (context) => ChatBloc(sl()))
       ],
       child: MaterialApp(

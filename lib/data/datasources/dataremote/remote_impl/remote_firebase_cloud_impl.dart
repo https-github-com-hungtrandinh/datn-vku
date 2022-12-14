@@ -306,7 +306,8 @@ class RemoteFirebaseCloudImpl extends RemoteFireBaseCloud {
     try {
       String chatId = await firebaseFireStore.collection('chats').add({
         'userIds': [uidLike, uidLiked],
-        'lastMessage':""
+        'lastMessage':"",
+        'createAt': DateTime.now()
       }).then((value) => value.id);
       return Right(chatId);
     } on FirebaseException catch (e) {
@@ -427,9 +428,36 @@ class RemoteFirebaseCloudImpl extends RemoteFireBaseCloud {
       await firebaseFireStore
           .collection("chats")
           .doc(groupChatId)
-          .update({"lastMessage": lastMessage, "userIds": chat.userIds});
+          .update({"lastMessage": lastMessage, "userIds": chat.userIds, "createAt" :DateTime.now()});
     } catch (e) {
       throw Exception();
+    }
+  }
+
+  @override
+  Future<Either<FirebaseExceptionCustom, String>> seenImage({required String uid, required File imageFile}) async {
+    List<String> splitPath = imageFile.path.split('.');
+    String filetype = splitPath[splitPath.length - 1];
+    String filename = '$uid.$filetype';
+
+    try {
+      await firebaseStorage
+          .ref()
+          .child('images')
+          .child('picture-chat')
+          .child(filename)
+          .putFile(imageFile);
+
+      String downloadURL = await firebaseStorage
+          .ref()
+          .child('images')
+          .child('picture-chat')
+          .child(filename)
+          .getDownloadURL();
+
+      return Right(downloadURL);
+    } on FirebaseException catch (e) {
+      return Left(FirebaseExceptionCustom(e.code));
     }
   }
 }

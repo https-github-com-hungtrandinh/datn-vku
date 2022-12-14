@@ -107,7 +107,7 @@ class _WelcomePageState extends State<WelcomePage> {
                         ),
                         TextButton(
                           onPressed: () {
-                            Navigator.pushNamed(
+                            Navigator.pushReplacementNamed(
                                 context, RegisterScreen.registerPushName);
                           },
                           style: TextButton.styleFrom(
@@ -167,7 +167,7 @@ class _WelcomePageState extends State<WelcomePage> {
       text: Strings.signWithEmail,
       textColor: Colors.white,
       onTap: () {
-        Navigator.pushNamed(context, LoginScreen.loginPushName);
+        Navigator.pushReplacementNamed(context, LoginScreen.loginPushName);
       },
     );
   }

@@ -11,8 +11,6 @@ import '../../core/value/app_color.dart';
 import '../bloc/chat/chat_bloc.dart';
 import '../bloc/chat/chat_event.dart';
 
-
-
 class InitialApp extends StatefulWidget {
   const InitialApp({Key? key}) : super(key: key);
 
@@ -25,13 +23,6 @@ class InitialApp extends StatefulWidget {
 }
 
 class InitialAppState extends State<InitialApp> {
-  int _selectedIndex = 0;
-  static const List<Widget> _widgetOptions = <Widget>[
-    HomeScreen(),
-    SearchScreen(),
-    ChatsList(),
-    ProfileScreen()
-  ];
   @override
   void initState() {
     context.read<ChatBloc>()
@@ -39,6 +30,13 @@ class InitialAppState extends State<InitialApp> {
       ..add(GetAllChat());
     super.initState();
   }
+  int _selectedIndex = 0;
+  static const List<Widget> _widgetOptions = <Widget>[
+    HomeScreen(),
+    SearchScreen(),
+    ChatsList(),
+    ProfileScreen()
+  ];
 
   void _onItemTapped(int index) {
     setState(() {
@@ -49,22 +47,10 @@ class InitialAppState extends State<InitialApp> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.kPrimaryPink[100],
+      backgroundColor: Colors.white,
       appBar: getAppBar(),
       body: Stack(
         children: [
-          Container(
-            decoration: const BoxDecoration(
-              gradient: LinearGradient(
-                colors: [
-                  AppColors.colorC4B1F8,
-                  AppColors.colorFDB1D5,
-                ],
-                begin: Alignment.bottomLeft,
-                end: Alignment.topRight,
-              ),
-            ),
-          ),
           Center(
             child: _widgetOptions.elementAt(_selectedIndex),
           ),
@@ -83,7 +69,7 @@ class InitialAppState extends State<InitialApp> {
     return AppBar(
       automaticallyImplyLeading: false,
       backgroundColor: Colors.white,
-      elevation: 0,
+      elevation: 1,
       title: Padding(
         padding: const EdgeInsets.only(left: 10, right: 10),
         child: Row(

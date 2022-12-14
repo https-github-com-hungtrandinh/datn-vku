@@ -24,7 +24,7 @@ class RightChatWidget extends StatelessWidget {
             child: Container(
               padding: const EdgeInsets.only(bottom: 8, top: 16, left: 16, right: 16),
               decoration: BoxDecoration(
-                color: Color(0xFFDED6F4),
+                color: const Color(0xFFDED6F4),
                 borderRadius: const BorderRadius.only(
                   topLeft: Radius.circular(16),
                   bottomLeft: Radius.circular(16),

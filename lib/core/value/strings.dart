@@ -79,5 +79,10 @@ class Strings {
   static const String addPhoto ="Give us your best photo";
   static const String cropper="Cropper";
   static const String startChat="Bắt đầu trò chuyện với người bạn mới";
+  static const String settings="Settings";
+  static const String editProfile ="EditProfile";
+  static const String upDateAvatar="updateAvatar";
+  static const String itMatch="It's Match";
+  static const String seenMessage="Seen Message";
 
 }

@@ -3,6 +3,7 @@ import 'dart:developer';
 
 import 'package:clean_architecture/data/datasources/datalocal/shared_preferences_data.dart';
 import 'package:clean_architecture/data/models/firebase/messages.dart';
+import 'package:clean_architecture/data/models/firebase/user.dart';
 import 'package:clean_architecture/presentation/bloc/chat/chat_event.dart';
 import 'package:clean_architecture/presentation/bloc/chat/chat_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -40,8 +41,9 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     userMatch.fold((error) {
       emit(state.copyWith(loadListMatchStatus: LoadListMatchStatus.error));
     }, (data) {
+      final List<UserModel> allUserMatch=data;
       emit(state.copyWith(
-        allUserMatch: data,
+        allUserMatch: allUserMatch.reversed.toList(),
         loadListMatchStatus: LoadListMatchStatus.loaded,
       ));
     });
@@ -62,11 +64,21 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
 
   Future<void> _updateImageMessage(
       UploadImageMessageEvent event, Emitter<ChatState> emit) async {
-    final result = await socialUseCase.addImageProfile(
+    final result = await socialUseCase.seenImage(
         uid: event.uid, imageFile: event.file);
-result.fold((error) {}, (data){
-  emit(state.copyWith(urlImage: data));
-});
+    result.fold((error) {}, (data) {
+      emit(state.copyWith(urlImage: data));
+    });
+    final resultMessage = await socialUseCase.seenMessage(
+        message: Message(
+            senderId: state.uid,
+            receiverId: event.receiver,
+            message: state.urlImage,
+            messageType: MessageType.image,
+            dateTime: DateTime.now()),
+        groupChatId: event.groupChatId,
+        chat: event.chat);
+    result.fold((error) {}, (data) {});
   }
 
   void _getAllMessage(GetAllMessage event, Emitter<ChatState> emit) async {
