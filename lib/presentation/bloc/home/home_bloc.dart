@@ -1,8 +1,10 @@
+import 'package:clean_architecture/data/models/firebase/location.dart';
 import 'package:clean_architecture/data/models/firebase/user.dart';
 import 'package:clean_architecture/data/models/firebase/like.dart';
 import 'package:clean_architecture/presentation/bloc/home/home_event.dart';
 import 'package:clean_architecture/presentation/bloc/home/home_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../../core/util/location.dart';
 import '../../../data/datasources/datalocal/shared_preferences_data.dart';
 import '../../../domain/usecases/social_usecase.dart';
 
@@ -14,8 +16,18 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     on<UserLikeEvent>(_userLike);
     on<GetAllUser>(_getAllUser);
     on<UpdateCheckMatch>(_updateCheckMatch);
+    on<UpdateLocation>(updateLocation);
+    on<GetMyUser>(getMyUser);
   }
-  void _updateCheckMatch(UpdateCheckMatch event, Emitter<HomeState> emit){
+
+  Future<void> getMyUser(GetMyUser event, Emitter<HomeState> emit) async {
+    final uid =
+        await socialUseCase.sharedPreference.get(SharedPreference.uidAccount);
+   final result =await socialUseCase.getUser(uid: uid);
+   result.fold((error){}, (data) => emit(state.copyWith(userData: data)));
+  }
+
+  void _updateCheckMatch(UpdateCheckMatch event, Emitter<HomeState> emit) {
     emit(state.copyWith(checkMatch: false));
   }
 
@@ -60,7 +72,15 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     });
   }
 
-
+  Future<void> updateLocation(
+      UpdateLocation event, Emitter<HomeState> emit) async {
+    final uid =
+        await socialUseCase.sharedPreference.get(SharedPreference.uidAccount);
+    final location = await determinePosition();
+    await socialUseCase.updateLocation(
+        location: Location(lat: location.latitude, long: location.longitude),
+        uid: uid);
+  }
 
   Future<void> _getAllUser(GetAllUser event, Emitter<HomeState> emit) async {
     emit(state.copyWith(loadUserSwiper: LoadUserSwiper.loading));

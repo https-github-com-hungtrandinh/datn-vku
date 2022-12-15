@@ -9,6 +9,8 @@ import 'package:clean_architecture/data/models/firebase/personality.dart';
 import 'package:clean_architecture/data/models/firebase/like.dart';
 import 'package:clean_architecture/data/models/firebase/user_question.dart';
 import 'package:dartz/dartz.dart';
+import '../../models/firebase/chat_user.dart';
+import '../../models/firebase/location.dart';
 import '../../models/firebase/major.dart';
 import '../../models/firebase/user.dart';
 
@@ -67,7 +69,7 @@ abstract class RemoteFireBaseCloud {
   Future<Either<FirebaseExceptionCustom, List<MatchUser>>> getAllMatchId(
       {required String uid});
 
-  Future<Either<FirebaseExceptionCustom, List<UserModel>>> getAllUserMatch(
+  Future<Either<FirebaseExceptionCustom, List<ChatUser>>> getAllUserMatch(
       {required List<MatchUser> listMatch});
 
   Stream<List<Chat>> getAllChat({required String uid});
@@ -75,7 +77,11 @@ abstract class RemoteFireBaseCloud {
   Stream<List<Message>> getAllMessage({required String groupChatId});
 
   Future<Either<FirebaseExceptionCustom, void>> seenMessage(
-      {required Message message, required String groupChatId,required Chat chat});
+      {required Message message, required String groupChatId});
 
-  Future<Either<FirebaseExceptionCustom, String>> seenImage({required String uid, required File imageFile});
+  Future<Either<FirebaseExceptionCustom, String>> seenImage(
+      {required String uid, required File imageFile});
+
+  Future<Either<FirebaseExceptionCustom, void>> updateLocation(
+      {required Location location, required String uid});
 }

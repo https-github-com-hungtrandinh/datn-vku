@@ -71,7 +71,7 @@ class _ChatScreenState extends State<ChatScreen> {
       } else {
         return LeftChatWidget(
             profileImage:
-                NetworkImage(state.allUserMatch[widget.index].photoUrl!),
+                CachedNetworkImageProvider(state.allUserMatch[widget.index].user.photoUrl!,),
             content: state.listMessage[index].messageType == MessageType.text
                 ? Text(state.listMessage[index].message)
                 : Image.network(state.listMessage[index].message),
@@ -102,11 +102,6 @@ class _ChatScreenState extends State<ChatScreen> {
           maxHeight: 100,
         ),
         child: BlocBuilder<ChatBloc, ChatState>(builder: (context, state) {
-          final List<String> receiverId = state.listChat[widget.index].userIds;
-          var receiver = receiverId.where((element) {
-            return element != state.uid;
-          });
-          log("${receiver.first} ${state.uid}");
           return Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -122,9 +117,9 @@ class _ChatScreenState extends State<ChatScreen> {
                     color: const Color(0xFFA6A6A6),
                     onPressed: () async {
                       context.read<ChatBloc>().add(UploadImageMessageEvent(
-                          chat: state.listChat[widget.index],
-                          receiver: receiverId[0],
-                          groupChatId: state.listChat[widget.index].chatId,
+
+                          receiver: state.allUserMatch[widget.index].match.uidLiked,
+                          groupChatId: state.allUserMatch[widget.index].match.chatId,
                           file: await getFromGallery(),
                           uid: state.uid));
                     }),
@@ -137,16 +132,17 @@ class _ChatScreenState extends State<ChatScreen> {
                       context.read<ChatBloc>().add(ChangedMessage(message));
                     },
                     onSendPressed: () {
+                      log( state.allUserMatch[widget.index].match.chatId);
                       context.read<ChatBloc>().add(SeenMessageEvent(
-                          chat: state.listChat[widget.index],
+
                           message: Message(
                             messageType: MessageType.text,
                             senderId: state.uid,
-                            receiverId: receiver.first,
+                            receiverId: state.allUserMatch[widget.index].match.uidLiked,
                             message: state.message,
                             dateTime: DateTime.now(),
                           ),
-                          groupChatId: state.listChat[widget.index].chatId));
+                          groupChatId: state.allUserMatch[widget.index].match.chatId));
                       textEditingController.clear();
                     }),
               )
@@ -193,7 +189,7 @@ class _ChatScreenState extends State<ChatScreen> {
                   shape: BoxShape.circle,
                   image: DecorationImage(
                     image: NetworkImage(
-                        state.allUserMatch[widget.index].photoUrl!),
+                        state.allUserMatch[widget.index].user.photoUrl!),
                     fit: BoxFit.cover,
                   ),
                 ),
@@ -204,7 +200,7 @@ class _ChatScreenState extends State<ChatScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    state.allUserMatch[widget.index].name!,
+                    state.allUserMatch[widget.index].user.name!,
                     style: const TextStyle(
                         color: Colors.black54,
                         fontSize: 18,

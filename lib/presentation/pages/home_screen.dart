@@ -9,9 +9,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import '../../core/value/image.dart';
-
-import '../bloc/chat/chat_bloc.dart';
-import '../bloc/chat/chat_event.dart';
 import '../bloc/home/home_event.dart';
 import '../widgets/card_swiper.dart';
 
@@ -27,6 +24,8 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
+    context.read<HomeBloc>().add(GetMyUser());
+
     context.read<HomeBloc>().add(GetAllUser());
     super.initState();
   }
@@ -41,9 +40,6 @@ class _HomeScreenState extends State<HomeScreen> {
       },
         listener: (context, state) {
       if (state.checkMatch == true) {
-        context.read<ChatBloc>()
-          ..add(GetAllMatch())
-          ..add(GetAllChat());
         DialogCustom().showAnimatedDialogMatch(context, onClick: () {
           context.read<HomeBloc>().add(UpdateCheckMatch());
           Navigator.of(context).pop();

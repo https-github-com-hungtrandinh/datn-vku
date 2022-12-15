@@ -1,8 +1,14 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:clean_architecture/core/value/image.dart';
 import 'package:clean_architecture/data/models/firebase/user.dart';
+import 'package:clean_architecture/presentation/bloc/home/home_bloc.dart';
+import 'package:clean_architecture/presentation/widgets/dot_loading.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../core/util/location.dart';
+import '../bloc/home/home_state.dart';
 
 class CardSwipe extends StatelessWidget {
   final UserModel user;
@@ -39,9 +45,15 @@ class CardSwipe extends StatelessWidget {
                   topRight: Radius.circular(10),
                 ),
                 child: user.photoUrl != null
-                    ? Image.network(
-                        user.photoUrl!,
+                    ? CachedNetworkImage(
+                        imageUrl: user.photoUrl!,
                         fit: BoxFit.cover,
+                        progressIndicatorBuilder:
+                            (context, url, downloadProgress) =>
+                                const Center(child: DotLoading()),
+                        errorWidget: (context, url, error) {
+                          return const Icon(Icons.error);
+                        },
                       )
                     : Image.asset(
                         ImageSrc.maleAvatar,
@@ -76,13 +88,23 @@ class CardSwipe extends StatelessWidget {
                       const SizedBox(
                         height: 5,
                       ),
-                      Text(
-                        "${user.birthday ?? ""}",
-                        style: const TextStyle(
-                          color: Colors.grey,
-                          fontSize: 15,
-                        ),
-                      ),
+                      BlocBuilder<HomeBloc, HomeState>(
+                          builder: (context, state) {
+                            if(state.userData !=null){
+                              final distance = calculateDistance(
+                                  location1: state.userData!.location!,
+                                  location2: user.location!);
+                              return Text(
+                                "${distance.toInt()} KM",
+                                style: const TextStyle(
+                                  color: Colors.grey,
+                                  fontSize: 15,
+                                ),
+                              );
+                            }
+                            return const SizedBox();
+
+                      }),
                       const SizedBox(
                         height: 5,
                       ),

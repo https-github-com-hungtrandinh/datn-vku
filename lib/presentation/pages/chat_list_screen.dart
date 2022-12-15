@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'package:clean_architecture/core/value/strings.dart';
 import 'package:clean_architecture/presentation/bloc/chat/chat_bloc.dart';
 import 'package:clean_architecture/presentation/bloc/chat/chat_state.dart';
@@ -6,6 +7,7 @@ import 'package:clean_architecture/presentation/widgets/dot_loading.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../core/value/image.dart';
+import '../../data/models/firebase/chat.dart';
 import '../bloc/chat/chat_event.dart';
 import '../widgets/avatar_lable_user.dart';
 
@@ -20,7 +22,9 @@ class ChatsList extends StatefulWidget {
 class _ChatsListState extends State<ChatsList> {
   @override
   void initState() {
-
+    context.read<ChatBloc>()
+      ..add(GetAllMatch())
+      ..add(GetAllChat());
     super.initState();
   }
 
@@ -34,8 +38,8 @@ class _ChatsListState extends State<ChatsList> {
           child: Text(Strings.error),
         );
       } else if (state.loadListMatchStatus == LoadListMatchStatus.loaded) {
-        if(state.allUserMatch.isEmpty){
-          return  Center(
+        if (state.allUserMatch.isEmpty) {
+          return Center(
             child: Image.asset(
               ImageSrc.noMessage,
               width: 300,
@@ -51,10 +55,16 @@ class _ChatsListState extends State<ChatsList> {
                 shrinkWrap: true,
                 itemCount: state.allUserMatch.length,
                 itemBuilder: (context, index) {
+                  final List<Chat> listChat =[];
+                  for(var chat in state.listMatch){
+                    var chatData =state.listChat.where((element) => element.chatId ==chat.chatId);
+                    listChat.addAll(chatData);
+                  }
                   return InkWell(
                     onTap: () {
+                      log(" 1 ${state.allUserMatch[index].match.chatId}");
                       context.read<ChatBloc>().add(GetAllMessage(
-                          groupChatId: state.listChat[index].chatId));
+                          groupChatId: state.allUserMatch[index].match.chatId));
                       Navigator.pushNamed(
                         context,
                         ChatScreen.routeName,
@@ -71,7 +81,7 @@ class _ChatsListState extends State<ChatsList> {
                             margin: const EdgeInsets.only(top: 10, right: 10),
                             height: 70,
                             width: 70,
-                            url: state.allUserMatch[index].photoUrl,
+                            url: state.allUserMatch[index].user.photoUrl,
                           ),
                           Flexible(
                             child: Column(
@@ -82,15 +92,15 @@ class _ChatsListState extends State<ChatsList> {
                                   height: 10,
                                 ),
                                 Text(
-                                  state.allUserMatch[index].name!,
+                                  state.allUserMatch[index].user.name!,
                                   style: const TextStyle(
                                       fontSize: 20,
                                       fontWeight: FontWeight.w800,
                                       color: Colors.black),
                                 ),
                                 Text(
-                                    state.listChat.isNotEmpty
-                                        ? state.listChat[index].lastMessage ??
+                                    listChat.isNotEmpty
+                                        ? listChat[index].lastMessage ??
                                             Strings.startChat
                                         : Strings.startChat,
                                     style: const TextStyle(

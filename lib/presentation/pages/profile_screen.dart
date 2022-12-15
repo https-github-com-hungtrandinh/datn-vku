@@ -1,3 +1,7 @@
+
+
+import 'dart:developer';
+
 import 'package:clean_architecture/core/value/app_color.dart';
 import 'package:clean_architecture/presentation/bloc/authen/auth_bloc.dart';
 import 'package:clean_architecture/presentation/bloc/authen/auth_event.dart';
@@ -10,7 +14,9 @@ import 'package:clean_architecture/presentation/widgets/dot_loading.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
+import 'package:geolocator/geolocator.dart';
 
+import '../../core/util/location.dart';
 import '../../core/value/strings.dart';
 import '../../injection.dart';
 
@@ -63,7 +69,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   Container(
                     width: 140,
                     height: 140,
-                    decoration:  BoxDecoration(
+                    decoration: BoxDecoration(
                         shape: BoxShape.circle,
                         image: DecorationImage(
                             image: NetworkImage(state.userModel!.photoUrl!),
@@ -206,24 +212,31 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ),
                       Column(
                         children: [
-                          Container(
-                            width: 60,
-                            height: 60,
-                            decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: Colors.white,
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.grey.withOpacity(0.1),
-                                    spreadRadius: 10,
-                                    blurRadius: 15,
-                                    // changes position of shadow
-                                  ),
-                                ]),
-                            child: Icon(
-                              Icons.edit,
-                              size: 35,
-                              color: Colors.grey.withOpacity(0.5),
+                          InkWell(
+                            onTap: () async {
+                            Position position =  await determinePosition();
+
+                            log("${position.longitude}");
+                            },
+                            child: Container(
+                              width: 60,
+                              height: 60,
+                              decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: Colors.white,
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.grey.withOpacity(0.1),
+                                      spreadRadius: 10,
+                                      blurRadius: 15,
+                                      // changes position of shadow
+                                    ),
+                                  ]),
+                              child: Icon(
+                                Icons.edit,
+                                size: 35,
+                                color: Colors.grey.withOpacity(0.5),
+                              ),
                             ),
                           ),
                           const SizedBox(

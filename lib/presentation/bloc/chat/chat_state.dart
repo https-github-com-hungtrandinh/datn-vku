@@ -1,6 +1,7 @@
 import 'package:clean_architecture/data/models/firebase/chat.dart';
 import 'package:equatable/equatable.dart';
 
+import '../../../data/models/firebase/chat_user.dart';
 import '../../../data/models/firebase/match.dart';
 
 import '../../../data/models/firebase/messages.dart';
@@ -9,7 +10,7 @@ import '../../../data/models/firebase/user.dart';
 enum LoadListMatchStatus { initial, loading, loaded, error }
 
 class ChatState extends Equatable {
-  final List<UserModel> allUserMatch;
+  final List<ChatUser> allUserMatch;
   final List<Chat> listChat;
   final List<MatchUser> listMatch;
   final List<Message> listMessage;
@@ -47,7 +48,7 @@ class ChatState extends Equatable {
   }
 
   ChatState copyWith(
-      {List<UserModel>? allUserMatch,
+      {List<ChatUser>? allUserMatch,
       List<Chat>? listChat,
       List<MatchUser>? listMatch,
       List<Message>? listMessage,

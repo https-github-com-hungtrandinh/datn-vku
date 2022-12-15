@@ -14,6 +14,7 @@ class HomeState extends Equatable {
   final bool checkMatch;
   final String chatId;
   final String like;
+  final UserModel? userData;
   final List<UserModel> userMatch;
   final List<UserModel> allUserMatch;
   final List<Message> listMessages;
@@ -21,6 +22,7 @@ class HomeState extends Equatable {
   const HomeState(
       {required this.loadUserSwiper,
       required this.allUserMatch,
+      required this.userData,
       required this.like,
       required this.userMatch,
       required this.listMessages,
@@ -35,6 +37,7 @@ class HomeState extends Equatable {
     return const HomeState(
         listMessages: [],
         allUserMatch: [],
+        userData: null,
         checkMatch: false,
         like: "",
         userMatch: [],
@@ -55,10 +58,12 @@ class HomeState extends Equatable {
       String? userWatch,
       bool? checkMatch,
       String? chatId,
+      UserModel? userData,
       List<UserModel>? userMatch,
       List<UserModel>? allUserMatch,
       List<UserModel>? allUser}) {
     return HomeState(
+        userData: userData ?? this.userData,
         userMatch: userMatch ?? this.userMatch,
         like: like ?? this.like,
         listMessages: listMessages ?? this.listMessages,
@@ -84,6 +89,7 @@ class HomeState extends Equatable {
         allUserMatch,
         listMessages,
         like,
-        userMatch
+        userMatch,
+        userData
       ];
 }

@@ -1,3 +1,4 @@
+import 'package:clean_architecture/data/models/firebase/location.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class UserModel {
@@ -15,6 +16,7 @@ class UserModel {
   bool? questionaireFilled;
   bool? registerFinished;
   bool? emailVerified;
+  Location? location;
   List<dynamic>? interests;
 
   UserModel({
@@ -25,6 +27,7 @@ class UserModel {
     this.phone,
     this.name,
     this.major,
+    this.location,
     this.questionaireFilled,
     this.registerFinished,
     this.emailVerified,
@@ -37,6 +40,7 @@ class UserModel {
   Map<String, dynamic> toMap() {
     return {
       'uid': uid,
+      'location': location?.toJson(),
       'photoUrl': photoUrl,
       'email': email,
       'username': username,
@@ -55,18 +59,19 @@ class UserModel {
 
   factory UserModel.fromDocument(DocumentSnapshot doc) {
     return UserModel(
-      uid: doc['uid'],
-      photoUrl: doc['photoUrl'],
-      email: doc['email'],
-      name: doc.get('name'),
-      major: doc.get('major'),
-      mbti: doc.get('mbti'),
-      gender: doc.get('gender'),
-      // birthday: (doc.get('birthday') as Timestamp).toDate(),
-      interests: (doc['interests'] as List).map((e) => e.toString()).toList(),
-      questionaireFilled: doc['questionaireFilled'],
-      registerFinished: doc['registerFinished'],
-      emailVerified:doc['emailVerified'],
+        uid: doc['uid'],
+        photoUrl: doc['photoUrl'],
+        email: doc['email'],
+        name: doc.get('name'),
+        major: doc.get('major'),
+        mbti: doc.get('mbti'),
+        gender: doc.get('gender'),
+        // birthday: (doc.get('birthday') as Timestamp).toDate(),
+        interests: (doc['interests'] as List).map((e) => e.toString()).toList(),
+        questionaireFilled: doc['questionaireFilled'],
+        registerFinished: doc['registerFinished'],
+        emailVerified: doc['emailVerified'],
+        location: Location.fromJson(doc["location"])
     );
   }
 }

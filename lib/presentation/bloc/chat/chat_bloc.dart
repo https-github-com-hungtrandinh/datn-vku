@@ -9,6 +9,7 @@ import 'package:clean_architecture/presentation/bloc/chat/chat_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../data/models/firebase/chat.dart';
+import '../../../data/models/firebase/chat_user.dart';
 import '../../../domain/usecases/social_usecase.dart';
 
 class ChatBloc extends Bloc<ChatEvent, ChatState> {
@@ -41,9 +42,9 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     userMatch.fold((error) {
       emit(state.copyWith(loadListMatchStatus: LoadListMatchStatus.error));
     }, (data) {
-      final List<UserModel> allUserMatch=data;
+      final List<ChatUser> allChatUser = data;
       emit(state.copyWith(
-        allUserMatch: allUserMatch.reversed.toList(),
+        allUserMatch: allChatUser,
         loadListMatchStatus: LoadListMatchStatus.loaded,
       ));
     });
@@ -56,28 +57,28 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
   Future<void> _seenMessage(
       SeenMessageEvent event, Emitter<ChatState> emit) async {
     final result = await socialUseCase.seenMessage(
-        message: event.message,
-        groupChatId: event.groupChatId,
-        chat: event.chat);
+      message: event.message,
+      groupChatId: event.groupChatId,
+    );
     result.fold((error) {}, (data) {});
   }
 
   Future<void> _updateImageMessage(
       UploadImageMessageEvent event, Emitter<ChatState> emit) async {
-    final result = await socialUseCase.seenImage(
-        uid: event.uid, imageFile: event.file);
+    final result =
+        await socialUseCase.seenImage(uid: event.uid, imageFile: event.file);
     result.fold((error) {}, (data) {
       emit(state.copyWith(urlImage: data));
     });
     final resultMessage = await socialUseCase.seenMessage(
-        message: Message(
-            senderId: state.uid,
-            receiverId: event.receiver,
-            message: state.urlImage,
-            messageType: MessageType.image,
-            dateTime: DateTime.now()),
-        groupChatId: event.groupChatId,
-        chat: event.chat);
+      message: Message(
+          senderId: state.uid,
+          receiverId: event.receiver,
+          message: state.urlImage,
+          messageType: MessageType.image,
+          dateTime: DateTime.now()),
+      groupChatId: event.groupChatId,
+    );
     result.fold((error) {}, (data) {});
   }
 

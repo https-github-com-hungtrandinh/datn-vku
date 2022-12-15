@@ -7,8 +7,10 @@ import 'package:dartz/dartz.dart';
 import '../../core/util/firebase_exception.dart';
 import '../../data/datasources/datalocal/shared_preferences_data.dart';
 import '../../data/datasources/dataremote/remote_firebase_auth.dart';
+import '../../data/models/firebase/chat_user.dart';
 import '../../data/models/firebase/interest.dart';
 import '../../data/models/firebase/lifestyle.dart';
+import '../../data/models/firebase/location.dart';
 import '../../data/models/firebase/messages.dart';
 import '../../data/models/firebase/personality.dart';
 import '../../data/models/firebase/user.dart';
@@ -139,7 +141,7 @@ class SocialUseCase {
     return remoteFireBaseCloud.getAllChat(uid: uid);
   }
 
-  Future<Either<FirebaseExceptionCustom, List<UserModel>>> getAllUserMatch(
+  Future<Either<FirebaseExceptionCustom, List<ChatUser>>> getAllUserMatch(
       {required List<MatchUser> listMatch}) async {
     return await remoteFireBaseCloud.getAllUserMatch(listMatch: listMatch);
   }
@@ -153,10 +155,14 @@ class SocialUseCase {
     return await remoteFireBaseCloud.getUser(uid: uid);
   }
   Future<Either<FirebaseExceptionCustom, void>> seenMessage(
-      {required Message message, required String groupChatId,required Chat chat}) async{
-    return await remoteFireBaseCloud.seenMessage(message: message, groupChatId: groupChatId, chat: chat);
+      {required Message message, required String groupChatId}) async{
+    return await remoteFireBaseCloud.seenMessage(message: message, groupChatId: groupChatId);
   }
   Future<Either<FirebaseExceptionCustom, String>> seenImage({required String uid, required File imageFile}) async {
     return await remoteFireBaseCloud.seenImage(uid: uid, imageFile: imageFile);
+  }
+  Future<Either<FirebaseExceptionCustom, void>> updateLocation(
+      {required Location location, required String uid}) async{
+    return await remoteFireBaseCloud.updateLocation(location: location, uid: uid);
   }
 }

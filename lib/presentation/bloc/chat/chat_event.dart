@@ -27,15 +27,14 @@ class GetAllMessage extends ChatEvent {
 }
 
 class SeenMessageEvent extends ChatEvent {
-  final Chat chat;
   final Message message;
   final String groupChatId;
 
   SeenMessageEvent(
-      {required this.chat, required this.message, required this.groupChatId});
+      { required this.message, required this.groupChatId});
 
   @override
-  List<Object?> get props => [chat,message,groupChatId];
+  List<Object?> get props => [message,groupChatId];
 }
 class ChangedMessage extends ChatEvent{
   final String message;
@@ -49,14 +48,14 @@ class ChangedMessage extends ChatEvent{
 class UploadImageMessageEvent extends ChatEvent{
   final File file;
   final String uid;
-  final Chat chat;
+
 
   final String groupChatId;
   final String receiver;
 
-  UploadImageMessageEvent({required this.chat,required this.receiver,required this.groupChatId, required this.file,required this.uid});
+  UploadImageMessageEvent({required this.receiver,required this.groupChatId, required this.file,required this.uid});
 
   @override
-  List<Object?> get props => [file, uid,receiver,groupChatId,chat];
+  List<Object?> get props => [file, uid,receiver,groupChatId];
 
 }

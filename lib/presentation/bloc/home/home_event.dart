@@ -33,3 +33,15 @@ class UpdateCheckMatch extends HomeEvent{
   List<Object?> get props => [];
 
 }
+class UpdateLocation extends HomeEvent{
+  @override
+  // TODO: implement props
+  List<Object?> get props =>[];
+
+}
+class GetMyUser extends HomeEvent{
+  @override
+  List<Object?> get props => [];
+
+}
+

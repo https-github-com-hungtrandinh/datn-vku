@@ -1,4 +1,6 @@
 import 'package:clean_architecture/core/value/image.dart';
+import 'package:clean_architecture/presentation/bloc/home/home_bloc.dart';
+import 'package:clean_architecture/presentation/bloc/home/home_event.dart';
 import 'package:clean_architecture/presentation/pages/chat_list_screen.dart';
 import 'package:clean_architecture/presentation/pages/home_screen.dart';
 import 'package:clean_architecture/presentation/pages/profile_screen.dart';
@@ -6,10 +8,6 @@ import 'package:clean_architecture/presentation/pages/search_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
-
-import '../../core/value/app_color.dart';
-import '../bloc/chat/chat_bloc.dart';
-import '../bloc/chat/chat_event.dart';
 
 class InitialApp extends StatefulWidget {
   const InitialApp({Key? key}) : super(key: key);
@@ -25,11 +23,10 @@ class InitialApp extends StatefulWidget {
 class InitialAppState extends State<InitialApp> {
   @override
   void initState() {
-    context.read<ChatBloc>()
-      ..add(GetAllMatch())
-      ..add(GetAllChat());
+    context.read<HomeBloc>().add(UpdateLocation());
     super.initState();
   }
+
   int _selectedIndex = 0;
   static const List<Widget> _widgetOptions = <Widget>[
     HomeScreen(),

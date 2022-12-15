@@ -1,14 +1,15 @@
 import 'dart:io';
 import 'package:clean_architecture/core/util/firebase_exception.dart';
 import 'package:clean_architecture/data/models/firebase/chat.dart';
+import 'package:clean_architecture/data/models/firebase/chat_user.dart';
 import 'package:clean_architecture/data/models/firebase/interest.dart';
 import 'package:clean_architecture/data/models/firebase/lifestyle.dart';
+import 'package:clean_architecture/data/models/firebase/location.dart';
 import 'package:clean_architecture/data/models/firebase/match.dart';
 import 'package:clean_architecture/data/models/firebase/messages.dart';
 import 'package:clean_architecture/data/models/firebase/personality.dart';
 import 'package:clean_architecture/data/models/firebase/like.dart';
 import 'package:clean_architecture/data/models/firebase/user_question.dart';
-import 'package:clean_architecture/generated/intl/messages_en.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dartz/dartz.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -303,12 +304,14 @@ class RemoteFirebaseCloudImpl extends RemoteFireBaseCloud {
   @override
   Future<Either<FirebaseExceptionCustom, String>> createGroupChat(
       {required String uidLike, required String uidLiked}) async {
+    final chatId = DateTime.now().millisecondsSinceEpoch.toString();
     try {
-      String chatId = await firebaseFireStore.collection('chats').add({
+      await firebaseFireStore.collection('chats').doc(chatId).set({
         'userIds': [uidLike, uidLiked],
-        'lastMessage':"",
+        'lastMessage': "",
+        "groupChatId": chatId,
         'createAt': DateTime.now()
-      }).then((value) => value.id);
+      });
       return Right(chatId);
     } on FirebaseException catch (e) {
       return Left(FirebaseExceptionCustom(e.code));
@@ -343,27 +346,27 @@ class RemoteFirebaseCloudImpl extends RemoteFireBaseCloud {
         .where("userIds", arrayContainsAny: [uid])
         .snapshots()
         .map((snap) {
-          return snap.docs
-              .map((e) => Chat.fromJson(e.data(), chatId: e.id))
-              .toList();
+          return snap.docs.map((e) => Chat.fromJson(e.data())).toList();
         });
   }
 
   @override
-  Future<Either<FirebaseExceptionCustom, List<UserModel>>> getAllUserMatch(
+  Future<Either<FirebaseExceptionCustom, List<ChatUser>>> getAllUserMatch(
       {required List<MatchUser> listMatch}) async {
     try {
-      final List<UserModel> listUser = [];
+      final List<ChatUser> listChatUser = [];
       for (var match in listMatch) {
         await firebaseFireStore
             .collection("user")
             .doc(match.uidLiked)
             .get()
             .then((value) {
-          listUser.add(UserModel.fromDocument(value));
+          listChatUser
+              .add(ChatUser(match: match, user: UserModel.fromDocument(value)));
         });
       }
-      return Right(listUser);
+
+      return Right(listChatUser);
     } on FirebaseException catch (e) {
       return Left(FirebaseExceptionCustom(e.code));
     }
@@ -401,7 +404,7 @@ class RemoteFirebaseCloudImpl extends RemoteFireBaseCloud {
 
   @override
   Future<Either<FirebaseExceptionCustom, void>> seenMessage(
-      {required Message message, required String groupChatId,required Chat chat}) async {
+      {required Message message, required String groupChatId}) async {
     try {
       final result = firebaseFireStore
           .collection("chats")
@@ -412,7 +415,7 @@ class RemoteFirebaseCloudImpl extends RemoteFireBaseCloud {
         transaction.set(result, message.toJson());
       }).then((value) {
         updateNewMessage(
-            groupChatId: groupChatId, lastMessage: message.message,chat: chat);
+            groupChatId: groupChatId, lastMessage: message.message);
       });
       return const Right(null);
     } on FirebaseException catch (e) {
@@ -421,21 +424,20 @@ class RemoteFirebaseCloudImpl extends RemoteFireBaseCloud {
   }
 
   Future<void> updateNewMessage(
-      {required String groupChatId,
-      required Chat chat,
-      required String lastMessage}) async {
+      {required String groupChatId, required String lastMessage}) async {
     try {
       await firebaseFireStore
           .collection("chats")
           .doc(groupChatId)
-          .update({"lastMessage": lastMessage, "userIds": chat.userIds, "createAt" :DateTime.now()});
+          .update({"lastMessage": lastMessage, "createAt": DateTime.now()});
     } catch (e) {
       throw Exception();
     }
   }
 
   @override
-  Future<Either<FirebaseExceptionCustom, String>> seenImage({required String uid, required File imageFile}) async {
+  Future<Either<FirebaseExceptionCustom, String>> seenImage(
+      {required String uid, required File imageFile}) async {
     List<String> splitPath = imageFile.path.split('.');
     String filetype = splitPath[splitPath.length - 1];
     String filename = '$uid.$filetype';
@@ -456,6 +458,20 @@ class RemoteFirebaseCloudImpl extends RemoteFireBaseCloud {
           .getDownloadURL();
 
       return Right(downloadURL);
+    } on FirebaseException catch (e) {
+      return Left(FirebaseExceptionCustom(e.code));
+    }
+  }
+
+  @override
+  Future<Either<FirebaseExceptionCustom, void>> updateLocation(
+      {required Location location, required String uid}) async {
+    try {
+      await firebaseFireStore
+          .collection("user")
+          .doc(uid)
+          .update({"location": location.toJson()});
+      return const Right(null);
     } on FirebaseException catch (e) {
       return Left(FirebaseExceptionCustom(e.code));
     }
