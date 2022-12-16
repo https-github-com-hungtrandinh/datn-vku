@@ -110,7 +110,7 @@ class SocialUseCase {
 
   Future<Either<FirebaseExceptionCustom, List<UserModel>>> getAllUser(
       {required String uid}) async {
-    return await remoteFireBaseCloud.getAllUser(uid: uid);
+    return await remoteFireBaseCloud.getUserLike(uid: uid);
   }
 
   Future<Either<FirebaseExceptionCustom, bool>> checkMatch(
@@ -164,5 +164,15 @@ class SocialUseCase {
   Future<Either<FirebaseExceptionCustom, void>> updateLocation(
       {required Location location, required String uid}) async{
     return await remoteFireBaseCloud.updateLocation(location: location, uid: uid);
+  }
+  Future<Either<FirebaseExceptionCustom,UserLike>> getIdUserLike({required String docId})async{
+    return await remoteFireBaseCloud.getIdUserLike(docId: docId);
+  }
+  Stream<List<UserModel>> getAllUserLike({required UserLike userLike}){
+    return remoteFireBaseCloud.getAllUser(userLike: userLike);
+  }
+  Future<Either<FirebaseExceptionCustom, void>> updateUserStatus(
+      {required String uid, required String status})async{
+    return remoteFireBaseCloud.updateUserStatus(uid: uid, status: status);
   }
 }

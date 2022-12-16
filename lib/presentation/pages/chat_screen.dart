@@ -8,6 +8,7 @@ import 'package:clean_architecture/presentation/bloc/chat/chat_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../core/util/format_time.dart';
+import '../../data/models/firebase/chat_user.dart';
 import '../../injection.dart';
 import '../widgets/left_chat_widget.dart';
 import '../widgets/message_text_field.dart';
@@ -29,9 +30,9 @@ class ChatScreen extends StatefulWidget {
 class _ChatScreenState extends State<ChatScreen> {
   @override
   void initState() {
-
     super.initState();
   }
+
   TextEditingController textEditingController = TextEditingController();
 
   @override
@@ -48,6 +49,12 @@ class _ChatScreenState extends State<ChatScreen> {
 
   Widget buildListMessage() {
     return BlocBuilder<ChatBloc, ChatState>(builder: (context, state) {
+      final List<ChatUser> listChat = [];
+      for (var chat in state.listChat) {
+        var chatData = state.allUserMatch
+            .where((element) => element.match.chatId == chat.chatId);
+        listChat.addAll(chatData);
+      }
       return ListView.separated(
         physics: const BouncingScrollPhysics(),
         shrinkWrap: true,
@@ -62,6 +69,12 @@ class _ChatScreenState extends State<ChatScreen> {
 
   Widget buildItem({required int index}) {
     return BlocBuilder<ChatBloc, ChatState>(builder: (context, state) {
+      final List<ChatUser> listChat = [];
+      for (var chat in state.listChat) {
+        var chatData = state.allUserMatch
+            .where((element) => element.match.chatId == chat.chatId);
+        listChat.addAll(chatData);
+      }
       if (state.listMessage[index].senderId == state.uid) {
         return RightChatWidget(
             content: state.listMessage[index].messageType == MessageType.text
@@ -70,8 +83,9 @@ class _ChatScreenState extends State<ChatScreen> {
             time: formatDate(state.listMessage[index].dateTime));
       } else {
         return LeftChatWidget(
-            profileImage:
-                CachedNetworkImageProvider(state.allUserMatch[widget.index].user.photoUrl!,),
+            profileImage: CachedNetworkImageProvider(
+              listChat[widget.index].user.photoUrl!,
+            ),
             content: state.listMessage[index].messageType == MessageType.text
                 ? Text(state.listMessage[index].message)
                 : Image.network(state.listMessage[index].message),
@@ -102,6 +116,12 @@ class _ChatScreenState extends State<ChatScreen> {
           maxHeight: 100,
         ),
         child: BlocBuilder<ChatBloc, ChatState>(builder: (context, state) {
+          final List<ChatUser> listChat = [];
+          for (var chat in state.listChat) {
+            var chatData = state.allUserMatch
+                .where((element) => element.match.chatId == chat.chatId);
+            listChat.addAll(chatData);
+          }
           return Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -117,9 +137,8 @@ class _ChatScreenState extends State<ChatScreen> {
                     color: const Color(0xFFA6A6A6),
                     onPressed: () async {
                       context.read<ChatBloc>().add(UploadImageMessageEvent(
-
-                          receiver: state.allUserMatch[widget.index].match.uidLiked,
-                          groupChatId: state.allUserMatch[widget.index].match.chatId,
+                          receiver: listChat[widget.index].match.uidLiked,
+                          groupChatId: listChat[widget.index].match.chatId,
                           file: await getFromGallery(),
                           uid: state.uid));
                     }),
@@ -132,17 +151,15 @@ class _ChatScreenState extends State<ChatScreen> {
                       context.read<ChatBloc>().add(ChangedMessage(message));
                     },
                     onSendPressed: () {
-                      log( state.allUserMatch[widget.index].match.chatId);
                       context.read<ChatBloc>().add(SeenMessageEvent(
-
                           message: Message(
                             messageType: MessageType.text,
                             senderId: state.uid,
-                            receiverId: state.allUserMatch[widget.index].match.uidLiked,
+                            receiverId: listChat[widget.index].match.uidLiked,
                             message: state.message,
                             dateTime: DateTime.now(),
                           ),
-                          groupChatId: state.allUserMatch[widget.index].match.chatId));
+                          groupChatId: listChat[widget.index].match.chatId));
                       textEditingController.clear();
                     }),
               )
@@ -178,6 +195,12 @@ class _ChatScreenState extends State<ChatScreen> {
           ],
         ),
         child: BlocBuilder<ChatBloc, ChatState>(builder: (context, state) {
+          final List<ChatUser> listChat = [];
+          for (var chat in state.listChat) {
+            var chatData = state.allUserMatch
+                .where((element) => element.match.chatId == chat.chatId);
+            listChat.addAll(chatData);
+          }
           return Row(
             mainAxisAlignment: MainAxisAlignment.start,
             mainAxisSize: MainAxisSize.max,
@@ -188,8 +211,7 @@ class _ChatScreenState extends State<ChatScreen> {
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   image: DecorationImage(
-                    image: NetworkImage(
-                        state.allUserMatch[widget.index].user.photoUrl!),
+                    image: NetworkImage(listChat[widget.index].user.photoUrl!),
                     fit: BoxFit.cover,
                   ),
                 ),
@@ -200,7 +222,7 @@ class _ChatScreenState extends State<ChatScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    state.allUserMatch[widget.index].user.name!,
+                    listChat[widget.index].user.name!,
                     style: const TextStyle(
                         color: Colors.black54,
                         fontSize: 18,

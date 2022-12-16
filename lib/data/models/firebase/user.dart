@@ -17,6 +17,7 @@ class UserModel {
   bool? registerFinished;
   bool? emailVerified;
   Location? location;
+  String? status;
   List<dynamic>? interests;
 
   UserModel({
@@ -24,6 +25,7 @@ class UserModel {
     this.photoUrl,
     this.email,
     this.username,
+    this.status,
     this.phone,
     this.name,
     this.major,
@@ -39,6 +41,7 @@ class UserModel {
 
   Map<String, dynamic> toMap() {
     return {
+      'status': "online",
       'uid': uid,
       'location': location?.toJson(),
       'photoUrl': photoUrl,
@@ -66,6 +69,7 @@ class UserModel {
         major: doc.get('major'),
         mbti: doc.get('mbti'),
         gender: doc.get('gender'),
+        status: doc.get('status'),
         // birthday: (doc.get('birthday') as Timestamp).toDate(),
         interests: (doc['interests'] as List).map((e) => e.toString()).toList(),
         questionaireFilled: doc['questionaireFilled'],

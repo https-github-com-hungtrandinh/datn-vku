@@ -1,11 +1,14 @@
 import 'dart:developer';
 import 'package:clean_architecture/core/value/strings.dart';
+import 'package:clean_architecture/data/models/firebase/chat_user.dart';
 import 'package:clean_architecture/presentation/bloc/chat/chat_bloc.dart';
 import 'package:clean_architecture/presentation/bloc/chat/chat_state.dart';
 import 'package:clean_architecture/presentation/pages/chat_screen.dart';
 import 'package:clean_architecture/presentation/widgets/dot_loading.dart';
+import 'package:dashed_circle/dashed_circle.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_fonts/google_fonts.dart';
 import '../../core/value/image.dart';
 import '../../data/models/firebase/chat.dart';
 import '../bloc/chat/chat_event.dart';
@@ -50,21 +53,61 @@ class _ChatsListState extends State<ChatsList> {
         }
         return Column(
           children: [
+            const SizedBox(
+              height: 10,
+            ),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              height: 100,
+              child: ListView.builder(
+                  itemCount: state.allUserMatch.length,
+                  scrollDirection: Axis.horizontal,
+                  itemBuilder: (context, index) {
+                    return Column(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: SizedBox(
+                            width: 50,
+                            height: 50,
+                            child: Center(
+                              child: DashedCircle(
+                                color: Colors.deepOrangeAccent,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(3),
+                                  child: CircleAvatar(
+                                    radius: 45,
+                                    backgroundImage: NetworkImage(state.allUserMatch[index].user.photoUrl!),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                        Text(
+                          state.allUserMatch[index].user.name!,
+                          style: GoogleFonts.aBeeZee(
+                              fontSize: 13, color: Colors.black54),
+                        )
+                      ],
+                    );
+                  }),
+            ),
             Expanded(
               child: ListView.builder(
                 shrinkWrap: true,
                 itemCount: state.allUserMatch.length,
                 itemBuilder: (context, index) {
-                  final List<Chat> listChat =[];
-                  for(var chat in state.listMatch){
-                    var chatData =state.listChat.where((element) => element.chatId ==chat.chatId);
+                  final List<ChatUser> listChat = [];
+                  for (var chat in state.listChat) {
+                    var chatData = state.allUserMatch.where(
+                        (element) => element.match.chatId == chat.chatId);
                     listChat.addAll(chatData);
                   }
                   return InkWell(
                     onTap: () {
-                      log(" 1 ${state.allUserMatch[index].match.chatId}");
                       context.read<ChatBloc>().add(GetAllMessage(
-                          groupChatId: state.allUserMatch[index].match.chatId));
+                          groupChatId: listChat[index].match.chatId));
                       Navigator.pushNamed(
                         context,
                         ChatScreen.routeName,
@@ -81,7 +124,7 @@ class _ChatsListState extends State<ChatsList> {
                             margin: const EdgeInsets.only(top: 10, right: 10),
                             height: 70,
                             width: 70,
-                            url: state.allUserMatch[index].user.photoUrl,
+                            url: listChat[index].user.photoUrl,
                           ),
                           Flexible(
                             child: Column(
@@ -92,7 +135,7 @@ class _ChatsListState extends State<ChatsList> {
                                   height: 10,
                                 ),
                                 Text(
-                                  state.allUserMatch[index].user.name!,
+                                  listChat[index].user.name!,
                                   style: const TextStyle(
                                       fontSize: 20,
                                       fontWeight: FontWeight.w800,
@@ -100,13 +143,13 @@ class _ChatsListState extends State<ChatsList> {
                                 ),
                                 Text(
                                     listChat.isNotEmpty
-                                        ? listChat[index].lastMessage ??
+                                        ? state.listChat[index].lastMessage ??
                                             Strings.startChat
                                         : Strings.startChat,
                                     style: const TextStyle(
-                                        fontSize: 16,
+                                        fontSize: 14,
                                         fontWeight: FontWeight.w500,
-                                        color: Colors.black),
+                                        color: Colors.grey),
                                     overflow: TextOverflow.ellipsis),
                                 const SizedBox(height: 10),
                                 const Divider(

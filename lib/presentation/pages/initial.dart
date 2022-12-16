@@ -4,10 +4,12 @@ import 'package:clean_architecture/presentation/bloc/home/home_event.dart';
 import 'package:clean_architecture/presentation/pages/chat_list_screen.dart';
 import 'package:clean_architecture/presentation/pages/home_screen.dart';
 import 'package:clean_architecture/presentation/pages/profile_screen.dart';
-import 'package:clean_architecture/presentation/pages/search_screen.dart';
+import 'package:clean_architecture/presentation/pages/like_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+
+import '../../core/value/strings.dart';
 
 class InitialApp extends StatefulWidget {
   const InitialApp({Key? key}) : super(key: key);
@@ -20,17 +22,32 @@ class InitialApp extends StatefulWidget {
   }
 }
 
-class InitialAppState extends State<InitialApp> {
+class InitialAppState extends State<InitialApp>  with WidgetsBindingObserver{
+
   @override
   void initState() {
     context.read<HomeBloc>().add(UpdateLocation());
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
+  }
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      context.read<HomeBloc>().add(UpdateUserStatus(status: Strings.online));
+    } else {
+      context.read<HomeBloc>().add(UpdateUserStatus(status: Strings.offline));
+    }
+  }
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
   }
 
   int _selectedIndex = 0;
   static const List<Widget> _widgetOptions = <Widget>[
     HomeScreen(),
-    SearchScreen(),
+    LikesScreen(),
     ChatsList(),
     ProfileScreen()
   ];

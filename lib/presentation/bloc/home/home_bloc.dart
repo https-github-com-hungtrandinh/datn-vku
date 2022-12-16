@@ -18,13 +18,14 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     on<UpdateCheckMatch>(_updateCheckMatch);
     on<UpdateLocation>(updateLocation);
     on<GetMyUser>(getMyUser);
+    on<UpdateUserStatus>(updateUserStatus);
   }
 
   Future<void> getMyUser(GetMyUser event, Emitter<HomeState> emit) async {
     final uid =
         await socialUseCase.sharedPreference.get(SharedPreference.uidAccount);
-   final result =await socialUseCase.getUser(uid: uid);
-   result.fold((error){}, (data) => emit(state.copyWith(userData: data)));
+    final result = await socialUseCase.getUser(uid: uid);
+    result.fold((error) {}, (data) => emit(state.copyWith(userData: data)));
   }
 
   void _updateCheckMatch(UpdateCheckMatch event, Emitter<HomeState> emit) {
@@ -110,5 +111,13 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       emit(state.copyWith(
           allUser: listAllUser, loadUserSwiper: LoadUserSwiper.loaded));
     });
+  }
+
+  void updateUserStatus(UpdateUserStatus event, Emitter<HomeState> emit) async {
+    final uid =
+        await socialUseCase.sharedPreference.get(SharedPreference.uidAccount);
+    final result =
+        await socialUseCase.updateUserStatus(uid: uid, status: event.status);
+    result.fold((error) => null, (data) {});
   }
 }

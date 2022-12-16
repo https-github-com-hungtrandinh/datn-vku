@@ -84,5 +84,9 @@ class Strings {
   static const String upDateAvatar="updateAvatar";
   static const String itMatch="It's Match";
   static const String seenMessage="Seen Message";
+  static const String whoLikes="SEE WHO LIKES YOU";
+  static const String active="Recently Active";
+  static const String online="online";
+  static const String offline="offline";
 
 }

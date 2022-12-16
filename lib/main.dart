@@ -3,6 +3,8 @@ import 'package:clean_architecture/presentation/bloc/authen/auth_bloc.dart';
 import 'package:clean_architecture/presentation/bloc/authen/auth_event.dart';
 import 'package:clean_architecture/presentation/bloc/chat/chat_bloc.dart';
 import 'package:clean_architecture/presentation/bloc/home/home_bloc.dart';
+import 'package:clean_architecture/presentation/bloc/like/like_bloc.dart';
+import 'package:clean_architecture/presentation/bloc/like/like_event.dart';
 import 'package:clean_architecture/presentation/bloc/login/login_bloc.dart';
 import 'package:clean_architecture/presentation/bloc/register/register_bloc.dart';
 import 'package:clean_architecture/presentation/bloc/register_selection/register_selection_bloc.dart';
@@ -41,7 +43,8 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider<HomeBloc>(
             create: (context) => HomeBloc(sl())),
-        BlocProvider<ChatBloc>(lazy: false, create: (context) => ChatBloc(sl()))
+        BlocProvider<ChatBloc>(lazy: false, create: (context) => ChatBloc(sl())),
+        BlocProvider<LikeBloc>(create: (context)=>LikeBloc(sl()))
       ],
       child: MaterialApp(
           debugShowCheckedModeBanner: false,

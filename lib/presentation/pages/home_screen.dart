@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import '../../core/value/image.dart';
+import '../../core/value/strings.dart';
 import '../bloc/home/home_event.dart';
 import '../widgets/card_swiper.dart';
 
@@ -21,7 +22,7 @@ class HomeScreen extends StatefulWidget {
   }
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
   @override
   void initState() {
     context.read<HomeBloc>().add(GetMyUser());
@@ -30,15 +31,15 @@ class _HomeScreenState extends State<HomeScreen> {
     super.initState();
   }
 
+
+
   final AppinioSwiperController controller = AppinioSwiperController();
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<HomeBloc, HomeState>(
-      listenWhen: (oldState, newState){
-        return oldState.checkMatch != newState.checkMatch;
-      },
-        listener: (context, state) {
+    return BlocConsumer<HomeBloc, HomeState>(listenWhen: (oldState, newState) {
+      return oldState.checkMatch != newState.checkMatch;
+    }, listener: (context, state) {
       if (state.checkMatch == true) {
         DialogCustom().showAnimatedDialogMatch(context, onClick: () {
           context.read<HomeBloc>().add(UpdateCheckMatch());
@@ -46,7 +47,6 @@ class _HomeScreenState extends State<HomeScreen> {
         },
             urlAvatarMyUser: state.userMatch[0].photoUrl!,
             urlAvatarOwenUser: state.userMatch[1].photoUrl!);
-
       }
     }, buildWhen: (oldState, newState) {
       return oldState.allUser != newState.allUser;

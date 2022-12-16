@@ -49,7 +49,7 @@ abstract class RemoteFireBaseCloud {
   Future<Either<FirebaseExceptionCustom, void>> userLike(
       {required UserLike userLike});
 
-  Future<Either<FirebaseExceptionCustom, List<UserModel>>> getAllUser(
+  Future<Either<FirebaseExceptionCustom, List<UserModel>>> getUserLike(
       {required String uid});
 
   Future<Either<FirebaseExceptionCustom, UserLike>> getAllMyUserLike(
@@ -84,4 +84,11 @@ abstract class RemoteFireBaseCloud {
 
   Future<Either<FirebaseExceptionCustom, void>> updateLocation(
       {required Location location, required String uid});
+
+  Future<Either<FirebaseExceptionCustom,UserLike>> getIdUserLike({required String docId}) ;
+
+  Stream<List<UserModel>> getAllUser({required UserLike userLike});
+
+  Future<Either<FirebaseExceptionCustom, void>> updateUserStatus(
+      {required String uid, required String status});
 }

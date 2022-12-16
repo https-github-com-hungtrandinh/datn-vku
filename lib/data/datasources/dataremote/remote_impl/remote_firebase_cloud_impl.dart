@@ -204,7 +204,7 @@ class RemoteFirebaseCloudImpl extends RemoteFireBaseCloud {
   }
 
   @override
-  Future<Either<FirebaseExceptionCustom, List<UserModel>>> getAllUser(
+  Future<Either<FirebaseExceptionCustom, List<UserModel>>> getUserLike(
       {required String uid}) async {
     final List<UserModel> listAllUser = [];
     try {
@@ -344,6 +344,7 @@ class RemoteFirebaseCloudImpl extends RemoteFireBaseCloud {
     return firebaseFireStore
         .collection("chats")
         .where("userIds", arrayContainsAny: [uid])
+        .orderBy("createAt", descending: true)
         .snapshots()
         .map((snap) {
           return snap.docs.map((e) => Chat.fromJson(e.data())).toList();
@@ -471,6 +472,43 @@ class RemoteFirebaseCloudImpl extends RemoteFireBaseCloud {
           .collection("user")
           .doc(uid)
           .update({"location": location.toJson()});
+      return const Right(null);
+    } on FirebaseException catch (e) {
+      return Left(FirebaseExceptionCustom(e.code));
+    }
+  }
+
+  @override
+  Future<Either<FirebaseExceptionCustom, UserLike>> getIdUserLike(
+      {required String docId}) async {
+    try {
+      final result = await firebaseFireStore
+          .collection("userLike")
+          .doc(docId)
+          .get()
+          .then((value) => UserLike.fromDocument(value));
+      return Right(result);
+    } on FirebaseException catch (e) {
+      return Left(FirebaseExceptionCustom(e.code));
+    }
+  }
+
+  @override
+  Stream<List<UserModel>> getAllUser({required UserLike userLike}) {
+    return firebaseFireStore
+        .collection("user")
+        .where("uid", whereIn: userLike.uidLiked)
+        .snapshots()
+        .map((event) {
+      return event.docs.map((e) => UserModel.fromDocument(e)).toList();
+    });
+  }
+
+  @override
+  Future<Either<FirebaseExceptionCustom, void>> updateUserStatus(
+      {required String uid, required String status}) async {
+    try {
+    await  firebaseFireStore.collection("user").doc(uid).update({"status": status});
       return const Right(null);
     } on FirebaseException catch (e) {
       return Left(FirebaseExceptionCustom(e.code));
