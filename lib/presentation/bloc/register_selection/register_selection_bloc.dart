@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:clean_architecture/data/datasources/datalocal/shared_preferences_data.dart';
 import 'package:clean_architecture/data/models/firebase/user_question.dart';
 import 'package:clean_architecture/presentation/bloc/register_selection/register_selection_event.dart';
@@ -47,6 +49,7 @@ class RegisterSelectionBloc
 
   void _changedAvatar(
       ChangedAvatar event, Emitter<RegisterSelectionState> emit) {
+    log("${event.file}");
     emit(state.copyWith(file: event.file));
   }
 

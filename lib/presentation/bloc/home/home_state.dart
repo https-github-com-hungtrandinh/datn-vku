@@ -8,6 +8,7 @@ enum LoadUserSwiper { initial, loading, loaded, success }
 class HomeState extends Equatable {
   final String? userWatch;
   final String? liked;
+  final String uid;
   final LoadUserSwiper loadUserSwiper;
   final List<UserModel> allUser;
   final UserLike? allUserLike;
@@ -23,6 +24,7 @@ class HomeState extends Equatable {
       {required this.loadUserSwiper,
       required this.allUserMatch,
       required this.userData,
+      required this.uid,
       required this.like,
       required this.userMatch,
       required this.listMessages,
@@ -38,6 +40,7 @@ class HomeState extends Equatable {
         listMessages: [],
         allUserMatch: [],
         userData: null,
+        uid: "",
         checkMatch: false,
         like: "",
         userMatch: [],
@@ -58,6 +61,7 @@ class HomeState extends Equatable {
       String? userWatch,
       bool? checkMatch,
       String? chatId,
+      String? uid,
       UserModel? userData,
       List<UserModel>? userMatch,
       List<UserModel>? allUserMatch,
@@ -65,6 +69,7 @@ class HomeState extends Equatable {
     return HomeState(
         userData: userData ?? this.userData,
         userMatch: userMatch ?? this.userMatch,
+        uid: uid ?? this.uid,
         like: like ?? this.like,
         listMessages: listMessages ?? this.listMessages,
         allUserMatch: allUserMatch ?? this.allUserMatch,
@@ -89,6 +94,7 @@ class HomeState extends Equatable {
         allUserMatch,
         listMessages,
         like,
+        uid,
         userMatch,
         userData
       ];

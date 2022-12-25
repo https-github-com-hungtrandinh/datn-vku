@@ -2,6 +2,8 @@ import 'package:clean_architecture/injection.dart';
 import 'package:clean_architecture/presentation/bloc/authen/auth_bloc.dart';
 import 'package:clean_architecture/presentation/bloc/authen/auth_event.dart';
 import 'package:clean_architecture/presentation/bloc/chat/chat_bloc.dart';
+import 'package:clean_architecture/presentation/bloc/fake_data/fake_data_bloc.dart';
+import 'package:clean_architecture/presentation/bloc/fake_data/fake_data_event.dart';
 import 'package:clean_architecture/presentation/bloc/home/home_bloc.dart';
 import 'package:clean_architecture/presentation/bloc/like/like_bloc.dart';
 import 'package:clean_architecture/presentation/bloc/like/like_event.dart';
@@ -44,7 +46,8 @@ class MyApp extends StatelessWidget {
         BlocProvider<HomeBloc>(
             create: (context) => HomeBloc(sl())),
         BlocProvider<ChatBloc>(lazy: false, create: (context) => ChatBloc(sl())),
-        BlocProvider<LikeBloc>(create: (context)=>LikeBloc(sl()))
+        BlocProvider<LikeBloc>(create: (context)=>LikeBloc(sl())),
+        BlocProvider<FakeDataBloc>(create: (context)=>FakeDataBloc(sl()))
       ],
       child: MaterialApp(
           debugShowCheckedModeBanner: false,

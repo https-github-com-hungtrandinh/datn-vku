@@ -19,6 +19,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     on<UpdateLocation>(updateLocation);
     on<GetMyUser>(getMyUser);
     on<UpdateUserStatus>(updateUserStatus);
+    on<UserViewEvent>(updateUserView);
   }
 
   Future<void> getMyUser(GetMyUser event, Emitter<HomeState> emit) async {
@@ -88,6 +89,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
     final uid =
         await socialUseCase.sharedPreference.get(SharedPreference.uidAccount);
+    emit(state.copyWith(uid: uid));
     final userLike = await socialUseCase.getAllMyUserLike(uid: uid);
     userLike.fold((error) {}, (data) {
       emit(state.copyWith(allUserLike: data));
@@ -111,6 +113,11 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       emit(state.copyWith(
           allUser: listAllUser, loadUserSwiper: LoadUserSwiper.loaded));
     });
+  }
+  void updateUserView(UserViewEvent event, Emitter<HomeState> emit) async{
+    final result = await socialUseCase.userView(userView: event.userView);
+    result.fold((l) => null, (r) => null);
+
   }
 
   void updateUserStatus(UpdateUserStatus event, Emitter<HomeState> emit) async {

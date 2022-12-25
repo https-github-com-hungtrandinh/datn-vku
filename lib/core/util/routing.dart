@@ -4,6 +4,7 @@ import 'package:clean_architecture/presentation/pages/home_screen.dart';
 import 'package:clean_architecture/presentation/pages/initial.dart';
 import 'package:clean_architecture/presentation/pages/login_screen.dart';
 import 'package:clean_architecture/presentation/pages/register_screen.dart';
+import 'package:clean_architecture/presentation/pages/view_profile.dart';
 import 'package:clean_architecture/presentation/pages/wellcome_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -37,6 +38,9 @@ class RouteGenerator {
       case '/chat-page':
         final args = settings.arguments as int;
         return MaterialPageRoute(builder: (_) =>  ChatScreen(index: args));
+      case '/view-profile':
+
+        return MaterialPageRoute(builder: (_) =>const ViewProfile());
       default:
         // If there is no such named route in the switch statement, e.g. /third
         return _errorRoute();

@@ -10,6 +10,7 @@ import 'package:clean_architecture/data/models/firebase/messages.dart';
 import 'package:clean_architecture/data/models/firebase/personality.dart';
 import 'package:clean_architecture/data/models/firebase/like.dart';
 import 'package:clean_architecture/data/models/firebase/user_question.dart';
+import 'package:clean_architecture/data/models/firebase/view.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dartz/dartz.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -514,4 +515,41 @@ class RemoteFirebaseCloudImpl extends RemoteFireBaseCloud {
       return Left(FirebaseExceptionCustom(e.code));
     }
   }
+
+  @override
+  Future<Either<FirebaseExceptionCustom, void>> userView({required UserView userView}) async {
+    try {
+      if (await firebaseFireStore
+          .collection("userView")
+          .doc(userView.myUidView)
+          .get()
+          .then((value) => value.exists)) {
+        try {
+          await firebaseFireStore
+              .collection("userView")
+              .doc(userView.myUidView)
+              .update({
+            'uidOwenView': FieldValue.arrayUnion([userView.uidOwenView[0]])
+          });
+          return const Right(null);
+        } on FirebaseException catch (e) {
+          return Left(FirebaseExceptionCustom(e.code));
+        }
+      } else {
+        try {
+          await firebaseFireStore
+              .collection("userView")
+              .doc(userView.myUidView)
+              .set(userView.toMap());
+          return const Right(null);
+        } on FirebaseException catch (e) {
+          return Left(FirebaseExceptionCustom(e.code));
+        }
+      }
+    } on FirebaseException catch (e) {
+      return Left(FirebaseExceptionCustom(e.code));
+    }
+  }
+
+
 }

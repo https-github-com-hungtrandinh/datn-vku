@@ -16,6 +16,7 @@ import '../../data/models/firebase/personality.dart';
 import '../../data/models/firebase/user.dart';
 import '../../data/models/firebase/like.dart';
 import '../../data/models/firebase/user_question.dart';
+import '../../data/models/firebase/view.dart';
 
 class SocialUseCase {
   final RemoteFireBaseCloud remoteFireBaseCloud;
@@ -174,5 +175,8 @@ class SocialUseCase {
   Future<Either<FirebaseExceptionCustom, void>> updateUserStatus(
       {required String uid, required String status})async{
     return remoteFireBaseCloud.updateUserStatus(uid: uid, status: status);
+  }
+  Future<Either<FirebaseExceptionCustom, void>> userView({required UserView userView}) async {
+    return remoteFireBaseCloud.userView(userView: userView);
   }
 }

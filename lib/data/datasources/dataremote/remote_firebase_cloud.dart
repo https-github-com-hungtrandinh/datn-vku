@@ -8,6 +8,7 @@ import 'package:clean_architecture/data/models/firebase/messages.dart';
 import 'package:clean_architecture/data/models/firebase/personality.dart';
 import 'package:clean_architecture/data/models/firebase/like.dart';
 import 'package:clean_architecture/data/models/firebase/user_question.dart';
+import 'package:clean_architecture/data/models/firebase/view.dart';
 import 'package:dartz/dartz.dart';
 import '../../models/firebase/chat_user.dart';
 import '../../models/firebase/location.dart';
@@ -91,4 +92,6 @@ abstract class RemoteFireBaseCloud {
 
   Future<Either<FirebaseExceptionCustom, void>> updateUserStatus(
       {required String uid, required String status});
+  Future<Either<FirebaseExceptionCustom, void>> userView(
+      {required UserView userView});
 }

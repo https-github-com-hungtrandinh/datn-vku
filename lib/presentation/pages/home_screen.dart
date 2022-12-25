@@ -29,7 +29,25 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
 
     context.read<HomeBloc>().add(GetAllUser());
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
   }
+  @override
+  void dispose() {
+    super.dispose();
+    WidgetsBinding.instance.removeObserver(this);
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    print(state);
+    if (state == AppLifecycleState.resumed) {
+
+      context.read<HomeBloc>().add(UpdateUserStatus(status: Strings.online));
+    } else {
+      context.read<HomeBloc>().add(UpdateUserStatus(status: Strings.offline));
+    }
+  }
+
 
 
 

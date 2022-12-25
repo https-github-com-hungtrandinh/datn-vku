@@ -6,6 +6,9 @@ import 'package:clean_architecture/core/value/app_color.dart';
 import 'package:clean_architecture/presentation/bloc/authen/auth_bloc.dart';
 import 'package:clean_architecture/presentation/bloc/authen/auth_event.dart';
 import 'package:clean_architecture/presentation/bloc/authen/auth_state.dart';
+import 'package:clean_architecture/presentation/bloc/fake_data/fake_data_bloc.dart';
+import 'package:clean_architecture/presentation/bloc/fake_data/fake_data_event.dart';
+import 'package:clean_architecture/presentation/bloc/fake_data/fake_data_state.dart';
 import 'package:clean_architecture/presentation/bloc/profile/profile_bloc.dart';
 import 'package:clean_architecture/presentation/bloc/profile/profile_event.dart';
 import 'package:clean_architecture/presentation/bloc/profile/profile_state.dart';
@@ -232,10 +235,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       // changes position of shadow
                                     ),
                                   ]),
-                              child: Icon(
-                                Icons.edit,
-                                size: 35,
-                                color: Colors.grey.withOpacity(0.5),
+                              child: BlocBuilder<FakeDataBloc,FakeDataState>(
+                                builder: (context,state) {
+                                  return IconButton(
+                                    onPressed: (){
+                                      context.read<FakeDataBloc>().add(CreateDataFake());
+                                    },
+                                    icon: Icon(
+                                      Icons.edit,
+                                      size: 35,
+                                      color: Colors.grey.withOpacity(0.5),
+                                    ),
+                                  );
+                                }
                               ),
                             ),
                           ),

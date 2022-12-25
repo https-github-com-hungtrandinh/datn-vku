@@ -26,23 +26,10 @@ class InitialAppState extends State<InitialApp>  with WidgetsBindingObserver{
 
   @override
   void initState() {
-    context.read<HomeBloc>().add(UpdateLocation());
     super.initState();
-    WidgetsBinding.instance.addObserver(this);
+    context.read<HomeBloc>().add(UpdateLocation());
   }
-  @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
-    if (state == AppLifecycleState.resumed) {
-      context.read<HomeBloc>().add(UpdateUserStatus(status: Strings.online));
-    } else {
-      context.read<HomeBloc>().add(UpdateUserStatus(status: Strings.offline));
-    }
-  }
-  @override
-  void dispose() {
-    WidgetsBinding.instance.removeObserver(this);
-    super.dispose();
-  }
+
 
   int _selectedIndex = 0;
   static const List<Widget> _widgetOptions = <Widget>[

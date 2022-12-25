@@ -1,5 +1,7 @@
 import 'package:equatable/equatable.dart';
 
+import '../../../data/models/firebase/view.dart';
+
 abstract class HomeEvent extends Equatable {}
 
 class UserWatchEvent extends HomeEvent {
@@ -48,4 +50,12 @@ class UpdateUserStatus extends HomeEvent {
 
   @override
   List<Object?> get props => [status];
+}
+class UserViewEvent extends HomeEvent{
+  final UserView userView;
+
+  UserViewEvent({required this.userView});
+
+  @override
+  List<Object?> get props => [userView];
 }
