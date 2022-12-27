@@ -41,13 +41,14 @@ class MyApp extends StatelessWidget {
           create: (context) => RegisterSelectionBloc(sl())
             ..add(GetInterestEvent())
             ..add(GetMajor())
-            ..add(GetPersonality()),
+            ..add(GetPersonality())
+            ..add(UpdateRecommendation()),
         ),
-        BlocProvider<HomeBloc>(
-            create: (context) => HomeBloc(sl())),
-        BlocProvider<ChatBloc>(lazy: false, create: (context) => ChatBloc(sl())),
-        BlocProvider<LikeBloc>(create: (context)=>LikeBloc(sl())),
-        BlocProvider<FakeDataBloc>(create: (context)=>FakeDataBloc(sl()))
+        BlocProvider<HomeBloc>(create: (context) => HomeBloc(sl())),
+        BlocProvider<ChatBloc>(
+            lazy: false, create: (context) => ChatBloc(sl())),
+        BlocProvider<LikeBloc>(create: (context) => LikeBloc(sl())),
+        BlocProvider<FakeDataBloc>(create: (context) => FakeDataBloc(sl()))
       ],
       child: MaterialApp(
           debugShowCheckedModeBanner: false,

@@ -1,24 +1,17 @@
-
-
-import 'dart:developer';
-
 import 'package:clean_architecture/core/value/app_color.dart';
 import 'package:clean_architecture/presentation/bloc/authen/auth_bloc.dart';
 import 'package:clean_architecture/presentation/bloc/authen/auth_event.dart';
 import 'package:clean_architecture/presentation/bloc/authen/auth_state.dart';
-import 'package:clean_architecture/presentation/bloc/fake_data/fake_data_bloc.dart';
-import 'package:clean_architecture/presentation/bloc/fake_data/fake_data_event.dart';
-import 'package:clean_architecture/presentation/bloc/fake_data/fake_data_state.dart';
 import 'package:clean_architecture/presentation/bloc/profile/profile_bloc.dart';
 import 'package:clean_architecture/presentation/bloc/profile/profile_event.dart';
 import 'package:clean_architecture/presentation/bloc/profile/profile_state.dart';
+import 'package:clean_architecture/presentation/pages/changed_profile_detail.dart';
 import 'package:clean_architecture/presentation/pages/wellcome_screen.dart';
 import 'package:clean_architecture/presentation/widgets/dot_loading.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
 import 'package:geolocator/geolocator.dart';
-
 import '../../core/util/location.dart';
 import '../../core/value/strings.dart';
 import '../../injection.dart';
@@ -143,45 +136,24 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         padding: const EdgeInsets.only(top: 20),
                         child: Column(
                           children: [
-                            Container(
-                              width: 85,
-                              height: 85,
-                              child: Stack(
-                                children: [
-                                  Container(
-                                    width: 80,
-                                    height: 80,
-                                    decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        gradient: const LinearGradient(
-                                          colors: [
-                                            AppColors.primaryOne,
-                                            AppColors.primaryTwo
-                                          ],
-                                        ),
-                                        boxShadow: [
-                                          BoxShadow(
-                                            color: Colors.grey.withOpacity(0.1),
-                                            spreadRadius: 10,
-                                            blurRadius: 15,
-                                            // changes position of shadow
-                                          ),
-                                        ]),
-                                    child: const Icon(
-                                      Icons.camera_alt,
-                                      size: 45,
-                                      color: Colors.white,
-                                    ),
-                                  ),
-                                  Positioned(
-                                    bottom: 8,
-                                    right: 0,
-                                    child: Container(
-                                      width: 25,
-                                      height: 25,
+                            InkWell(
+                              onTap: () {},
+                              child: SizedBox(
+                                width: 85,
+                                height: 85,
+                                child: Stack(
+                                  children: [
+                                    Container(
+                                      width: 80,
+                                      height: 80,
                                       decoration: BoxDecoration(
                                           shape: BoxShape.circle,
-                                          color: Colors.white,
+                                          gradient: const LinearGradient(
+                                            colors: [
+                                              AppColors.primaryOne,
+                                              AppColors.primaryTwo
+                                            ],
+                                          ),
                                           boxShadow: [
                                             BoxShadow(
                                               color:
@@ -191,13 +163,38 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                               // changes position of shadow
                                             ),
                                           ]),
-                                      child: const Center(
-                                        child:
-                                            Icon(Icons.add, color: Colors.grey),
+                                      child: const Icon(
+                                        Icons.camera_alt,
+                                        size: 45,
+                                        color: Colors.white,
                                       ),
                                     ),
-                                  )
-                                ],
+                                    Positioned(
+                                      bottom: 8,
+                                      right: 0,
+                                      child: Container(
+                                        width: 25,
+                                        height: 25,
+                                        decoration: BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            color: Colors.white,
+                                            boxShadow: [
+                                              BoxShadow(
+                                                color: Colors.grey
+                                                    .withOpacity(0.1),
+                                                spreadRadius: 10,
+                                                blurRadius: 15,
+                                                // changes position of shadow
+                                              ),
+                                            ]),
+                                        child: const Center(
+                                          child: Icon(Icons.add,
+                                              color: Colors.grey),
+                                        ),
+                                      ),
+                                    )
+                                  ],
+                                ),
                               ),
                             ),
                             const SizedBox(
@@ -217,39 +214,35 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         children: [
                           InkWell(
                             onTap: () async {
-                            Position position =  await determinePosition();
-
-                            log("${position.longitude}");
+                              Position position = await determinePosition();
                             },
                             child: Container(
-                              width: 60,
-                              height: 60,
-                              decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  color: Colors.white,
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Colors.grey.withOpacity(0.1),
-                                      spreadRadius: 10,
-                                      blurRadius: 15,
-                                      // changes position of shadow
-                                    ),
-                                  ]),
-                              child: BlocBuilder<FakeDataBloc,FakeDataState>(
-                                builder: (context,state) {
-                                  return IconButton(
-                                    onPressed: (){
-                                      context.read<FakeDataBloc>().add(CreateDataFake());
-                                    },
-                                    icon: Icon(
-                                      Icons.edit,
-                                      size: 35,
-                                      color: Colors.grey.withOpacity(0.5),
-                                    ),
-                                  );
-                                }
-                              ),
-                            ),
+                                width: 60,
+                                height: 60,
+                                decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: Colors.white,
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.grey.withOpacity(0.1),
+                                        spreadRadius: 10,
+                                        blurRadius: 15,
+                                        // changes position of shadow
+                                      ),
+                                    ]),
+                                child: IconButton(
+                                  onPressed: () {
+                                    Navigator.pushNamed(
+                                        context,
+                                        ChangedProfileDetail
+                                            .changedProfileDetailPushName);
+                                  },
+                                  icon: Icon(
+                                    Icons.edit,
+                                    size: 35,
+                                    color: Colors.grey.withOpacity(0.5),
+                                  ),
+                                )),
                           ),
                           const SizedBox(
                             height: 10,

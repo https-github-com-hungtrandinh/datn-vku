@@ -1,3 +1,4 @@
+import 'package:clean_architecture/presentation/pages/changed_profile_detail.dart';
 import 'package:clean_architecture/presentation/pages/chat_list_screen.dart';
 import 'package:clean_architecture/presentation/pages/chat_screen.dart';
 import 'package:clean_architecture/presentation/pages/home_screen.dart';
@@ -17,7 +18,6 @@ class RouteGenerator {
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
       case '/LoginPage':
-
         return MaterialPageRoute(builder: (_) => const LoginScreen());
       case '/StartSelection':
         return MaterialPageRoute(builder: (_) => const StartSelection());
@@ -37,10 +37,11 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => const ChatsList());
       case '/chat-page':
         final args = settings.arguments as int;
-        return MaterialPageRoute(builder: (_) =>  ChatScreen(index: args));
+        return MaterialPageRoute(builder: (_) => ChatScreen(index: args));
       case '/view-profile':
-
-        return MaterialPageRoute(builder: (_) =>const ViewProfile());
+        return MaterialPageRoute(builder: (_) => const ViewProfile());
+      case "/ChangedProfileDetailPage":
+        return MaterialPageRoute(builder: (_) => const ChangedProfileDetail());
       default:
         // If there is no such named route in the switch statement, e.g. /third
         return _errorRoute();

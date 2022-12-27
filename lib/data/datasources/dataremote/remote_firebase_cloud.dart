@@ -90,8 +90,9 @@ abstract class RemoteFireBaseCloud {
 
   Stream<List<UserModel>> getAllUser({required UserLike userLike});
 
-  Future<Either<FirebaseExceptionCustom, void>> updateUserStatus(
+  Future<Either<FirebaseExceptionCustom, void>> updateUser(
       {required String uid, required String status});
   Future<Either<FirebaseExceptionCustom, void>> userView(
       {required UserView userView});
+  Future<Either<FirebaseExceptionCustom, void>> updatePost({required String uid, required File imageFile});
 }

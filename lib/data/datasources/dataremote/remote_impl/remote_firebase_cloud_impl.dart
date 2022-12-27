@@ -506,10 +506,13 @@ class RemoteFirebaseCloudImpl extends RemoteFireBaseCloud {
   }
 
   @override
-  Future<Either<FirebaseExceptionCustom, void>> updateUserStatus(
+  Future<Either<FirebaseExceptionCustom, void>> updateUser(
       {required String uid, required String status}) async {
     try {
-    await  firebaseFireStore.collection("user").doc(uid).update({"status": status});
+      await firebaseFireStore
+          .collection("user")
+          .doc(uid)
+          .update({"status": status});
       return const Right(null);
     } on FirebaseException catch (e) {
       return Left(FirebaseExceptionCustom(e.code));
@@ -517,7 +520,8 @@ class RemoteFirebaseCloudImpl extends RemoteFireBaseCloud {
   }
 
   @override
-  Future<Either<FirebaseExceptionCustom, void>> userView({required UserView userView}) async {
+  Future<Either<FirebaseExceptionCustom, void>> userView(
+      {required UserView userView}) async {
     try {
       if (await firebaseFireStore
           .collection("userView")
@@ -551,5 +555,32 @@ class RemoteFirebaseCloudImpl extends RemoteFireBaseCloud {
     }
   }
 
+  @override
+  Future<Either<FirebaseExceptionCustom, void>> updatePost(
+      {required String uid, required File imageFile}) async {
+    List<String> splitPath = imageFile.path.split('.');
+    String filetype = splitPath[splitPath.length - 1];
+    String filename = '$uid.$filetype';
 
+    try {
+      await firebaseStorage
+          .ref()
+          .child('images')
+          .child('post')
+          .child(filename)
+          .putFile(imageFile);
+      String downloadURL = await firebaseStorage
+          .ref()
+          .child('images')
+          .child('post')
+          .child(filename)
+          .getDownloadURL();
+      await firebaseFireStore.collection("user").doc(uid).update({
+        "mbti": FieldValue.arrayUnion([downloadURL])
+      });
+      return const Right(null);
+    } on FirebaseException catch (e) {
+      return Left(FirebaseExceptionCustom(e.code));
+    }
+  }
 }

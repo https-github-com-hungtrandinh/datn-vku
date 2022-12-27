@@ -11,7 +11,7 @@ class UserModel {
   String? name;
   String? major;
   String? gender;
-  String? mbti;
+  List<String>? post;
   DateTime? birthday;
   bool? questionaireFilled;
   bool? registerFinished;
@@ -33,7 +33,7 @@ class UserModel {
     this.questionaireFilled,
     this.registerFinished,
     this.emailVerified,
-    this.mbti,
+    this.post,
     this.gender,
     this.birthday,
     this.interests,
@@ -50,7 +50,7 @@ class UserModel {
       'phone': phone,
       'name': name,
       'major': major,
-      'mbti': mbti,
+      'mbti': post,
       'gender': gender,
       'birthday': birthday,
       'interests': interests,
@@ -67,7 +67,7 @@ class UserModel {
         email: doc['email'],
         name: doc.get('name'),
         major: doc.get('major'),
-        mbti: doc.get('mbti'),
+        // post: (doc.get('mbti') as List).map((post) => post.toString()).toList(),
         gender: doc.get('gender'),
         status: doc.get('status'),
         // birthday: (doc.get('birthday') as Timestamp).toDate(),

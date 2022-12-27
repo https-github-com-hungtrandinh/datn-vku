@@ -6,4 +6,5 @@ class ConstApp {
 
   static const baseUrlHeroku ="https://server-social-media.herokuapp.com/";
   static const header = 'application/json';
+  static const String baseUrlRecommendation="http://0.0.0.0:8088/api/recommended-system/";
 }

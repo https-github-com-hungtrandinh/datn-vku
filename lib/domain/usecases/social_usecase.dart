@@ -6,6 +6,7 @@ import 'package:clean_architecture/data/models/firebase/match.dart';
 import 'package:dartz/dartz.dart';
 import '../../core/util/firebase_exception.dart';
 import '../../data/datasources/datalocal/shared_preferences_data.dart';
+import '../../data/datasources/dataremote/remote_api_recomendation.dart';
 import '../../data/datasources/dataremote/remote_firebase_auth.dart';
 import '../../data/models/firebase/chat_user.dart';
 import '../../data/models/firebase/interest.dart';
@@ -17,14 +18,16 @@ import '../../data/models/firebase/user.dart';
 import '../../data/models/firebase/like.dart';
 import '../../data/models/firebase/user_question.dart';
 import '../../data/models/firebase/view.dart';
+import '../../data/models/uid_user_recommendation.dart';
 
 class SocialUseCase {
   final RemoteFireBaseCloud remoteFireBaseCloud;
   final SharedPreference sharedPreference;
   final RemoteFirebaseAuth remoteDataSource;
+  final RemoteApiRecommendation remoteApiRecommendation;
 
-  SocialUseCase(
-      this.sharedPreference, this.remoteDataSource, this.remoteFireBaseCloud);
+  SocialUseCase(this.sharedPreference, this.remoteDataSource,
+      this.remoteFireBaseCloud, this.remoteApiRecommendation);
 
   Future<Either<FirebaseExceptionCustom, String>> registerWithEmailPassword({
     required String email,
@@ -155,28 +158,54 @@ class SocialUseCase {
       {required String uid}) async {
     return await remoteFireBaseCloud.getUser(uid: uid);
   }
+
   Future<Either<FirebaseExceptionCustom, void>> seenMessage(
-      {required Message message, required String groupChatId}) async{
-    return await remoteFireBaseCloud.seenMessage(message: message, groupChatId: groupChatId);
+      {required Message message, required String groupChatId}) async {
+    return await remoteFireBaseCloud.seenMessage(
+        message: message, groupChatId: groupChatId);
   }
-  Future<Either<FirebaseExceptionCustom, String>> seenImage({required String uid, required File imageFile}) async {
+
+  Future<Either<FirebaseExceptionCustom, String>> seenImage(
+      {required String uid, required File imageFile}) async {
     return await remoteFireBaseCloud.seenImage(uid: uid, imageFile: imageFile);
   }
+
   Future<Either<FirebaseExceptionCustom, void>> updateLocation(
-      {required Location location, required String uid}) async{
-    return await remoteFireBaseCloud.updateLocation(location: location, uid: uid);
+      {required Location location, required String uid}) async {
+    return await remoteFireBaseCloud.updateLocation(
+        location: location, uid: uid);
   }
-  Future<Either<FirebaseExceptionCustom,UserLike>> getIdUserLike({required String docId})async{
+
+  Future<Either<FirebaseExceptionCustom, UserLike>> getIdUserLike(
+      {required String docId}) async {
     return await remoteFireBaseCloud.getIdUserLike(docId: docId);
   }
-  Stream<List<UserModel>> getAllUserLike({required UserLike userLike}){
+
+  Stream<List<UserModel>> getAllUserLike({required UserLike userLike}) {
     return remoteFireBaseCloud.getAllUser(userLike: userLike);
   }
-  Future<Either<FirebaseExceptionCustom, void>> updateUserStatus(
-      {required String uid, required String status})async{
-    return remoteFireBaseCloud.updateUserStatus(uid: uid, status: status);
+
+  Future<Either<FirebaseExceptionCustom, void>> updateUser(
+      {required String uid, required String status}) async {
+    return remoteFireBaseCloud.updateUser(uid: uid, status: status);
   }
-  Future<Either<FirebaseExceptionCustom, void>> userView({required UserView userView}) async {
+
+  Future<Either<FirebaseExceptionCustom, void>> userView(
+      {required UserView userView}) async {
     return remoteFireBaseCloud.userView(userView: userView);
+  }
+
+  Future<Either<FirebaseExceptionCustom, void>> updatePost(
+      {required String uid, required File imageFile}) {
+    return remoteFireBaseCloud.updatePost(uid: uid, imageFile: imageFile);
+  }
+
+  Future<Either<void, void>> updateRecommendation() async {
+    return remoteApiRecommendation.updateRecommendation();
+  }
+
+  Future<Either<void, UidUserRecommendation>> getListRecommendation(
+      {required String uid}) async {
+    return remoteApiRecommendation.getListRecommendation(uid: uid);
   }
 }

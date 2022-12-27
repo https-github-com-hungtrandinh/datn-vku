@@ -78,7 +78,7 @@ class Strings {
   static const String choseInterest="Choose your interests";
   static const String addPhoto ="Give us your best photo";
   static const String cropper="Cropper";
-  static const String startChat="Bắt đầu trò chuyện với người bạn mới";
+  static const String startChat="Start Chat now?";
   static const String settings="Settings";
   static const String editProfile ="EditProfile";
   static const String upDateAvatar="updateAvatar";
@@ -88,5 +88,13 @@ class Strings {
   static const String active="Recently Active";
   static const String online="online";
   static const String offline="offline";
-
+  static const String editProfileDetail ="Edit Profile";
+  static const String done= "done";
+  static const String preview= "Preview";
+  static const String edit ="Edit";
+  static const String image ="Image";
+  static const String yourOpinion ="Your opinion";
+  static const String needAddProfile="You need to add more information to your profile so other users can know more about you";
+  static const String interests="Interests";
+  static const String datingPurpose="Dating purpose";
 }

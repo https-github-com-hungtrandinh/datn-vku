@@ -22,4 +22,22 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
         (data) => emit(state.copyWith(
             userModel: data, profileStatus: ProfileStatus.loaded)));
   }
+
+  void changedStatus(ChangedStatus event, Emitter<ProfileState> emit) {
+    emit(state.copyWith(status: event.status));
+  }
+
+  void changedPost(ChangedPost event, Emitter<ProfileState> emit) async {
+    emit(state.copyWith(postStatus: PostStatus.loading));
+    final uid =
+        await socialUseCase.sharedPreference.get(SharedPreference.uidAccount);
+    final result =
+        await socialUseCase.updatePost(uid: uid, imageFile: event.file);
+    result.fold(
+      (l) => null,
+      (r) => emit(
+        state.copyWith(postStatus: PostStatus.loaded),
+      ),
+    );
+  }
 }

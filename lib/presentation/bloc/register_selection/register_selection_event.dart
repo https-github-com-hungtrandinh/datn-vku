@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:clean_architecture/presentation/pages/register_slection/register_selection.dart';
 import 'package:equatable/equatable.dart';
 
 abstract class RegisterSelectionEvent extends Equatable {}
@@ -129,12 +130,19 @@ class ChangedAnswerLifeStyle extends RegisterSelectionEvent {
   @override
   List<Object?> get props => [answerLifestyle];
 }
-class SummitSelectionRegister extends RegisterSelectionEvent{
+
+class SummitSelectionRegister extends RegisterSelectionEvent {
   @override
   List<Object?> get props => [];
-
 }
-class AddAvatar extends RegisterSelectionEvent{
+
+class AddAvatar extends RegisterSelectionEvent {
   @override
+  List<Object?> get props => [];
+}
+
+class UpdateRecommendation extends RegisterSelectionEvent {
+  @override
+  // TODO: implement props
   List<Object?> get props => [];
 }

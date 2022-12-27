@@ -124,7 +124,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     final uid =
         await socialUseCase.sharedPreference.get(SharedPreference.uidAccount);
     final result =
-        await socialUseCase.updateUserStatus(uid: uid, status: event.status);
+        await socialUseCase.updateUser(uid: uid, status: event.status);
     result.fold((error) => null, (data) {});
   }
 }

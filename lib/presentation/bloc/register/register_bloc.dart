@@ -60,4 +60,5 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
       });
     }
   }
+
 }

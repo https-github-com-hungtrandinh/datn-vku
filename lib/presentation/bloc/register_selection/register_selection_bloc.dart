@@ -31,30 +31,31 @@ class RegisterSelectionBloc
     on<GetLifestyle>(getLifeStyle);
     on<ChangedNameUserRegister>(_changedUserName);
     on<SummitSelectionRegister>(_summitRegisterSelection);
+    on<UpdateRecommendation>(_updateRecommendation);
   }
 
-  void _changedAddInterest(
-      ChangedAddInterestEvent event, Emitter<RegisterSelectionState> emit) {
+  void _changedAddInterest(ChangedAddInterestEvent event,
+      Emitter<RegisterSelectionState> emit) {
     List<String> interest = state.interest;
     interest.add(event.interest);
     emit(state.copyWith(interest: interest));
   }
 
-  void _changedRemoveInterest(
-      ChangedRemoveInterestEvent event, Emitter<RegisterSelectionState> emit) {
+  void _changedRemoveInterest(ChangedRemoveInterestEvent event,
+      Emitter<RegisterSelectionState> emit) {
     List<String> interest = state.interest;
     interest.remove(event.interest);
     emit(state.copyWith(interest: interest));
   }
 
-  void _changedAvatar(
-      ChangedAvatar event, Emitter<RegisterSelectionState> emit) {
+  void _changedAvatar(ChangedAvatar event,
+      Emitter<RegisterSelectionState> emit) {
     log("${event.file}");
     emit(state.copyWith(file: event.file));
   }
 
-  Future<void> _getInterest(
-      GetInterestEvent event, Emitter<RegisterSelectionState> emit) async {
+  Future<void> _getInterest(GetInterestEvent event,
+      Emitter<RegisterSelectionState> emit) async {
     emit(state.copyWith(interestStatus: InterestStatus.loading));
     final result = await socialUseCase.getInterest();
     result.fold((error) {
@@ -73,13 +74,13 @@ class RegisterSelectionBloc
     emit(state.copyWith(registerStep: state.registerStep - 1));
   }
 
-  void _changeGender(
-      ChangedMaleUserRegister event, Emitter<RegisterSelectionState> emit) {
+  void _changeGender(ChangedMaleUserRegister event,
+      Emitter<RegisterSelectionState> emit) {
     emit(state.copyWith(gender: event.male));
   }
 
-  void _changedUserName(
-      ChangedNameUserRegister event, Emitter<RegisterSelectionState> emit) {
+  void _changedUserName(ChangedNameUserRegister event,
+      Emitter<RegisterSelectionState> emit) {
     emit(
       state.copyWith(userName: event.nameUser),
     );
@@ -92,16 +93,16 @@ class RegisterSelectionBloc
     emit(state.copyWith(listMajorInSearch: listNewMajor));
   }
 
-  Future<void> _getMajor(
-      GetMajor event, Emitter<RegisterSelectionState> emit) async {
+  Future<void> _getMajor(GetMajor event,
+      Emitter<RegisterSelectionState> emit) async {
     final result = await socialUseCase.getMajor();
     result.fold((error) {}, (data) {
       emit(state.copyWith(listMajor: data));
     });
   }
 
-  void _changedMajor(
-      ChangedMajor event, Emitter<RegisterSelectionState> emit) async {
+  void _changedMajor(ChangedMajor event,
+      Emitter<RegisterSelectionState> emit) async {
     emit(state.copyWith(major: event.major));
   }
 
@@ -119,21 +120,21 @@ class RegisterSelectionBloc
     emit(state.copyWith(listLifestyleSelect: lifestyle));
   }
 
-  void _changedBirthDay(
-      ChangedBirthDay event, Emitter<RegisterSelectionState> emit) async {
+  void _changedBirthDay(ChangedBirthDay event,
+      Emitter<RegisterSelectionState> emit) async {
     emit(state.copyWith(birthDay: event.birthDay));
   }
 
-  Future<void> getPersonality(
-      GetPersonality event, Emitter<RegisterSelectionState> emit) async {
+  Future<void> getPersonality(GetPersonality event,
+      Emitter<RegisterSelectionState> emit) async {
     final result = await socialUseCase.getPersonality();
     result.fold((error) {}, (data) {
       emit(state.copyWith(listPersonalityQuestion: data));
     });
   }
 
-  Future<void> getLifeStyle(
-      GetLifestyle event, Emitter<RegisterSelectionState> emit) async {
+  Future<void> getLifeStyle(GetLifestyle event,
+      Emitter<RegisterSelectionState> emit) async {
     final result = await socialUseCase.getLifestyle();
     result.fold((error) {}, (data) {
       emit(state.copyWith(listLifestyleQuestion: data));
@@ -145,9 +146,9 @@ class RegisterSelectionBloc
     emit(state.copyWith(
         registerSelectionStatus: RegisterSelectionStatus.loading));
     final uid =
-        await socialUseCase.sharedPreference.get(SharedPreference.uidAccount);
+    await socialUseCase.sharedPreference.get(SharedPreference.uidAccount);
     final resultAvatar =
-        await socialUseCase.addImageProfile(uid: uid, imageFile: state.file!);
+    await socialUseCase.addImageProfile(uid: uid, imageFile: state.file!);
     resultAvatar.fold((error) {}, (data) {
       emit(state.copyWith(imageUrl: data));
     });
@@ -179,5 +180,10 @@ class RegisterSelectionBloc
         uid: uid, userAnswersModel: userAnswersModel);
 
     result.fold((error) {}, (data) {});
+  }
+
+  Future<void> _updateRecommendation(UpdateRecommendation event,
+      Emitter<RegisterSelectionState> emit) async {
+    final result = await socialUseCase.updateRecommendation();
   }
 }
