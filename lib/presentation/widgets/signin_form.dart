@@ -70,7 +70,10 @@ class SignInForm extends StatelessWidget {
         borderRadius: 12,
         blurRadius: 22,
         onPressed: () {
-          context.read<LoginBloc>().add(LoginSummit());
+          if(!state.validatePassword && !state.validateEmail){
+            context.read<LoginBloc>().add(LoginSummit());
+          }
+
         },
         child: const Center(
           child: Text(

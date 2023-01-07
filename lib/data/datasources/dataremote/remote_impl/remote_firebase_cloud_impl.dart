@@ -496,9 +496,14 @@ class RemoteFirebaseCloudImpl extends RemoteFireBaseCloud {
 
   @override
   Stream<List<UserModel>> getAllUser({required UserLike userLike}) {
+      final List<String> list =[];
+      for(int  i= 0; i<10 ;i++){
+        list.add(userLike.uidLiked[i]);
+      }
+
     return firebaseFireStore
         .collection("user")
-        .where("uid", whereIn: userLike.uidLiked)
+        .where("uid", whereIn: list)
         .snapshots()
         .map((event) {
       return event.docs.map((e) => UserModel.fromDocument(e)).toList();

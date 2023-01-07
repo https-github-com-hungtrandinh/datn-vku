@@ -47,10 +47,6 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
       context.read<HomeBloc>().add(UpdateUserStatus(status: Strings.offline));
     }
   }
-
-
-
-
   final AppinioSwiperController controller = AppinioSwiperController();
 
   @override

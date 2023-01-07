@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../core/util/glow_button.dart';
 import '../../core/util/rouder_text_field.dart';
-import '../../core/value/image.dart';
 import '../bloc/register/register_bloc.dart';
 import '../bloc/register/register_event.dart';
 import '../bloc/register/register_state.dart';
@@ -45,7 +44,7 @@ class SignUpFormFirst extends StatelessWidget {
         keyboardType: TextInputType.text,
         textInputAction: TextInputAction.next,
         obscureText: true,
-        errorText: null,
+        errorText: state.emailValidate ? Strings.emailValidate : null,
       );
     });
   }
@@ -88,7 +87,9 @@ class SignUpFormFirst extends StatelessWidget {
         borderRadius: 12,
         blurRadius: 22,
         onPressed: () {
-          context.read<RegisterBloc>().add(RegisterSummit());
+          if(!state.emailValidate && !state.passwordValidate) {
+            context.read<RegisterBloc>().add(RegisterSummit());
+          }
         },
         child: const Center(
           child: Text(

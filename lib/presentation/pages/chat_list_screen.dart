@@ -10,7 +10,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../core/value/image.dart';
-import '../../data/models/firebase/chat.dart';
 import '../bloc/chat/chat_event.dart';
 import '../widgets/avatar_lable_user.dart';
 

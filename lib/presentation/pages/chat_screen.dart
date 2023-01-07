@@ -9,7 +9,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../core/util/format_time.dart';
 import '../../data/models/firebase/chat_user.dart';
-import '../../injection.dart';
 import '../widgets/left_chat_widget.dart';
 import '../widgets/message_text_field.dart';
 import '../widgets/right_chat_widget.dart';
