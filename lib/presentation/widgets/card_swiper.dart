@@ -139,7 +139,7 @@ class CardSwipe extends StatelessWidget {
             context.read<HomeBloc>().add(UserViewEvent(
                 userView:
                     UserView(myUidView: state.uid, uidOwenView: [user.uid!])));
-            Navigator.pushNamed(context, ViewProfile.routeName);
+            Navigator.pushNamed(context, ViewProfile.routeName,arguments: user);
           },
           icon: const Icon(
             Icons.remove_red_eye_outlined,

@@ -1,12 +1,10 @@
-import 'package:clean_architecture/data/models/post.dart';
 import 'package:flutter/material.dart';
-
 import '../../core/util/text_utils.dart';
 
 class PostViewWidget extends StatefulWidget {
-  final Posts posts;
 
-  const PostViewWidget({Key? key, required this.posts}) : super(key: key);
+
+  const PostViewWidget({Key? key}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() {
@@ -49,11 +47,7 @@ class _PostViewWidgetState extends State<PostViewWidget> {
               ],
             ),
           ),
-          Image.asset(
-            widget.posts.media[0],
-            height: 300,
-            fit: BoxFit.fill,
-          ),
+
           const SizedBox(
             height: 10,
           ),
@@ -111,8 +105,7 @@ class _PostViewWidgetState extends State<PostViewWidget> {
                     const SizedBox(
                       width: 5,
                     ),
-                    _textUtils.normal14(
-                       widget.posts.content , Colors.white)
+
                   ],
                 ),
                 const SizedBox(

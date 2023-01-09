@@ -4,10 +4,7 @@ import 'package:clean_architecture/data/datasources/dataremote/remote_firebase_c
 import 'package:clean_architecture/domain/usecases/social_usecase.dart';
 import 'package:clean_architecture/presentation/bloc/authen/auth_bloc.dart';
 import 'package:clean_architecture/presentation/bloc/login/login_bloc.dart';
-
-
 import 'package:get_it/get_it.dart';
-
 import 'data/datasources/dataremote/remote_impl/remote_firebase_cloud_impl.dart';
 
 final sl = GetIt.instance;

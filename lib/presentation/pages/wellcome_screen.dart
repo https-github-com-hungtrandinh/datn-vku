@@ -3,7 +3,6 @@ import 'package:clean_architecture/presentation/bloc/login/login_bloc.dart';
 import 'package:clean_architecture/presentation/bloc/login/login_event.dart';
 import 'package:clean_architecture/presentation/bloc/login/login_state.dart';
 import 'package:clean_architecture/presentation/pages/register_screen.dart';
-import 'package:clean_architecture/presentation/pages/register_slection/register_selection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';

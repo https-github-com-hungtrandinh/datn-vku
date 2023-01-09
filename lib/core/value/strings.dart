@@ -88,5 +88,6 @@ class Strings {
   static const String active="Recently Active";
   static const String online="online";
   static const String offline="offline";
+  static const String myBasic = "My Basics";
 
 }
