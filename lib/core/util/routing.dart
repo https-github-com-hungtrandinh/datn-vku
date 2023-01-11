@@ -9,16 +9,17 @@ import 'package:clean_architecture/presentation/pages/view_profile.dart';
 import 'package:clean_architecture/presentation/pages/wellcome_screen.dart';
 import 'package:flutter/material.dart';
 
+import '../../presentation/pages/changed_profile_detail.dart';
 import '../../presentation/pages/forgot_password_screen.dart';
 
 import '../../presentation/pages/register_slection/register_selection.dart';
 import '../../presentation/pages/start_selection_screen.dart';
+import '../value/strings.dart';
 
 class RouteGenerator {
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
       case '/LoginPage':
-
         return MaterialPageRoute(builder: (_) => const LoginScreen());
       case '/StartSelection':
         return MaterialPageRoute(builder: (_) => const StartSelection());
@@ -38,10 +39,16 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => const ChatsList());
       case '/chat-page':
         final args = settings.arguments as int;
-        return MaterialPageRoute(builder: (_) =>  ChatScreen(index: args));
+        return MaterialPageRoute(builder: (_) => ChatScreen(index: args));
       case '/view-profile':
         final args = settings.arguments as UserModel;
-        return MaterialPageRoute(builder: (_) =>ViewProfile(userModel: args,));
+        return MaterialPageRoute(
+            builder: (_) => ViewProfile(
+                  userModel: args,
+                ));
+      case '/ChangedProfileDetailPage':
+        final args = settings.arguments as UserModel;
+        return MaterialPageRoute(builder: (_) =>  ChangedProfileDetail(userModel: args,));
       default:
         // If there is no such named route in the switch statement, e.g. /third
         return _errorRoute();
@@ -52,10 +59,10 @@ class RouteGenerator {
     return MaterialPageRoute(builder: (_) {
       return Scaffold(
         appBar: AppBar(
-          title: const Text('Error'),
+          title: const Text(Strings.error),
         ),
         body: const Center(
-          child: Text('ERROR'),
+          child: Text(Strings.error),
         ),
       );
     });

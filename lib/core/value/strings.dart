@@ -63,12 +63,14 @@ class Strings {
   static const String niceToMissYou="Nice to meet you ";
   static const String whatIsBirthDay="! What is your birthday?";
   static const String yourMaJor="Your major...";
+  static const String major ="Major";
   static const String alright ="Alright";
   static const String whatIsMajor ="! What is your major?";
   static const String search='Search';
   static const String pleaseEnterYourName="Please enter your name";
   static const String nameSize="Name should be less than 20 characters";
   static const String pleaseEnterGender="Please choose your gender";
+  static const String gender="Gender";
   static const String pleaseEnterBirthDay="Please enter your birthday";
   static const String errorBirthDay="Birthday should be before today";
   static const String pleaseMajor ="Please enter your major";
@@ -89,5 +91,13 @@ class Strings {
   static const String online="online";
   static const String offline="offline";
   static const String myBasic = "My Basics";
-
+  static const String editProfileDetail ="Edit Profile";
+  static const String done= "done";
+  static const String preview= "Preview";
+  static const String edit ="Edit";
+  static const String image ="Image";
+  static const String yourOpinion ="Your opinion";
+  static const String needAddProfile="You need to add more information to your profile so other users can know more about you";
+  static const String interests="Interests";
+  static const String datingPurpose="Dating purpose";
 }

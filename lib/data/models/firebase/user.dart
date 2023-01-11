@@ -70,7 +70,7 @@ class UserModel {
         mbti: doc.get('mbti'),
         gender: doc.get('gender'),
         status: doc.get('status'),
-        // birthday: (doc.get('birthday') as Timestamp).toDate(),
+        birthday: doc.get('birthday') !=null ? DateTime.parse((doc.get('birthday') as Timestamp).toDate().toString()) : DateTime.now(),
         interests: (doc['interests'] as List).map((e) => e.toString()).toList(),
         questionaireFilled: doc['questionaireFilled'],
         registerFinished: doc['registerFinished'],

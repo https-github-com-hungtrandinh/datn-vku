@@ -1,4 +1,3 @@
-import 'dart:math';
 
 import 'package:geolocator/geolocator.dart';
 
@@ -32,3 +31,4 @@ double calculateDistance({required Location location1, required Location locatio
   return Geolocator.distanceBetween(
       location1.lat!, location1.long!, location2.lat!, location2.long!) /1000;
 }
+

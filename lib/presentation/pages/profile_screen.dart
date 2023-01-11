@@ -12,6 +12,7 @@ import 'package:clean_architecture/presentation/bloc/fake_data/fake_data_state.d
 import 'package:clean_architecture/presentation/bloc/profile/profile_bloc.dart';
 import 'package:clean_architecture/presentation/bloc/profile/profile_event.dart';
 import 'package:clean_architecture/presentation/bloc/profile/profile_state.dart';
+import 'package:clean_architecture/presentation/pages/changed_profile_detail.dart';
 import 'package:clean_architecture/presentation/pages/wellcome_screen.dart';
 import 'package:clean_architecture/presentation/widgets/dot_loading.dart';
 import 'package:flutter/material.dart';
@@ -235,11 +236,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       // changes position of shadow
                                     ),
                                   ]),
-                              child: BlocBuilder<FakeDataBloc,FakeDataState>(
+                              child: BlocBuilder<ProfileBloc, ProfileState>(
                                 builder: (context,state) {
                                   return IconButton(
                                     onPressed: (){
-                                      context.read<FakeDataBloc>().add(CreateDataFake());
+                                      Navigator.pushNamed(context, ChangedProfileDetail.changedProfileDetailPushName,arguments: state.userModel);
                                     },
                                     icon: Icon(
                                       Icons.edit,
