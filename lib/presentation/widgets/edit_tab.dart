@@ -1,7 +1,9 @@
 import 'package:clean_architecture/core/value/app_color.dart';
 import 'package:clean_architecture/presentation/widgets/grid_post_widgets.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
+import '../../core/util/glow_button.dart';
 import '../../core/value/strings.dart';
 
 class EditTab extends StatefulWidget {
@@ -110,7 +112,32 @@ class _EditTabState extends State<EditTab> {
                 maxLines: 2,
                 decoration: const InputDecoration(border: InputBorder.none),
               ),
-            )
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            Center(
+              child: GlowButtonWidget(
+                height: 60,
+                width: MediaQuery.of(context).size.width * 0.85,
+                backgroundColor: AppColors.colorF78361,
+                glowColor: AppColors.colorF78361,
+                glowOffset: const Offset(0, 6),
+                borderRadius: 30,
+                blurRadius: 25,
+                onPressed: () {},
+                child: Text(
+                  Strings.done,
+                  style: GoogleFonts.aBeeZee(
+                      fontSize: 20,
+                      fontWeight: FontWeight.w700,
+                      color: Colors.white),
+                ),
+              ),
+            ),
+            const SizedBox(
+              height: 20,
+            ),
           ],
         ),
       ),

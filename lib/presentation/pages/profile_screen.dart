@@ -1,5 +1,3 @@
-
-
 import 'dart:developer';
 
 import 'package:clean_architecture/core/value/app_color.dart';
@@ -20,6 +18,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
 import 'package:geolocator/geolocator.dart';
 
+import '../../core/util/image_picker.dart';
 import '../../core/util/location.dart';
 import '../../core/value/strings.dart';
 import '../../injection.dart';
@@ -76,7 +75,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     decoration: BoxDecoration(
                         shape: BoxShape.circle,
                         image: DecorationImage(
-                            image: NetworkImage(state.userModel!.photoUrl!),
+                            image: state.file == null
+                                ? NetworkImage(state.userModel!.photoUrl!)
+                                : FileImage(state.file!) as ImageProvider,
                             fit: BoxFit.cover)),
                   ),
                   const SizedBox(
@@ -168,11 +169,23 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                             // changes position of shadow
                                           ),
                                         ]),
-                                    child: const Icon(
-                                      Icons.camera_alt,
-                                      size: 45,
-                                      color: Colors.white,
-                                    ),
+                                    child:
+                                        BlocBuilder<ProfileBloc, ProfileState>(
+                                            builder: (context, state) {
+                                      return IconButton(
+                                        onPressed: () async {
+                                          context.read<ProfileBloc>().add(
+                                              ChangedAvatar(
+                                                  file:
+                                                      await getFromGallery()));
+                                        },
+                                        icon: const Icon(
+                                          Icons.camera_alt,
+                                          size: 45,
+                                          color: Colors.white,
+                                        ),
+                                      );
+                                    }),
                                   ),
                                   Positioned(
                                     bottom: 8,
@@ -218,9 +231,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         children: [
                           InkWell(
                             onTap: () async {
-                            Position position =  await determinePosition();
+                              Position position = await determinePosition();
 
-                            log("${position.longitude}");
+                              log("${position.longitude}");
                             },
                             child: Container(
                               width: 60,
@@ -237,19 +250,22 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     ),
                                   ]),
                               child: BlocBuilder<ProfileBloc, ProfileState>(
-                                builder: (context,state) {
-                                  return IconButton(
-                                    onPressed: (){
-                                      Navigator.pushNamed(context, ChangedProfileDetail.changedProfileDetailPushName,arguments: state.userModel);
-                                    },
-                                    icon: Icon(
-                                      Icons.edit,
-                                      size: 35,
-                                      color: Colors.grey.withOpacity(0.5),
-                                    ),
-                                  );
-                                }
-                              ),
+                                  builder: (context, state) {
+                                return IconButton(
+                                  onPressed: () {
+                                    Navigator.pushNamed(
+                                        context,
+                                        ChangedProfileDetail
+                                            .changedProfileDetailPushName,
+                                        arguments: state.userModel);
+                                  },
+                                  icon: Icon(
+                                    Icons.edit,
+                                    size: 35,
+                                    color: Colors.grey.withOpacity(0.5),
+                                  ),
+                                );
+                              }),
                             ),
                           ),
                           const SizedBox(

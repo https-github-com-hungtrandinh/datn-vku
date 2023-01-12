@@ -1,3 +1,4 @@
+import 'package:clean_architecture/data/models/list_id_recommender.dart';
 import 'package:equatable/equatable.dart';
 import '../../../data/models/firebase/messages.dart';
 import '../../../data/models/firebase/user.dart';
@@ -19,9 +20,11 @@ class HomeState extends Equatable {
   final List<UserModel> userMatch;
   final List<UserModel> allUserMatch;
   final List<Message> listMessages;
+  final ListIdRecommender? listIdRecommender;
 
   const HomeState(
       {required this.loadUserSwiper,
+      required this.listIdRecommender,
       required this.allUserMatch,
       required this.userData,
       required this.uid,
@@ -40,6 +43,7 @@ class HomeState extends Equatable {
         listMessages: [],
         allUserMatch: [],
         userData: null,
+        listIdRecommender: null,
         uid: "",
         checkMatch: false,
         like: "",
@@ -65,8 +69,10 @@ class HomeState extends Equatable {
       UserModel? userData,
       List<UserModel>? userMatch,
       List<UserModel>? allUserMatch,
+      ListIdRecommender? listIdRecommender,
       List<UserModel>? allUser}) {
     return HomeState(
+        listIdRecommender: listIdRecommender ?? this.listIdRecommender,
         userData: userData ?? this.userData,
         userMatch: userMatch ?? this.userMatch,
         uid: uid ?? this.uid,
@@ -88,6 +94,7 @@ class HomeState extends Equatable {
         liked,
         userWatch,
         allUser,
+        listIdRecommender,
         allUserLike,
         checkMatch,
         chatId,

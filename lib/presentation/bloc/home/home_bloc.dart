@@ -1,6 +1,7 @@
 import 'package:clean_architecture/data/models/firebase/location.dart';
 import 'package:clean_architecture/data/models/firebase/user.dart';
 import 'package:clean_architecture/data/models/firebase/like.dart';
+import 'package:clean_architecture/data/models/list_id_recommender.dart';
 import 'package:clean_architecture/presentation/bloc/home/home_event.dart';
 import 'package:clean_architecture/presentation/bloc/home/home_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -95,7 +96,11 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       emit(state.copyWith(allUserLike: data));
     });
     final allUser = await socialUseCase.getAllUser(uid: uid);
-
+    // final listIdRecommender = await socialUseCase.getIdRecommender(uid: uid);
+    // listIdRecommender.fold((l) => null, (data) {
+    //   emit(state.copyWith(listIdRecommender: data));
+    // });
+    // final allUser = await socialUseCase.getUserRecommender(listIdRecommender: state.listIdRecommender!);
     allUser.fold((error) {}, (data) {
       final List<UserModel> listAllUser = [];
 
@@ -114,10 +119,10 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
           allUser: listAllUser, loadUserSwiper: LoadUserSwiper.loaded));
     });
   }
-  void updateUserView(UserViewEvent event, Emitter<HomeState> emit) async{
+
+  void updateUserView(UserViewEvent event, Emitter<HomeState> emit) async {
     final result = await socialUseCase.userView(userView: event.userView);
     result.fold((l) => null, (r) => null);
-
   }
 
   void updateUserStatus(UpdateUserStatus event, Emitter<HomeState> emit) async {

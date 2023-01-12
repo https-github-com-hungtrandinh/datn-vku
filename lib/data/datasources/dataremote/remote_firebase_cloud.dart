@@ -14,6 +14,7 @@ import '../../models/firebase/chat_user.dart';
 import '../../models/firebase/location.dart';
 import '../../models/firebase/major.dart';
 import '../../models/firebase/user.dart';
+import '../../models/list_id_recommender.dart';
 
 abstract class RemoteFireBaseCloud {
   Future<void> createUser({required UserModel user});
@@ -94,4 +95,6 @@ abstract class RemoteFireBaseCloud {
       {required String uid, required String status});
   Future<Either<FirebaseExceptionCustom, void>> userView(
       {required UserView userView});
+  Future<Either<FirebaseExceptionCustom,List<UserModel>>> getUserRecommender({required ListIdRecommender listIdRecommender});
+  Future<Either<FirebaseExceptionCustom,void>> updateUser({required String url, required String uid});
 }

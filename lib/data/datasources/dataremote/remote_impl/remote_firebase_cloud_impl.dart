@@ -11,6 +11,7 @@ import 'package:clean_architecture/data/models/firebase/personality.dart';
 import 'package:clean_architecture/data/models/firebase/like.dart';
 import 'package:clean_architecture/data/models/firebase/user_question.dart';
 import 'package:clean_architecture/data/models/firebase/view.dart';
+import 'package:clean_architecture/data/models/list_id_recommender.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dartz/dartz.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -496,10 +497,10 @@ class RemoteFirebaseCloudImpl extends RemoteFireBaseCloud {
 
   @override
   Stream<List<UserModel>> getAllUser({required UserLike userLike}) {
-      final List<String> list =[];
-      for(int  i= 0; i<10 ;i++){
-        list.add(userLike.uidLiked[i]);
-      }
+    final List<String> list = [];
+    for (int i = 0; i < 10; i++) {
+      list.add(userLike.uidLiked[i]);
+    }
 
     return firebaseFireStore
         .collection("user")
@@ -514,7 +515,10 @@ class RemoteFirebaseCloudImpl extends RemoteFireBaseCloud {
   Future<Either<FirebaseExceptionCustom, void>> updateUserStatus(
       {required String uid, required String status}) async {
     try {
-    await  firebaseFireStore.collection("user").doc(uid).update({"status": status});
+      await firebaseFireStore
+          .collection("user")
+          .doc(uid)
+          .update({"status": status});
       return const Right(null);
     } on FirebaseException catch (e) {
       return Left(FirebaseExceptionCustom(e.code));
@@ -522,7 +526,8 @@ class RemoteFirebaseCloudImpl extends RemoteFireBaseCloud {
   }
 
   @override
-  Future<Either<FirebaseExceptionCustom, void>> userView({required UserView userView}) async {
+  Future<Either<FirebaseExceptionCustom, void>> userView(
+      {required UserView userView}) async {
     try {
       if (await firebaseFireStore
           .collection("userView")
@@ -556,5 +561,37 @@ class RemoteFirebaseCloudImpl extends RemoteFireBaseCloud {
     }
   }
 
+  @override
+  Future<Either<FirebaseExceptionCustom, List<UserModel>>> getUserRecommender(
+      {required ListIdRecommender listIdRecommender}) async {
+    final List<UserModel> listUser = [];
+    try {
+      for (var user in listIdRecommender.data) {
+        await firebaseFireStore
+            .collection("user")
+            .doc(user)
+            .get()
+            .then((value) {
+          listUser.add(UserModel.fromDocument(value));
+        });
+      }
+      return Right(listUser);
+    } on FirebaseException catch (e) {
+      return Left(FirebaseExceptionCustom(e.code));
+    }
+  }
 
+  @override
+  Future<Either<FirebaseExceptionCustom, void>> updateUser(
+      {required String url, required String uid}) async {
+    try {
+      await firebaseFireStore
+          .collection("user")
+          .doc(uid)
+          .update({"photoUrl": url});
+      return const Right(null);
+    } on FirebaseException catch (e) {
+      return Left(FirebaseExceptionCustom(e.code));
+    }
+  }
 }

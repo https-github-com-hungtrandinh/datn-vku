@@ -9,6 +9,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
 
   ProfileBloc(this.socialUseCase) : super(ProfileState.initial()) {
     on<GetUserProfile>(_getUserProfile);
+    on<ChangedAvatar>(_changedAvatar);
   }
 
   Future<void> _getUserProfile(
@@ -21,5 +22,17 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
         (error) => emit(state.copyWith(profileStatus: ProfileStatus.error)),
         (data) => emit(state.copyWith(
             userModel: data, profileStatus: ProfileStatus.loaded)));
+  }
+
+  void _changedAvatar(ChangedAvatar event, Emitter<ProfileState> emit) async {
+    final uid =
+        await socialUseCase.sharedPreference.get(SharedPreference.uidAccount);
+    final result =
+        await socialUseCase.addImageProfile(uid: uid, imageFile: event.file);
+    result.fold((l) => null, (r) {
+      emit(state.copyWith(urlPhoto: r));
+    });
+    await socialUseCase.updateUser(url: state.urlPhoto, uid: uid);
+    emit(state.copyWith(file: event.file));
   }
 }
